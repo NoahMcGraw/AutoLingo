@@ -14,6 +14,6 @@ Unfortunately, the free version of the translator api does have limitations so I
 This is where you will store the API integration details.
 
 The variables you'll need:
-```VITE_RANDOM_API_URL```
+```VITE_RANDOM_API_URL=https://random-word-api.herokuapp.com``` (This is a public open-source api. With that said, this url may be subject to change.)
 ```VITE_MS_TRANSLATOR_API_URL```
 ```VITE_MS_TRANSLATOR_API_KEY```

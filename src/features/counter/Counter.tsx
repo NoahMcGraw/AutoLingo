@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import {
@@ -10,6 +10,8 @@ import {
   selectCount,
 } from "./counterSlice";
 import styles from "./Counter.module.css";
+import { getTranslations } from "../../api/microsoft-translator/microsoft-translator";
+import { TranslatedWord } from "../../app/types";
 
 export function Counter() {
   const count = useAppSelector(selectCount);
@@ -17,6 +19,13 @@ export function Counter() {
   const [incrementAmount, setIncrementAmount] = useState("2");
 
   const incrementValue = Number(incrementAmount) || 0;
+
+  useEffect(() => {
+    getTranslations(["^&^&s", "Confirming"])
+    .then((translatedList: TranslatedWord[]) => {
+      console.log(JSON.stringify(translatedList))
+    })
+  }, [])
 
   return (
     <div>
