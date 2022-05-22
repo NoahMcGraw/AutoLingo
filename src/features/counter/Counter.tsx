@@ -10,8 +10,7 @@ import {
   selectCount,
 } from "./counterSlice";
 import styles from "./Counter.module.css";
-import { getTranslations } from "../../api/microsoft-translator/microsoft-translator";
-import { TranslatedResultObj, TranslatedWord } from "../../app/types";
+import { TranslatedResultObj } from "../../app/types";
 import { buildTranslationsList } from "../../api/integration-bridge/bridge";
 
 export function Counter() {
@@ -21,12 +20,12 @@ export function Counter() {
 
   const incrementValue = Number(incrementAmount) || 0;
 
-  useEffect(() => {
-    buildTranslationsList(3, "en", "es")
-    .then((resultsList: TranslatedResultObj[]) => {
-      console.log(JSON.stringify(resultsList))
-    })
-  }, [])
+  // useEffect(() => {
+  //   buildTranslationsList(3, "en", "es")
+  //   .then((resultsList: TranslatedResultObj[]) => {
+  //     console.log(JSON.stringify(resultsList))
+  //   })
+  // }, [])
 
   return (
     <div>

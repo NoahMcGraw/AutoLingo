@@ -11,3 +11,7 @@ export const formatUrlGetParams = (urlParams: {key: string, value: string}[]) =>
     })
     return currentUrlParams.toString().length ? '?' + currentUrlParams.toString().replace(/\+/g,' ') : '';
 }
+
+export const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
