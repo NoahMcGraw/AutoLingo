@@ -15,8 +15,8 @@ const initialState: CardsState = {
 
 export type fetchTranslationsParams = {
   wordNumber: number,
-  sourceLang: string,
-  targetLang: string
+  sourceLang?: string,
+  targetLang?: string
 }
 
 // The function below is called a thunk and allows us to perform async logic. It

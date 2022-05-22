@@ -3,12 +3,12 @@ import { getTranslations } from "../microsoft-translator/microsoft-translator";
 import { SourceWord, TranslatedResultObj, TranslatedWord } from "../../app/types";
 
 
-export const buildTranslationsList = async (wordNumber: number, sourceLang = "en", targetLang = "es") => {
+export const buildTranslationsList = async (wordNumber: number, sourceLang = "es", targetLang = "en") => {
   let mergedList = [] as TranslatedResultObj[]
   const sourceList = await getSourceWords(wordNumber, sourceLang).catch((err) => { console.error(err) })
   //TODO: dispatch source words to store
   if (typeof sourceList !== "undefined" && sourceList.length > 0) {
-    let translatedList = await getTranslations(sourceList, targetLang).catch((err) => { console.error(err) })
+    let translatedList = await getTranslations(sourceList, sourceLang, targetLang).catch((err) => { console.error(err) })
     mergedList = mergeTranslationsIntoSourceList(sourceList, translatedList)
   }
   return mergedList

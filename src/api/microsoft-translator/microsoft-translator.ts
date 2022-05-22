@@ -16,13 +16,13 @@ import { MSTranslationResponse, SourceWord, TranslatedWord } from '../../app/typ
 /**
  * Translates the arr of source words into the desired language
  * @param wordList: String[] - List of words to translate
- * @param toLang: String - Target language to translate into
+ * @param sourceLang: String - Source language being translated from
+ * @param targetLang: String - Target language to translate into
  * @returns List of tranlated words
  */
-export const getTranslations = (wordList:string[], toLang: string = "es") => new Promise<TranslatedWord[]>((resolve, reject) => {
+export const getTranslations = (wordList:string[] , sourceLang: string = "es", targetLang: string = "en") => new Promise<TranslatedWord[]>((resolve, reject) => {
 
   var subscriptionKey = import.meta.env.VITE_MS_TRANSLATOR_API_KEY;
-  console.log("🚀 ~ file: microsoft-translator.ts ~ line 25 ~ getTranslations ~ subscriptionKey", subscriptionKey)
   var endpoint = import.meta.env.VITE_MS_TRANSLATOR_API_URL;
 
   // Add your location, also known as region. The default is global.
@@ -41,8 +41,8 @@ export const getTranslations = (wordList:string[], toLang: string = "es") => new
       },
       params: {
           'api-version': '3.0',
-          'from': 'en',
-          'to': [toLang]
+          'from': sourceLang,
+          'to': [targetLang]
       },
       data: wordList.map((word: SourceWord) => {
         return {
