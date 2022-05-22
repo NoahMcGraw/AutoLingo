@@ -1,11 +1,15 @@
 module.exports = {
-  purge: {
-    enabled: true,
-    content: ["./dist/**/*.html"],
-  },
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}"
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+  ],
+  safelist: [
+    {
+      pattern: /bg-(red|green|blue)-/,
+    },
+    {
+      pattern: /group-hover:text-(red|green|blue)-/,
+    },
   ],
   theme: {
     extend: {},

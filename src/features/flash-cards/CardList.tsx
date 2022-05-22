@@ -59,19 +59,39 @@ const CardReactions = ({card}: CardReactionsProps) => {
     {
       name: "Don't Know",
       icon: "",
-      color: "red-500"
+      color: "red",
     },
     {
       name: "Know",
       icon: "",
-      color: "green-500"
+      color: "green",
     }
   ]
+
+  const getElColorClasses = (color: string, classPrefix: string = "") => {
+    switch (color) {
+      case "red":
+        return {
+          bg: classPrefix + "bg-red-500",
+          text: classPrefix + "text-red-500"
+        }
+      case "green":
+        return {
+          bg: classPrefix + "bg-green-500",
+          text: classPrefix + "text-green-500"
+        }
+      default:
+        return {
+          bg: classPrefix + "bg-slate-100",
+          text: classPrefix + "text-white"
+        }
+    }
+  }
 
   return (
     <div className="flex justify-evenly">
       {reactions.map((reaction: reactionObj, i: number) =>
-        <button key={`reaction_` + i} className={`group ${card.reaction === reaction.name ? "bg-" + reaction.color : ""}`} onClick={
+        <button key={`reaction_` + i} className={`group ${card.reaction === reaction.name ? getElColorClasses(reaction.color).bg : ""}`} onClick={
           (e) => {
             dispatch(
               addReaction(
@@ -83,7 +103,7 @@ const CardReactions = ({card}: CardReactionsProps) => {
             )
           }
         }>
-          <span className={`group-hover:text-${reaction.color} md:visible`}>{reaction.name}</span>
+          <span className={`${card.reaction !== reaction.name ? getElColorClasses(reaction.color, "group-hover:").text : ""} md:visible`}>{reaction.name}</span>
           <div className="md:invisible" dangerouslySetInnerHTML={{__html: reaction.icon}}></div>
         </button>
       )}
