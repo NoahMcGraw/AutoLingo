@@ -7,8 +7,10 @@ export type SourceWord = string
 export type TranslatedWord = string
 
 export type TranslatedResultObj = {
+  id: string
   source: SourceWord,
-  translation: TranslatedWord
+  translation: TranslatedWord,
+  reaction: TranslationReaction
 }
 
 export type MSTranslationResponse = {
@@ -17,3 +19,6 @@ export type MSTranslationResponse = {
     to: string
   }[]
 }
+
+export type TranslationReaction = "Do Not Know" | "Know"
+
