@@ -19,7 +19,11 @@ import { formatUrlGetParams } from '../../utils'
  * @param lang: String - Alternate language to return. Known Options: es | zh | it | de
  * @returns List of random words
  */
-export const getWords = (wordNumber:number, lang: string = "") => new Promise<SourceWord[]>((resolve, reject) => {
+export const getSourceWords = (wordNumber:number, lang: string = "") => new Promise<SourceWord[]>((resolve, reject) => {
+  // The random word api defaults to returning english and does not accept an 'en' lang code so we will just blank the value.
+  if (lang == 'en') {
+    lang = ""
+  }
   const _params = [
     {
       key: "number",

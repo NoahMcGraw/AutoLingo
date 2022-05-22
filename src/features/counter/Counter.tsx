@@ -11,7 +11,8 @@ import {
 } from "./counterSlice";
 import styles from "./Counter.module.css";
 import { getTranslations } from "../../api/microsoft-translator/microsoft-translator";
-import { TranslatedWord } from "../../app/types";
+import { TranslatedResultObj, TranslatedWord } from "../../app/types";
+import { buildTranslationsList } from "../../api/integration-bridge/bridge";
 
 export function Counter() {
   const count = useAppSelector(selectCount);
@@ -21,9 +22,9 @@ export function Counter() {
   const incrementValue = Number(incrementAmount) || 0;
 
   useEffect(() => {
-    getTranslations(["^&^&s", "Confirming"])
-    .then((translatedList: TranslatedWord[]) => {
-      console.log(JSON.stringify(translatedList))
+    buildTranslationsList(3, "en", "es")
+    .then((resultsList: TranslatedResultObj[]) => {
+      console.log(JSON.stringify(resultsList))
     })
   }, [])
 
