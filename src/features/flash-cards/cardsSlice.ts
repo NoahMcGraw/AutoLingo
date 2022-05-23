@@ -28,12 +28,18 @@ export type fetchTranslationsParams = {
 // typically used to make async requests.
 export const fetchTranslations = createAsyncThunk(
   "cards/fetchTranslations",
-  async ({wordNumber, sourceLang, targetLang}: fetchTranslationsParams) => {
-    const response = await buildTranslationsList(wordNumber, sourceLang, targetLang);
-    // Insert an id into each card so we can identify them later.
-    response.map(entry => entry.id = nanoid())
-    // The value we return becomes the `fulfilled` action payload
-    return response;
+  async ({wordNumber, sourceLang, targetLang}: fetchTranslationsParams, { rejectWithValue }) => {
+    const response = await buildTranslationsList(wordNumber, sourceLang, targetLang)
+    if (response.length) {
+      console.log("🚀 ~ file: cardsSlice.ts ~ line 34 ~ response", response)
+      // Insert an id into each card so we can identify them later.
+      response.map(entry => entry.id = nanoid())
+      // The value we return becomes the `fulfilled` action payload
+      return response;
+    }
+    else {
+      return rejectWithValue('Could not connect to the API');
+    }
   }
 );
 

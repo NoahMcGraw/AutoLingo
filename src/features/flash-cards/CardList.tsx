@@ -15,7 +15,7 @@ export const CardsList = () => {
       {cardDataList.map((cardData: TranslatedResultObj, i: number) =>
         <Card card={cardData} index={i} key={`card_${i}`}/>
       )}
-      {cardDataList.length && curIndex >= cardDataList.length && <MoreCardsButton />}
+      {cardDataList.length > 0 && curIndex >= cardDataList.length && <MoreCardsButton />}
     </section>
   )
 }
