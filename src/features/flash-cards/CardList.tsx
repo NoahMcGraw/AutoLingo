@@ -73,10 +73,10 @@ const Card = ({card, index}: CardProps) => {
     <div className={`flip-card top-5 transition-all duration-1000 ${handleTransitionOffScreen()}`} style={{left: `${modLeftOffset}%`, zIndex: modZIndex.toString()}}>
       <div onClick={(e) => handleCardFlip(card.id)} id={`card_${card.id}_inner`} className="flip-card-inner">
         <section className="flip-card-front bg-slate-100 border-2 border-slate-200">
-          <div className="relative top-1/2 text-2xl">{capitalizeFirstLetter(card.source)}</div>
+          <div className="relative top-1/2 text-2xl cursor-default">{capitalizeFirstLetter(card.source)}</div>
         </section>
         <section className="flip-card-back bg-blue-100 align-middle border-2 border-slate-200">
-          <div className="relative top-1/2 text-2xl">{capitalizeFirstLetter(card.translation)}</div>
+          <div className="relative top-1/2 text-2xl cursor-default">{capitalizeFirstLetter(card.translation)}</div>
         <CardReactions card={card} />
         </section>
       </div>

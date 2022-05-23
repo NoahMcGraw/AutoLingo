@@ -61,7 +61,7 @@ export const getTranslations = (wordList:string[] , sourceLang: string = "es", t
 const pullTranslationFromMSResponse = (translationsObjArr: MSTranslationResponse[]): TranslatedWord[] => {
   let translationsFlatArr = [] as TranslatedWord[]
   translationsObjArr.map((translationObj: MSTranslationResponse) => {
-    let translatedText = "Unknown Translation"
+    let translatedText = "Unknown"
     if (typeof translationObj.translations !== 'undefined' && translationObj.translations.length > 0) {
       // TODO: Accept multiple versions of the translation.
       const firstTranslation = translationObj.translations[0]

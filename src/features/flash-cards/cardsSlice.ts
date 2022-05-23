@@ -70,14 +70,17 @@ export const cardsSlice = createSlice({
     builder
       .addCase(fetchTranslations.pending, (state) => {
         state.status = "loading";
+        console.log("🚀 ~ file: cardsSlice.ts ~ line 73 ~ .addCase ~ state.status ", state.status )
         state.curListIndex = 0
       })
       .addCase(fetchTranslations.fulfilled, (state, action) => {
         state.status = "idle";
+        console.log("🚀 ~ file: cardsSlice.ts ~ line 78 ~ .addCase ~ state.status", state.status)
         state.list = action.payload;
       })
       .addCase(fetchTranslations.rejected, (state) => {
         state.status = "failed";
+        console.log("🚀 ~ file: cardsSlice.ts ~ line 83 ~ .addCase ~ state.status", state.status)
       });
   },
 });
