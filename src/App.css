@@ -1,12 +1,17 @@
+body {
+  overflow-x: hidden;
+}
+
 .App {
   text-align: center;
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
 }
 
 .card-list-backdrop {
   width: 100vw;
-  height: 75vh;
+  height: 100vh;
 }
 
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
@@ -29,7 +34,7 @@
 }
 
 /* Do an horizontal flip when you move the mouse over the flip box container */
-.flip-card:hover .flip-card-inner {
+.flip-card-inner.rotate-y-180 {
   transform: rotateY(180deg);
 }
 

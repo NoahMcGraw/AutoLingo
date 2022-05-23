@@ -12,7 +12,11 @@ module.exports = {
     },
   ],
   theme: {
-    extend: {},
+    extend: {
+      translate: {
+        '100vw': '100vw'
+      }
+    },
   },
   plugins: [],
 }

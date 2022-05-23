@@ -5,11 +5,13 @@ import { TranslatedResultObj } from "../../app/types";
 
 export interface CardsState {
   list: TranslatedResultObj[];
+  curListIndex: number
   status: "idle" | "loading" | "failed";
 }
 
 const initialState: CardsState = {
   list: [],
+  curListIndex: 0,
   status: "idle",
 };
 
@@ -52,6 +54,14 @@ export const cardsSlice = createSlice({
       if (card) {
         card.reaction = reaction
       }
+
+      incrementCardListIndex()
+    },
+    incrementCardListIndex: (state) => {
+      state.curListIndex++;
+    },
+    decrementCardListIndex: (state) => {
+      state.curListIndex--;
     }
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -60,6 +70,7 @@ export const cardsSlice = createSlice({
     builder
       .addCase(fetchTranslations.pending, (state) => {
         state.status = "loading";
+        state.curListIndex = 0
       })
       .addCase(fetchTranslations.fulfilled, (state, action) => {
         state.status = "idle";
@@ -71,7 +82,7 @@ export const cardsSlice = createSlice({
   },
 });
 
-export const { addReaction } = cardsSlice.actions;
+export const { addReaction, incrementCardListIndex, decrementCardListIndex } = cardsSlice.actions;
 
 /**
  * Returns the whole card.list state
@@ -88,5 +99,11 @@ export const selectList = (state: RootState) => state.cards.list;
 export const selectFromListById = (state: RootState, cardId: string) => {
   state.cards.list.find(card => card.id === cardId)
 }
+
+/**
+ * select curIndex from store
+ * @returns curIndex of list
+ */
+export const selectCurCardListIndex = (state: RootState) => state.cards.curListIndex
 
 export default cardsSlice.reducer;
