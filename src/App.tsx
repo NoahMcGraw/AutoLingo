@@ -4,6 +4,7 @@ import "./App.css";
 import { useAppDispatch } from "./app/hooks";
 import { fetchTranslations } from "./features/flash-cards/cardsSlice";
 import { CardsList } from "./features/flash-cards/CardList";
+import { CardSourceSearch } from "./features/flash-cards/UI/CardSourceSearch";
 
 export const App = () => {
   const dispatch = useAppDispatch()
@@ -12,7 +13,8 @@ export const App = () => {
   }, [])
 
   return (
-    <div className="App">
+    <div className="App bg-purple-200">
+      <CardSourceSearch />
       <CardsList />
     </div>
   );

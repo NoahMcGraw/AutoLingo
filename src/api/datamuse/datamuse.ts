@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { DMTranslationResponse, DMTranslationResponseSingular, SourceWord } from '../../app/types'
+import { DMAPIResponse, DMAPIResponseSingular, SourceWord } from '../../app/types'
 import { formatUrlGetParams } from '../../utils'
 
 
@@ -14,7 +14,7 @@ import { formatUrlGetParams } from '../../utils'
 /**
  * Fetches a list of words of determined length and topic
  * @param wordNumber: Number - Number of words to return from the request
- * @param lang: String - Alternate language to return. Known Options: es | zh | it | de
+ * @param lang: String - Alternate language to return. Known Options: es | en
  * @returns List of random words
  */
 export const getSourceWords = (wordNumber:number, lang: string = "", topic: string = "travel") => new Promise<SourceWord[]>((resolve, reject) => {
@@ -45,16 +45,58 @@ export const getSourceWords = (wordNumber:number, lang: string = "", topic: stri
       },
   })
   .then((x: any) => x.data)
-  .then((sourceWordArr: DMTranslationResponse) => {
-    const _sourceWordArr = pullSourceWordsFromDMResponse(sourceWordArr)
+  .then((sourceWordArr: DMAPIResponse) => {
+    const _sourceWordArr = pullWordsFromDMResponse(sourceWordArr)
     resolve(_sourceWordArr)
   })
 })
 
-const pullSourceWordsFromDMResponse = (sourceWordArr: DMTranslationResponse) => {
+/**
+ * Fetches a list of search suggestions based of the search string passed and maxResults
+ * @param searchString: String - Current search string
+ * @param maxResults: Number - Max number of results to return
+ * @param lang: String - Alternate language to return. Known Options: es | en
+ * @returns List of random words
+ */
+ export const getSearchSuggestions = (searchString: string, maxResults: number, lang: string = "") => new Promise<SourceWord[]>((resolve, reject) => {
+  // The random word api defaults to returning english and does not accept an 'en' lang code so we will just blank the value.
+  if (lang == 'en') {
+    lang = ""
+  }
+
+  const _params = [
+    {
+      key: "s",
+      value: searchString
+    },
+    {
+      key: "max",
+      value: maxResults.toString()
+    },
+    {
+      key: "v",
+      value: lang
+    }
+  ]
+  axios({
+      method: 'GET',
+      url: `${import.meta.env.VITE_DATAMUSE_API_URL}/sug${formatUrlGetParams(_params)}`,
+      headers: {
+          'Content-Type': 'application/json'
+      },
+  })
+  .then((x: any) => x.data)
+  .then((sugWordArr: DMAPIResponse) => {
+    const _sugWordArr = pullWordsFromDMResponse(sugWordArr)
+    resolve(_sugWordArr)
+  })
+})
+
+const pullWordsFromDMResponse = (sourceWordArr: DMAPIResponse) => {
   let pulledArr = [] as SourceWord[]
-  sourceWordArr.map((sourceWordObj: DMTranslationResponseSingular) => {
-    if (typeof sourceWordObj.word !== 'undefined') {
+  sourceWordArr.map((sourceWordObj: DMAPIResponseSingular) => {
+    // If the word prop exists and the source word has not already been added to the list.
+    if (typeof sourceWordObj.word !== 'undefined' && pulledArr.indexOf(sourceWordObj.word) === -1) {
       pulledArr.push(sourceWordObj.word)
     }
   })

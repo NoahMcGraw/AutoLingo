@@ -11,7 +11,7 @@ export const CardsList = () => {
   const curIndex = useAppSelector(selectCurCardListIndex)
 
   return (
-    <section className="card-list-backdrop bg-purple-200">
+    <section className="card-list-backdrop">
       {cardDataList.map((cardData: TranslatedResultObj, i: number) =>
         <Card card={cardData} index={i} key={`card_${i}`}/>
       )}
