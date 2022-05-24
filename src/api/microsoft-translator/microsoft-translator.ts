@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid';
-import { MSTranslationResponse, SourceWord, TranslatedWord } from '../../app/types'
+import { MSTranslationResponse, MSTranslationResponseSingular, SourceWord, TranslatedWord } from '../../app/types'
 
 
 /** /========================================\
@@ -52,15 +52,15 @@ export const getTranslations = (wordList:string[] , sourceLang: string = "es", t
       responseType: 'json'
   })
   .then(x => x.data)
-  .then((translationsObjArr: MSTranslationResponse[]) => {
+  .then((translationsObjArr: MSTranslationResponse) => {
     const translationList = pullTranslationFromMSResponse(translationsObjArr)
     resolve(translationList)
   })
 })
 
-const pullTranslationFromMSResponse = (translationsObjArr: MSTranslationResponse[]): TranslatedWord[] => {
+const pullTranslationFromMSResponse = (translationsObjArr: MSTranslationResponse): TranslatedWord[] => {
   let translationsFlatArr = [] as TranslatedWord[]
-  translationsObjArr.map((translationObj: MSTranslationResponse) => {
+  translationsObjArr.map((translationObj: MSTranslationResponseSingular) => {
     let translatedText = "Unknown"
     if (typeof translationObj.translations !== 'undefined' && translationObj.translations.length > 0) {
       // TODO: Accept multiple versions of the translation.

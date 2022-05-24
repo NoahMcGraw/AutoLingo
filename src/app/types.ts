@@ -4,6 +4,14 @@
 
 export type SourceWord = string
 
+export type DMTranslationResponseSingular = {
+  word: string,
+  score: number
+}
+
+export type DMTranslationResponse = DMTranslationResponseSingular[]
+
+
 export type TranslatedWord = string
 
 export type TranslatedResultObj = {
@@ -13,12 +21,14 @@ export type TranslatedResultObj = {
   reaction: TranslationReaction
 }
 
-export type MSTranslationResponse = {
+export type MSTranslationResponseSingular = {
   translations: {
     text: string,
     to: string
   }[]
 }
+
+export type MSTranslationResponse = MSTranslationResponseSingular[]
 
 export type TranslationReaction = "Do Not Know" | "Know"
 

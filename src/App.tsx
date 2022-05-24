@@ -8,7 +8,7 @@ import { CardsList } from "./features/flash-cards/CardList";
 export const App = () => {
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(fetchTranslations({wordNumber: 5}))
+    dispatch(fetchTranslations({wordNumber: 50}))
   }, [])
 
   return (

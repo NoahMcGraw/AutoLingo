@@ -1,6 +1,6 @@
-# Tranlator Flash Cards
+# Translator Flash Cards
 
-This project's original idea was to generate a flash card deck of english to spanish flash cards in order to help me study for my trip to Spain. It connects two api integrations together in order to grab a list of random english words and then pass them through the Microsoft translator api to find their Spanish equivelant.
+This project's original idea was to generate a flash card deck of english to spanish flash cards in order to help me study for my trip to Spain. It connects two api integrations together in order to grab a list of english words and then pass them through the Microsoft translator api to find their Spanish equivelant.
 
 # Required Setup
 
@@ -14,6 +14,6 @@ Unfortunately, the free version of the translator api does have limitations so I
 This is where you will store the API integration details.
 
 The variables you'll need:
-```VITE_RANDOM_API_URL=https://random-word-api.herokuapp.com``` (This is a public open-source api. With that said, this url may be subject to change.)
+```VITE_DATAMUSE_API_URL=https://api.datamuse.com``` (This is a public open-source api. With that said, this url may be subject to change.)
 ```VITE_MS_TRANSLATOR_API_URL```
 ```VITE_MS_TRANSLATOR_API_KEY```
