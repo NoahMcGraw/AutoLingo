@@ -41,10 +41,10 @@ const Card = ({card, index}: CardProps) => {
 
   const mdMediaQuery = window.matchMedia('(min-width: 768px)')
   mdMediaQuery.addEventListener("change", ()=>{
-    calcBaseLeftOffset()
+    updateBaseLeftOffset()
   })
 
-  const calcBaseLeftOffset = () => {
+  const updateBaseLeftOffset = () => {
     const _mdBaseLeftOffset = 33
     if (mdMediaQuery.matches && baseLeftOffset !== _mdBaseLeftOffset) {
       setBaseLeftOffset(_mdBaseLeftOffset)
@@ -88,7 +88,7 @@ const Card = ({card, index}: CardProps) => {
 
   useEffect(()=> {
     setTimeout(()=> {
-      calcBaseLeftOffset() // Modify the base offset by the index of the card in the stack
+      updateBaseLeftOffset() // Modify the base offset by the index of the card in the stack
     }, 100)
   }, [curIndex])
 
