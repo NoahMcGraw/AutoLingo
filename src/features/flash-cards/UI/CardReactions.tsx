@@ -11,7 +11,7 @@ export const CardReactions = ({card}: CardReactionsProps) => {
   const reactions = translationReactions
 
   return (
-    <div className="flex justify-evenly absolute bottom-5 left-0 right-0">
+    <div className="flex justify-evenly absolute bottom-5 left-0 right-0 text-xl">
       {reactions.map((reaction: reactionObj, i: number) =>
         <button key={`reaction_` + i} className={`rounded py-2 px-4 group ${card.reaction === reaction.name ? getElColorClasses(reaction.color).bg : ""}`} onClick={
           (e) => {

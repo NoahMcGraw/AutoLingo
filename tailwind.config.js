@@ -15,6 +15,12 @@ module.exports = {
     extend: {
       translate: {
         '100vw': '100vw'
+      },
+      zIndex: {
+        '1000': '1000'
+      },
+      width: {
+        '500': '500px'
       }
     },
   },

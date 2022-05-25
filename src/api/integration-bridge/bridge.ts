@@ -7,15 +7,16 @@ import { SourceWord, TranslatedResultObj, TranslatedWord } from "../../app/types
  * @param wordNumber: number: Amount of words to return
  * @param sourceLang : string: source language code
  * @param targetLang : string: target language code
+ * @param topic : string: topic used to generate related words
  * @returns Obj arr containing source word and translation
  */
-export const buildTranslationsList = async (wordNumber: number, sourceLang = "en", targetLang = "es") => {
+export const buildTranslationsList = async (wordNumber: number, sourceLang: string|undefined = undefined, targetLang: string|undefined = undefined, topic: string|undefined = undefined) => {
   let mergedList = [] as TranslatedResultObj[]
 
   /**
    * First, call the source word api to retrieve our starting word set.
    */
-  const sourceList = await getSourceWords(wordNumber, sourceLang).catch((err) => { console.error(err) })
+  const sourceList = await getSourceWords(wordNumber, sourceLang, topic).catch((err) => { console.error(err) })
   // If the request was successful,
   if (typeof sourceList !== "undefined" && sourceList.length > 0) {
     /**
@@ -30,12 +31,12 @@ export const buildTranslationsList = async (wordNumber: number, sourceLang = "en
      * Due to how MS Tranlator handles words that it cannot translate, lets check to see if either we were handed back the same word as we passed the translation api (Default MS behavior) or if some other odd translation case exists. If so, we will trim those entries out of the merged list and requery the apis for the amount of records we trimmed.
      */
     // let toRefreshCount = 0 // Keep track of how many records we trim from the list so we can refresh that many from the server.
-    // mergedList.map((listEntry: TranslatedResultObj, i: number) => {
-    //   if (listEntry.source.toLowerCase() === listEntry.translation.toLowerCase() || !listEntry.translation.length || listEntry.translation === "Unknown" ) {
-    //     mergedList.splice(i, 1)
-    //     toRefreshCount++
-    //   }
-    // })
+    mergedList.map((listEntry: TranslatedResultObj, i: number) => {
+      if (listEntry.source.toLowerCase() === listEntry.translation.toLowerCase() || !listEntry.translation.length || listEntry.translation === "Unknown" ) {
+        mergedList.splice(i, 1)
+        // toRefreshCount++
+      }
+    })
     // if (toRefreshCount > 0) {
     //   // Here, if we've trimmed anything out of the mergedList, lets recursively build new entries for the list and append them to the result.
     //   const newListEntries = await buildTranslationsList(toRefreshCount, sourceLang, targetLang)

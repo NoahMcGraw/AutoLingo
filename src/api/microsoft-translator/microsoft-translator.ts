@@ -20,7 +20,7 @@ import { MSAPIResponse, MSAPIResponseSingular, SourceWord, TranslatedWord } from
  * @param targetLang: String - Target language to translate into
  * @returns List of tranlated words
  */
-export const getTranslations = (wordList:string[] , sourceLang: string = "es", targetLang: string = "en") => new Promise<TranslatedWord[]>((resolve, reject) => {
+export const getTranslations = (wordList:string[] , sourceLang: string = "en", targetLang: string = "es") => new Promise<TranslatedWord[]>((resolve, reject) => {
 
   var subscriptionKey = import.meta.env.VITE_MS_TRANSLATOR_API_KEY;
   var endpoint = import.meta.env.VITE_MS_TRANSLATOR_API_URL;
@@ -42,7 +42,7 @@ export const getTranslations = (wordList:string[] , sourceLang: string = "es", t
       params: {
           'api-version': '3.0',
           'from': sourceLang,
-          'to': [targetLang]
+          'to': targetLang
       },
       data: wordList.map((word: SourceWord) => {
         return {

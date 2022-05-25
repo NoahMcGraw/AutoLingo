@@ -17,3 +17,4 @@ The variables you'll need:
 ```VITE_DATAMUSE_API_URL=https://api.datamuse.com``` (This is a public open-source api. With that said, this url may be subject to change.)
 ```VITE_MS_TRANSLATOR_API_URL```
 ```VITE_MS_TRANSLATOR_API_KEY```
+```VITE_MS_TRANSLATOR_API_LOCALITY```

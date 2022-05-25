@@ -18,7 +18,8 @@ const initialState: CardsState = {
 export type fetchTranslationsParams = {
   wordNumber: number,
   sourceLang?: string,
-  targetLang?: string
+  targetLang?: string,
+  topic?: string
 }
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -28,16 +29,21 @@ export type fetchTranslationsParams = {
 // typically used to make async requests.
 export const fetchTranslations = createAsyncThunk(
   "cards/fetchTranslations",
-  async ({wordNumber, sourceLang, targetLang}: fetchTranslationsParams, { rejectWithValue }) => {
-    const response = await buildTranslationsList(wordNumber, sourceLang, targetLang)
-    if (response.length) {
-      // Insert an id into each card so we can identify them later.
-      response.map(entry => entry.id = nanoid())
-      // The value we return becomes the `fulfilled` action payload
+  async ({wordNumber, sourceLang, targetLang, topic}: fetchTranslationsParams, {rejectWithValue}) => {
+    try {
+      let response = [] as TranslatedResultObj[]
+      const translationList = await buildTranslationsList(wordNumber, sourceLang, targetLang, topic)
+
+      if (translationList.length) {
+        // Insert an id into each card so we can identify them later.
+        translationList.map(entry => entry.id = nanoid())
+        // The value we return becomes the `fulfilled` action payload
+        response = translationList
+      }
       return response;
     }
-    else {
-      return rejectWithValue('Could not connect to the API');
+    catch(error) {
+      rejectWithValue("There was an error contacting the server")
     }
   }
 );
@@ -59,8 +65,6 @@ export const cardsSlice = createSlice({
       if (card) {
         card.reaction = reaction
       }
-
-      incrementCardListIndex()
     },
     incrementCardListIndex: (state) => {
       state.curListIndex++;
@@ -75,11 +79,12 @@ export const cardsSlice = createSlice({
     builder
       .addCase(fetchTranslations.pending, (state) => {
         state.status = "loading";
-        state.curListIndex = 0
       })
       .addCase(fetchTranslations.fulfilled, (state, action) => {
         state.status = "idle";
-        state.list = action.payload;
+        if (typeof action.payload !== 'undefined') {
+          state.list = state.list.concat(action.payload);
+        }
       })
       .addCase(fetchTranslations.rejected, (state) => {
         state.status = "failed";

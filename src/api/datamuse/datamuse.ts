@@ -17,8 +17,9 @@ import { formatUrlGetParams } from '../../utils'
  * @param lang: String - Alternate language to return. Known Options: es | en
  * @returns List of random words
  */
-export const getSourceWords = (wordNumber:number, lang: string = "", topic: string = "travel") => new Promise<SourceWord[]>((resolve, reject) => {
+export const getSourceWords = (wordNumber:number, lang: string = "en", topic: string = "travel") => new Promise<SourceWord[]>((resolve, reject) => {
   // The random word api defaults to returning english and does not accept an 'en' lang code so we will just blank the value.
+  console.log(topic)
   if (lang == 'en') {
     lang = ""
   }
@@ -33,9 +34,23 @@ export const getSourceWords = (wordNumber:number, lang: string = "", topic: stri
       value: lang
     },
     {
+      key: "topics",
+      value: topic
+    },
+
+
+    {
       key: "rel_trg",
       value: topic
-    }
+    },
+    // {
+    //   key: "rel_gen",
+    //   value: topic
+    // }
+    // {
+    //   key: "rel_spc",
+    //   value: topic
+    // }
   ]
   axios({
       method: 'GET',

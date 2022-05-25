@@ -9,11 +9,11 @@ import { CardSourceSearch } from "./features/flash-cards/UI/CardSourceSearch";
 export const App = () => {
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(fetchTranslations({wordNumber: 50}))
+    // dispatch(fetchTranslations({wordNumber: 50}))
   }, [])
 
   return (
-    <div className="App bg-purple-200">
+    <div className="App bg-gradient-to-tl to-cyan-500 from-blue-500">
       <CardSourceSearch />
       <CardsList />
     </div>
