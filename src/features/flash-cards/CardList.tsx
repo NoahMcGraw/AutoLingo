@@ -8,7 +8,6 @@ import { MoreCardsButton } from "./UI/MoreCardsButton"
 
 export const CardsList = () => {
   const cardDataList = useAppSelector(selectList) as TranslatedResultObj[]
-  const curIndex = useAppSelector(selectCurCardListIndex)
 
   return (
     <section className="card-list-backdrop overflow-hidden my-3">
@@ -46,14 +45,8 @@ const Card = ({card, index}: CardProps) => {
 
   const updateBaseLeftOffset = () => {
     const _mdBaseLeftOffset = 33
-    if (mdMediaQuery.matches && baseLeftOffset !== _mdBaseLeftOffset) {
-      setBaseLeftOffset(_mdBaseLeftOffset)
-      setModLeftOffset(_mdBaseLeftOffset - index + curIndex) // Modify the base offset by the index of the card in the stack
-    }
-    else if (!mdMediaQuery.matches && baseLeftOffset !== defaultBaseLeftOffset) {
-      setBaseLeftOffset(defaultBaseLeftOffset)
-      setModLeftOffset(defaultBaseLeftOffset - index + curIndex) // Modify the base offset by the index of the card in the stack
-    }
+    setBaseLeftOffset(mdMediaQuery.matches ? _mdBaseLeftOffset : defaultBaseLeftOffset)
+    setModLeftOffset((mdMediaQuery.matches ? _mdBaseLeftOffset : defaultBaseLeftOffset) - index + curIndex)
   }
 
   const handleCardFlip = (cardId: string) => {
@@ -93,7 +86,7 @@ const Card = ({card, index}: CardProps) => {
   }, [curIndex])
 
   return (
-    <div className={`flip-card w-11/12 h-full md:w-2/5 md:h-2/3 lg:w-1/3 xl:w-500 transition-all duration-1000 ${handleTransitionOffScreen()}`} style={{left: `${modLeftOffset}%`, zIndex: modZIndex.toString()}}>
+    <div className={`flip-card h-full md:h-50v w-90v md:w-40v lg:w-30v transition-all duration-1000 ${handleTransitionOffScreen()}`} style={{left: `${modLeftOffset.toString()}%`, zIndex: modZIndex.toString()}}>
       <div onClick={(e) => handleCardFlip(card.id)} id={`card_${card.id}_inner`} className="flip-card-inner">
         <section className="flip-card-front bg-slate-100 border-2 border-slate-200">
           <div className="relative top-1/2 cursor-default text-3xl md:text-2xl">{capitalizeFirstLetter(card.translation)}</div>
