@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 import { MSAPIResponse, MSAPIResponseSingular, SourceWord, TranslatedWord } from '../../app/types'
-
 
 /** /========================================\
  *  |== Microsoft Tranlator Get Endpoints====|
@@ -20,48 +19,48 @@ import { MSAPIResponse, MSAPIResponseSingular, SourceWord, TranslatedWord } from
  * @param targetLang: String - Target language to translate into
  * @returns List of tranlated words
  */
-export const getTranslations = (wordList:string[] , sourceLang: string = "en", targetLang: string = "es") => new Promise<TranslatedWord[]>((resolve, reject) => {
+export const getTranslations = (wordList: string[], sourceLang: string = 'en', targetLang: string = 'es') =>
+  new Promise<TranslatedWord[]>((resolve, reject) => {
+    var subscriptionKey = import.meta.env.VITE_MS_TRANSLATOR_API_KEY
+    var endpoint = import.meta.env.VITE_MS_TRANSLATOR_API_URL
 
-  var subscriptionKey = import.meta.env.VITE_MS_TRANSLATOR_API_KEY;
-  var endpoint = import.meta.env.VITE_MS_TRANSLATOR_API_URL;
+    // Add your location, also known as region. The default is global.
+    // This is required if using a Cognitive Services resource.
+    var location = import.meta.env.VITE_MS_TRANSLATOR_API_LOCALITY
 
-  // Add your location, also known as region. The default is global.
-  // This is required if using a Cognitive Services resource.
-  var location = import.meta.env.VITE_MS_TRANSLATOR_API_LOCALITY;
-
-  axios({
+    axios({
       baseURL: endpoint,
       url: '/translate',
       method: 'post',
       headers: {
-          'Ocp-Apim-Subscription-Key': subscriptionKey,
-          'Ocp-Apim-Subscription-Region': location,
-          'Content-type': 'application/json',
-          'X-ClientTraceId': uuidv4().toString(),
+        'Ocp-Apim-Subscription-Key': subscriptionKey,
+        'Ocp-Apim-Subscription-Region': location,
+        'Content-type': 'application/json',
+        'X-ClientTraceId': uuidv4().toString(),
       },
       params: {
-          'api-version': '3.0',
-          'from': sourceLang,
-          'to': targetLang
+        'api-version': '3.0',
+        from: sourceLang,
+        to: targetLang,
       },
       data: wordList.map((word: SourceWord) => {
         return {
-          text: word
+          text: word,
         }
       }),
-      responseType: 'json'
+      responseType: 'json',
+    })
+      .then((x) => x.data)
+      .then((translationsObjArr: MSAPIResponse) => {
+        const translationList = pullTranslationFromMSResponse(translationsObjArr)
+        resolve(translationList)
+      })
   })
-  .then(x => x.data)
-  .then((translationsObjArr: MSAPIResponse) => {
-    const translationList = pullTranslationFromMSResponse(translationsObjArr)
-    resolve(translationList)
-  })
-})
 
 const pullTranslationFromMSResponse = (translationsObjArr: MSAPIResponse): TranslatedWord[] => {
   let translationsFlatArr = [] as TranslatedWord[]
   translationsObjArr.map((translationObj: MSAPIResponseSingular) => {
-    let translatedText = "Unknown"
+    let translatedText = 'Unknown'
     if (typeof translationObj.translations !== 'undefined' && translationObj.translations.length > 0) {
       // TODO: Accept multiple versions of the translation.
       const firstTranslation = translationObj.translations[0]
@@ -69,6 +68,7 @@ const pullTranslationFromMSResponse = (translationsObjArr: MSAPIResponse): Trans
         translatedText = firstTranslation.text
       }
     }
+
     translationsFlatArr.push(translatedText)
   })
   return translationsFlatArr
