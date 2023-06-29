@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid'
-import { MSAPIResponse, MSAPIResponseSingular, SourceWord, TranslatedWord } from '../../app/types'
+import { MSAPIResponse, MSAPIResponseSingular, SourceWord, TranslatedWord } from '../../models/MSApi.model'
 
 /** /========================================\
  *  |== Microsoft Tranlator Get Endpoints====|

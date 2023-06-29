@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { DMAPIResponse, DMAPIResponseSingular, SourceWord } from '../../app/types'
 import { formatUrlGetParams } from '../../utils'
-
+import { SourceWord } from '../../models/MSApi.model'
+import { DMAPIResponse, DMAPIResponseSingular } from '../../models/DMApi.model'
 
 /** /========================================\
  *  |=======Source Word Get Endpoints========|
@@ -17,54 +17,54 @@ import { formatUrlGetParams } from '../../utils'
  * @param lang: String - Alternate language to return. Known Options: es | en
  * @returns List of random words
  */
-export const getSourceWords = (wordNumber:number, lang: string = "en", topic: string = "travel") => new Promise<SourceWord[]>((resolve, reject) => {
-  // The random word api defaults to returning english and does not accept an 'en' lang code so we will just blank the value.
-  console.log(topic)
-  if (lang == 'en') {
-    lang = ""
-  }
+export const getSourceWords = (wordNumber: number, lang: string = 'en', topic: string = 'travel') =>
+  new Promise<SourceWord[]>((resolve, reject) => {
+    // The random word api defaults to returning english and does not accept an 'en' lang code so we will just blank the value.
+    console.log(topic)
+    if (lang == 'en') {
+      lang = ''
+    }
 
-  const _params = [
-    {
-      key: "max",
-      value: wordNumber.toString()
-    },
-    {
-      key: "v",
-      value: lang
-    },
-    {
-      key: "topics",
-      value: topic
-    },
+    const _params = [
+      {
+        key: 'max',
+        value: wordNumber.toString(),
+      },
+      {
+        key: 'v',
+        value: lang,
+      },
+      {
+        key: 'topics',
+        value: topic,
+      },
 
-
-    {
-      key: "rel_trg",
-      value: topic
-    },
-    // {
-    //   key: "rel_gen",
-    //   value: topic
-    // }
-    // {
-    //   key: "rel_spc",
-    //   value: topic
-    // }
-  ]
-  axios({
+      {
+        key: 'rel_trg',
+        value: topic,
+      },
+      // {
+      //   key: "rel_gen",
+      //   value: topic
+      // }
+      // {
+      //   key: "rel_spc",
+      //   value: topic
+      // }
+    ]
+    axios({
       method: 'GET',
       url: `${import.meta.env.VITE_DATAMUSE_API_URL}/words${formatUrlGetParams(_params)}`,
       headers: {
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
+    })
+      .then((x: any) => x.data)
+      .then((sourceWordArr: DMAPIResponse) => {
+        const _sourceWordArr = pullWordsFromDMResponse(sourceWordArr)
+        resolve(_sourceWordArr)
+      })
   })
-  .then((x: any) => x.data)
-  .then((sourceWordArr: DMAPIResponse) => {
-    const _sourceWordArr = pullWordsFromDMResponse(sourceWordArr)
-    resolve(_sourceWordArr)
-  })
-})
 
 /**
  * Fetches a list of search suggestions based of the search string passed and maxResults
@@ -73,39 +73,40 @@ export const getSourceWords = (wordNumber:number, lang: string = "en", topic: st
  * @param lang: String - Alternate language to return. Known Options: es | en
  * @returns List of random words
  */
- export const getSearchSuggestions = (searchString: string, maxResults: number, lang: string = "") => new Promise<SourceWord[]>((resolve, reject) => {
-  // The random word api defaults to returning english and does not accept an 'en' lang code so we will just blank the value.
-  if (lang == 'en') {
-    lang = ""
-  }
-
-  const _params = [
-    {
-      key: "s",
-      value: searchString
-    },
-    {
-      key: "max",
-      value: maxResults.toString()
-    },
-    {
-      key: "v",
-      value: lang
+export const getSearchSuggestions = (searchString: string, maxResults: number, lang: string = '') =>
+  new Promise<SourceWord[]>((resolve, reject) => {
+    // The random word api defaults to returning english and does not accept an 'en' lang code so we will just blank the value.
+    if (lang == 'en') {
+      lang = ''
     }
-  ]
-  axios({
+
+    const _params = [
+      {
+        key: 's',
+        value: searchString,
+      },
+      {
+        key: 'max',
+        value: maxResults.toString(),
+      },
+      {
+        key: 'v',
+        value: lang,
+      },
+    ]
+    axios({
       method: 'GET',
       url: `${import.meta.env.VITE_DATAMUSE_API_URL}/sug${formatUrlGetParams(_params)}`,
       headers: {
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
+    })
+      .then((x: any) => x.data)
+      .then((sugWordArr: DMAPIResponse) => {
+        const _sugWordArr = pullWordsFromDMResponse(sugWordArr)
+        resolve(_sugWordArr)
+      })
   })
-  .then((x: any) => x.data)
-  .then((sugWordArr: DMAPIResponse) => {
-    const _sugWordArr = pullWordsFromDMResponse(sugWordArr)
-    resolve(_sugWordArr)
-  })
-})
 
 const pullWordsFromDMResponse = (sourceWordArr: DMAPIResponse) => {
   let pulledArr = [] as SourceWord[]

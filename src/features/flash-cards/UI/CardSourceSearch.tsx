@@ -1,10 +1,10 @@
 import { Combobox, Transition } from '@headlessui/react'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { getSearchSuggestions } from '../../../api/datamuse/datamuse'
-import { useAppDispatch } from '../../../app/hooks'
-import { SourceWord } from '../../../app/types'
-import { capitalizeFirstLetter, createClearAllTimeouts } from '../../../utils'
+import { useAppDispatch } from '../../../context/hooks'
+import { capitalizeFirstLetter } from '../../../utils'
 import { fetchTranslations } from '../cardsSlice'
+import { SourceWord } from '../../../models/MSApi.model'
 
 export const CardSourceSearch = () => {
   const dispatch = useAppDispatch()
@@ -17,8 +17,8 @@ export const CardSourceSearch = () => {
 
   const handleQueryChange = (newQuery: string) => {
     // TODO: Figure out how to clear previous timeouts and only run one search at a time
-    const clearAllTimeouts = createClearAllTimeouts()
-    clearAllTimeouts() // Clear all prev timeouts
+    // const clearAllTimeouts = createClearAllTimeouts()
+    // clearAllTimeouts() // Clear all prev timeouts
     // If the query is not empty, reset the timeout and then get the suggested results.
     if (newQuery) {
       setTimeout(() => {
@@ -56,7 +56,7 @@ export const CardSourceSearch = () => {
   return (
     <div className='w-full h-1/6 bg-gray-800 bg-opacity-80'>
       <div className='text-xl py-2 text-slate-100'>Add more cards by Topic</div>
-      <div className='relative mt-3 flex justify-center left-0 right-0 z-1000'>
+      <div className='relative mt-3 flex justify-center left-0 right-0 z-100'>
         <Combobox value={selectedTopic} onChange={setSelectedTopic}>
           <div className='w-1/2'>
             {/* <div className="relative w-full cursor-default overflow-hidden rounded-l bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300"> */}

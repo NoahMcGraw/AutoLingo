@@ -1,6 +1,6 @@
-import { getSourceWords } from "../datamuse/datamuse";
-import { getTranslations } from "../microsoft-translator/microsoft-translator";
-import { SourceWord, TranslatedResultObj, TranslatedWord } from "../../app/types";
+import { SourceWord, TranslatedResultObj, TranslatedWord } from '../../models/MSApi.model'
+import { getSourceWords } from '../datamuse/datamuse'
+import { getTranslations } from '../microsoft-translator/microsoft-translator'
 
 /**
  * Queries the source and then the translation apis to get the full data set for the translations and then outputs the formatted translation list
@@ -10,19 +10,28 @@ import { SourceWord, TranslatedResultObj, TranslatedWord } from "../../app/types
  * @param topic : string: topic used to generate related words
  * @returns Obj arr containing source word and translation
  */
-export const buildTranslationsList = async (wordNumber: number, sourceLang: string|undefined = undefined, targetLang: string|undefined = undefined, topic: string|undefined = undefined) => {
+export const buildTranslationsList = async (
+  wordNumber: number,
+  sourceLang: string | undefined = undefined,
+  targetLang: string | undefined = undefined,
+  topic: string | undefined = undefined
+) => {
   let mergedList = [] as TranslatedResultObj[]
 
   /**
    * First, call the source word api to retrieve our starting word set.
    */
-  const sourceList = await getSourceWords(wordNumber, sourceLang, topic).catch((err) => { console.error(err) })
+  const sourceList = await getSourceWords(wordNumber, sourceLang, topic).catch((err) => {
+    console.error(err)
+  })
   // If the request was successful,
-  if (typeof sourceList !== "undefined" && sourceList.length > 0) {
+  if (typeof sourceList !== 'undefined' && sourceList.length > 0) {
     /**
      * Then, call the translation api and pass it the source word list
      */
-    let translatedList = await getTranslations(sourceList, sourceLang, targetLang).catch((err) => { console.error(err) })
+    let translatedList = await getTranslations(sourceList, sourceLang, targetLang).catch((err) => {
+      console.error(err)
+    })
     /**
      * Combine the two lists together into our prelim list result
      */
@@ -32,7 +41,11 @@ export const buildTranslationsList = async (wordNumber: number, sourceLang: stri
      */
     // let toRefreshCount = 0 // Keep track of how many records we trim from the list so we can refresh that many from the server.
     mergedList.map((listEntry: TranslatedResultObj, i: number) => {
-      if (listEntry.source.toLowerCase() === listEntry.translation.toLowerCase() || !listEntry.translation.length || listEntry.translation === "Unknown" ) {
+      if (
+        listEntry.source.toLowerCase() === listEntry.translation.toLowerCase() ||
+        !listEntry.translation.length ||
+        listEntry.translation === 'Unknown'
+      ) {
         mergedList.splice(i, 1)
         // toRefreshCount++
       }
@@ -52,12 +65,15 @@ export const buildTranslationsList = async (wordNumber: number, sourceLang: stri
  * @param translatedList: TranslatedWord[]: Arr of words derived from the translation api
  * @returns an Obj arr containing both the source and translation as props.
  */
-const mergeTranslationsIntoSourceList = (sourceList: SourceWord[], translatedList: TranslatedWord[] | void): TranslatedResultObj[] => {
+const mergeTranslationsIntoSourceList = (
+  sourceList: SourceWord[],
+  translatedList: TranslatedWord[] | void
+): TranslatedResultObj[] => {
   const mergedList = [] as TranslatedResultObj[]
   for (let i = 0; i < sourceList.length; i++) {
     let mergedObj = {
       source: sourceList[i],
-      translation: "Unknown"
+      translation: 'Unknown',
     } as TranslatedResultObj
     if (typeof translatedList !== 'undefined' && typeof translatedList[i] !== 'undefined') {
       mergedObj.translation = translatedList[i]

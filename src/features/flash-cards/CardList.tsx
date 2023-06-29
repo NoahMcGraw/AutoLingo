@@ -1,31 +1,32 @@
-import { useEffect, useState } from "react"
-import { useAppSelector } from "../../app/hooks"
-import { TranslatedResultObj, translationReactions } from "../../app/types"
-import { capitalizeFirstLetter } from "../../utils"
-import { selectCurCardListIndex, selectList } from "./cardsSlice"
-import { CardReactions } from "./UI/CardReactions"
-import { MoreCardsButton } from "./UI/MoreCardsButton"
+import { useEffect, useState } from 'react'
+import { useAppSelector } from '../../context/hooks'
+import { TranslatedResultObj } from '../../models/MSApi.model'
+import { capitalizeFirstLetter } from '../../utils'
+import { selectCurCardListIndex, selectList } from './cardsSlice'
+import { CardReactions } from './UI/CardReactions'
+import { MoreCardsButton } from './UI/MoreCardsButton'
+import { translationReactions } from '../../models/Reaction.model'
 
 export const CardsList = () => {
   const cardDataList = useAppSelector(selectList) as TranslatedResultObj[]
 
   return (
-    <section className="card-list-backdrop overflow-hidden my-3">
-      {cardDataList.map((cardData: TranslatedResultObj, i: number) =>
-        <Card card={cardData} index={i} key={`card_${cardData.id}`}/>
-      )}
+    <section className='card-list-backdrop overflow-hidden my-3'>
+      {cardDataList.map((cardData: TranslatedResultObj, i: number) => (
+        <Card card={cardData} index={i} key={`card_${cardData.id}`} />
+      ))}
       {/* {cardDataList.length > 0 && curIndex >= cardDataList.length && <MoreCardsButton />} */}
     </section>
   )
 }
 
 type CardProps = {
-  card: TranslatedResultObj,
+  card: TranslatedResultObj
   index: number
 }
 
-const Card = ({card, index}: CardProps) => {
-  const curIndex = useAppSelector(state => selectCurCardListIndex(state))
+const Card = ({ card, index }: CardProps) => {
+  const curIndex = useAppSelector((state) => selectCurCardListIndex(state))
 
   const isTopCard = () => {
     return curIndex === index
@@ -39,7 +40,7 @@ const Card = ({card, index}: CardProps) => {
   const [modLeftOffset, setModLeftOffset] = useState<number>(-33)
 
   const mdMediaQuery = window.matchMedia('(min-width: 768px)')
-  mdMediaQuery.addEventListener("change", ()=>{
+  mdMediaQuery.addEventListener('change', () => {
     updateBaseLeftOffset()
   })
 
@@ -51,49 +52,55 @@ const Card = ({card, index}: CardProps) => {
 
   const handleCardFlip = (cardId: string) => {
     if (isTopCard()) {
-      const el = document.getElementById("card_" + cardId + "_inner")
+      const el = document.getElementById('card_' + cardId + '_inner')
       if (el) {
-        el.classList.toggle("rotate-y-180")
+        el.classList.toggle('rotate-y-180')
       }
     }
   }
 
   const handleTransitionOffScreen = () => {
-    let response = ""
+    let response = ''
     let reactions = translationReactions
     if (curIndex > index) {
-      let reactionObj = reactions.find(reaction => reaction.name === card.reaction)
+      let reactionObj = reactions.find((reaction) => reaction.name === card.reaction)
       if (reactionObj) {
         switch (reactionObj.exitDir) {
-          case "left":
-            response = "-translate-x-100vw"
-            break;
-            case "right":
-              response = "translate-x-100vw"
-              break;
-              default:
-                break;
-              }
+          case 'left':
+            response = '-translate-x-100vw'
+            break
+          case 'right':
+            response = 'translate-x-100vw'
+            break
+          default:
+            break
+        }
       }
     }
     return response
   }
 
-  useEffect(()=> {
-    setTimeout(()=> {
+  useEffect(() => {
+    setTimeout(() => {
       updateBaseLeftOffset() // Modify the base offset by the index of the card in the stack
     }, 100)
   }, [curIndex])
 
   return (
-    <div className={`flip-card h-full md:h-50v w-90v md:w-40v lg:w-30v transition-all duration-1000 ${handleTransitionOffScreen()}`} style={{left: `${modLeftOffset.toString()}%`, zIndex: modZIndex.toString()}}>
-      <div onClick={(e) => handleCardFlip(card.id)} id={`card_${card.id}_inner`} className="flip-card-inner">
-        <section className="flip-card-front bg-slate-100 border-2 border-slate-200">
-          <div className="relative top-1/2 cursor-default text-3xl md:text-2xl">{capitalizeFirstLetter(card.translation)}</div>
+    <div
+      className={`flip-card h-full md:h-50v w-90v md:w-40v lg:w-30v transition-all duration-1000 ${handleTransitionOffScreen()}`}
+      style={{ left: `${modLeftOffset.toString()}%`, zIndex: modZIndex.toString() }}>
+      <div onClick={(e) => handleCardFlip(card.id)} id={`card_${card.id}_inner`} className='flip-card-inner'>
+        <section className='flip-card-front bg-slate-100 border-2 border-slate-200'>
+          <div className='relative top-1/2 cursor-default text-3xl md:text-2xl'>
+            {capitalizeFirstLetter(card.translation)}
+          </div>
         </section>
-        <section className="flip-card-back bg-blue-100 align-middle border-2 border-slate-200">
-          <div className="relative top-1/2 cursor-default text-3xl md:text-2xl">{capitalizeFirstLetter(card.source)}</div>
-        <CardReactions card={card} />
+        <section className='flip-card-back bg-blue-100 align-middle border-2 border-slate-200'>
+          <div className='relative top-1/2 cursor-default text-3xl md:text-2xl'>
+            {capitalizeFirstLetter(card.source)}
+          </div>
+          <CardReactions card={card} />
         </section>
       </div>
     </div>

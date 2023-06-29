@@ -3,17 +3,17 @@
  * @param urlParams obj arr: Arr of objs containing a key value pair
  * @return string param list
  */
-export const formatUrlGetParams = (urlParams: {key: string, value: string}[]) => {
-    let currentUrlParams = new URLSearchParams();
-    urlParams.map(kvPair => {
-        if (kvPair.value.length > 0 && kvPair.value !== '0') currentUrlParams.set( kvPair.key, kvPair.value );
-        else currentUrlParams.delete(kvPair.key)
-    })
-    return currentUrlParams.toString().length ? '?' + currentUrlParams.toString().replace(/\+/g,' ') : '';
+export const formatUrlGetParams = (urlParams: { key: string; value: string }[]) => {
+  let currentUrlParams = new URLSearchParams()
+  urlParams.map((kvPair) => {
+    if (kvPair.value.length > 0 && kvPair.value !== '0') currentUrlParams.set(kvPair.key, kvPair.value)
+    else currentUrlParams.delete(kvPair.key)
+  })
+  return currentUrlParams.toString().length ? '?' + currentUrlParams.toString().replace(/\+/g, ' ') : ''
 }
 
 export const capitalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 /**
@@ -23,33 +23,33 @@ export const capitalizeFirstLetter = (string: string) => {
  */
 export const getElColorClasses = (color: string) => {
   switch (color) {
-    case "red":
+    case 'red':
       return {
-        bg: "bg-red-500",
-        text: "text-red-500"
+        bg: 'bg-red-500',
+        text: 'text-red-500',
       }
-    case "green":
+    case 'green':
       return {
-        bg: "bg-green-500",
-        text: "text-green-500"
+        bg: 'bg-green-500',
+        text: 'text-green-500',
       }
     default:
       return {
-        bg: "bg-slate-100",
-        text: "text-white"
+        bg: 'bg-slate-100',
+        text: 'text-white',
       }
   }
 }
 
-export const createClearAllTimeouts = () => {
-  const noop = () => {};
-  let firstId = setTimeout(noop, 0);
+// export const createClearAllTimeouts = () => {
+//   const noop = () => {};
+//   let firstId = setTimeout(noop, 0);
 
-  return () => {
-    const lastId = setTimeout(noop, 0);
-    while (firstId !== lastId) {
-      firstId += 1;
-      clearTimeout(firstId);
-    }
-  };
-};
+//   return () => {
+//     const lastId = setTimeout(noop, 0);
+//     while (firstId !== lastId) {
+//       firstId += 1;
+//       clearTimeout(firstId);
+//     }
+//   };
+// };
