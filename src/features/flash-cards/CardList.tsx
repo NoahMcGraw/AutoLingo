@@ -18,7 +18,7 @@ export const CardsList = () => {
           {/* Instructions for getting started including how the search works and how to add more cards to the deck */}
 
           <div className='text-3xl font-bold text-center mb-4'>Welcome to AutoLingo - Language Study Made Easy</div>
-          <div className='px-12 overflow-scroll h-96 sm:h-auto'>
+          <div className='px-12 overflow-scroll sm:overflow-hidden h-96 sm:h-auto'>
             <div className='text-xl font-medium'>
               - To get started, use the input to search a topic that you would like to learn vocabulary for.**
             </div>
