@@ -11,8 +11,19 @@ const SideMenu = () => {
 
   return (
     <>
-      {/* Sidemenu Open/Close Button */}
+      {/* Sidemenu Open/Close Button - Mobile/ Tablet */}
       <button
+        onClick={handleToggleMenuOpen}
+        className=' md:hidden text-black text-2xl md:text-white font-bold py-2 px-4 rounded w-full hover:border-b-2 border-secondary m-auto'>
+        <span>About</span>
+      </button>
+      {/* Sidemenu Open/Close Button - Desktop */}
+      <button
+        onClick={handleToggleMenuOpen}
+        className='hidden md:block text-black md:text-white font-bold py-2 px-4 rounded hover:border-b-2 border-secondary m-auto'>
+        <span>About</span>
+      </button>
+      {/* <button
         type='button'
         className='inline-flex items-center px-3 py-2 border border-transparent shadow-lg drop-shadow-lg text-sm leading-4 font-medium rounded-md bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
         onClick={handleToggleMenuOpen}>
@@ -37,11 +48,11 @@ const SideMenu = () => {
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16m-7 6h7' />
           </svg>
         )}
-      </button>
+      </button> */}
       {/* SideMenu */}
       {/* If isOpen is false, the side menu should be hidden and moved off screen to the right. Once opened, visibility should be set and a transition will bring it into the user viewport from right to left */}
       <div
-        className={`fixed top-0 right-0 h-screen w-1/3 bg-tertiary text-black z-1000 transition-all duration-500 ease-in-out ${
+        className={`fixed top-0 right-0 h-screen w-full lg:w-1/3 bg-tertiary text-black z-1000 transition-all duration-500 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         id='sidemenu'>
@@ -62,19 +73,19 @@ const SideMenu = () => {
           </button>
         </section>
         {/* Section containing a picture and short description of the app author */}
-        <section className='flex flex-col justify-center items-center my-4 mx-8'>
+        <section className='flex flex-col my-4 mx-8'>
           {/* Picture of me */}
           <img
             src='assets/images/noah_mcgraw.png'
             alt='Noah McGraw'
-            className='h-48 w-48 rounded-full border-4 border-primary'
+            className='h-48 w-48 rounded-full border-4 border-primary mx-auto mb-4'
           />
           {/* Short description */}
           <p className='text-2xl text-black text-left my-4'>
             Hi, I'm Noah, a full-stack software engineer with a passion for learning and teaching!
           </p>
           {/* Call to action */}
-          <p className='text-xl text-black text-justify my-4'>
+          <p className='text-xl text-black text-left my-4'>
             Want to support what I'm doing? Check out the links below!
           </p>
         </section>
@@ -85,7 +96,7 @@ const SideMenu = () => {
             href='https://github.com/NoahMcGraw'
             target='_blank'
             rel='noopener noreferrer'
-            className='text-3xl text-black hover:text-gray-500 text-left'>
+            className='text-3xl text-black hover:text-gray-500 text-left flex items-center'>
             {/* Github svg from assets/images */}
             <img src={githubLogo} alt='Github Logo' className='h-12 w-12 inline-block' />
             <span className='inline-block ml-2'>Check me out on Github!</span>
@@ -95,7 +106,7 @@ const SideMenu = () => {
             href='https://www.linkedin.com/in/noah-mcgraw-4364b1aa/'
             target='_blank'
             rel='noopener noreferrer'
-            className='text-3xl text-black hover:text-gray-500'>
+            className='text-3xl text-black hover:text-gray-500 text-left flex items-center'>
             {/* LinkedIn svg from assets/images */}
             <img src={linkedinLogo} alt='LinkedIn Logo' className='h-12 w-12 inline-block' />
             <span className='inline-block ml-2'>Let's Connect on LinkedIn!</span>
@@ -106,7 +117,7 @@ const SideMenu = () => {
             href='https://bmc.link/NoahMcGraw'
             target='_blank'
             rel='noopener noreferrer'
-            className='text-3xl text-black hover:text-gray-500'>
+            className='text-3xl text-black hover:text-gray-500 text-left flex items-center'>
             <span className='h-12 w-12 inline-block'>☕</span>
             <span className='inline-block ml-2'>Buy me a coffee!</span>
           </a>

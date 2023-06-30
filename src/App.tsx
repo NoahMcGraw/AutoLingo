@@ -18,7 +18,7 @@ export const App = () => {
         <Routes>
           <Route path='/get-started' Component={GetStarted}></Route>
           <Route path='/create' Component={Create}></Route>
-          <Route path='/' Component={Home}></Route>
+          <Route path='/' Component={Create}></Route>
         </Routes>
       </Router>
       <Footer />
