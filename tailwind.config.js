@@ -10,6 +10,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: '#152D5A',
+        primaryLight: '#1f4283',
+        secondary: '#5ec64f',
+        secondaryLight: '#7edc6c',
+        tertiary: '#fafdf6',
+      },
       translate: {
         '100vw': '100vw',
       },

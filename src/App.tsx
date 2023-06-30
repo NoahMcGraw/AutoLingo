@@ -1,24 +1,26 @@
-import React, { useEffect } from 'react'
-import logo from './logo.svg'
+import { useEffect } from 'react'
 import './App.css'
-import { useAppDispatch } from './context/hooks'
-import { fetchTranslations } from './features/flash-cards/cardsSlice'
 import { CardsList } from './features/flash-cards/CardList'
 import { CardSourceSearch } from './features/flash-cards/UI/CardSourceSearch'
 import Header from './components/Header'
 import Footer from './components/Footer'
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Create from './pages/Create'
+import Home from './pages/Home'
+import GetStarted from './pages/GetStarted'
 export const App = () => {
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    // dispatch(fetchTranslations({wordNumber: 50}))
-  }, [])
-
   return (
-    <div className='App bg-gradient-to-tl to-cyan-500 from-blue-500'>
+    <div className='App bg-tertiary'>
       <Header />
-      <CardSourceSearch />
-      <CardsList />
+      <Router>
+        {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+        <Routes>
+          <Route path='/get-started' Component={GetStarted}></Route>
+          <Route path='/create' Component={Create}></Route>
+          <Route path='/' Component={Home}></Route>
+        </Routes>
+      </Router>
       <Footer />
     </div>
   )

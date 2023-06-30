@@ -14,16 +14,16 @@ const SideMenu = () => {
       {/* Sidemenu Open/Close Button */}
       <button
         type='button'
-        className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-gray-500 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
+        className='inline-flex items-center px-3 py-2 border border-transparent shadow-lg drop-shadow-lg text-sm leading-4 font-medium rounded-md bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
         onClick={handleToggleMenuOpen}>
         {isOpen && (
           // Show close icon
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='h-6 w-6'
-            fill='#000000'
+            fill='#ffffff'
             viewBox='0 0 24 24'
-            stroke='#000000'>
+            stroke='#ffffff'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
           </svg>
         )}
@@ -31,9 +31,9 @@ const SideMenu = () => {
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='h-6 w-6'
-            fill='#000000'
+            fill='#ffffff'
             viewBox='0 0 24 24'
-            stroke='#000000'>
+            stroke='#ffffff'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16m-7 6h7' />
           </svg>
         )}
@@ -41,7 +41,7 @@ const SideMenu = () => {
       {/* SideMenu */}
       {/* If isOpen is false, the side menu should be hidden and moved off screen to the right. Once opened, visibility should be set and a transition will bring it into the user viewport from right to left */}
       <div
-        className={`fixed top-0 right-0 h-screen w-1/3 bg-gray-500 z-1000 transition-all duration-500 ease-in-out ${
+        className={`fixed top-0 right-0 h-screen w-1/3 bg-tertiary text-black z-1000 transition-all duration-500 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         id='sidemenu'>
@@ -49,7 +49,7 @@ const SideMenu = () => {
         <section className='flex justify-start'>
           <button
             type='button'
-            className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-gray-500 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
+            className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-black bg-tertiary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
             onClick={handleToggleMenuOpen}>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -61,34 +61,52 @@ const SideMenu = () => {
             </svg>
           </button>
         </section>
+        {/* Section containing a picture and short description of the app author */}
+        <section className='flex flex-col justify-center items-center my-4 mx-8'>
+          {/* Picture of me */}
+          <img
+            src='assets/images/noah_mcgraw.png'
+            alt='Noah McGraw'
+            className='h-48 w-48 rounded-full border-4 border-primary'
+          />
+          {/* Short description */}
+          <p className='text-2xl text-black text-left my-4'>
+            Hi, I'm Noah, a full-stack software engineer with a passion for learning and teaching!
+          </p>
+          {/* Call to action */}
+          <p className='text-xl text-black text-justify my-4'>
+            Want to support what I'm doing? Check out the links below!
+          </p>
+        </section>
         {/* Main section for sidemenu. Contains the menu items */}
-        <section className='flex flex-col justify-center items-center'>
+        <section className='flex flex-col justify-start items-start gap-4 mx-8 mt-8'>
           {/* Visit my Github */}
           <a
             href='https://github.com/NoahMcGraw'
             target='_blank'
             rel='noopener noreferrer'
-            className='text-3xl text-white hover:text-gray-300'>
+            className='text-3xl text-black hover:text-gray-500 text-left'>
             {/* Github svg from assets/images */}
             <img src={githubLogo} alt='Github Logo' className='h-12 w-12 inline-block' />
-            <span className='inline-block ml-2'>Visit me on Github!</span>
+            <span className='inline-block ml-2'>Check me out on Github!</span>
           </a>
           {/* Connect on LinkedIn */}
           <a
             href='https://www.linkedin.com/in/noah-mcgraw-4364b1aa/'
             target='_blank'
             rel='noopener noreferrer'
-            className='text-3xl text-white hover:text-gray-300'>
+            className='text-3xl text-black hover:text-gray-500'>
             {/* LinkedIn svg from assets/images */}
             <img src={linkedinLogo} alt='LinkedIn Logo' className='h-12 w-12 inline-block' />
             <span className='inline-block ml-2'>Let's Connect on LinkedIn!</span>
           </a>
+          <div className='text-center w-full'>OR...</div>
           {/* Buy me a coffee */}
           <a
             href='https://bmc.link/NoahMcGraw'
             target='_blank'
             rel='noopener noreferrer'
-            className='text-3xl text-white hover:text-gray-300'>
+            className='text-3xl text-black hover:text-gray-500'>
             <span className='h-12 w-12 inline-block'>☕</span>
             <span className='inline-block ml-2'>Buy me a coffee!</span>
           </a>
