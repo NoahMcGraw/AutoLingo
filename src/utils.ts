@@ -40,16 +40,3 @@ export const getElColorClasses = (color: string) => {
       }
   }
 }
-
-// export const createClearAllTimeouts = () => {
-//   const noop = () => {};
-//   let firstId = setTimeout(noop, 0);
-
-//   return () => {
-//     const lastId = setTimeout(noop, 0);
-//     while (firstId !== lastId) {
-//       firstId += 1;
-//       clearTimeout(firstId);
-//     }
-//   };
-// };

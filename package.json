@@ -1,7 +1,7 @@
 {
-  "name": "vite-react-template-redux",
+  "name": "autolingo-v1",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite",
     "test": "vitest",
@@ -17,8 +17,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-redux": "^8.0.1",
-    "react-router-dom": "^6.14.0",
-    "uuid": "^8.3.2"
+    "react-router-dom": "^6.14.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.2",
