@@ -14,11 +14,11 @@ export const CardsList = () => {
   return (
     <section className='card-list-backdrop flex items-center overflow-hidden my-3'>
       {cardDataList.length === 0 && (
-        <div className='text-justify h-full sm:h-auto sm:mt-8 sm:w-3/4 mx-auto sm:pb-28'>
+        <div className='text-justify h-full sm:h-auto sm:mt-8 sm:w-3/4 mx-auto sm:pb-28 px-4'>
           {/* Instructions for getting started including how the search works and how to add more cards to the deck */}
 
           <div className='text-3xl font-bold text-center mb-4'>Welcome to AutoLingo - Language Study Made Easy</div>
-          <div className='px-12 overflow-scroll sm:overflow-hidden h-96 sm:h-auto'>
+          <div className='px-8 overflow-scroll sm:overflow-hidden h-96 sm:h-auto'>
             <div className='text-xl font-medium'>
               - To get started, use the input to search a topic that you would like to learn vocabulary for.**
             </div>
@@ -45,7 +45,7 @@ export const CardsList = () => {
         <Card card={cardData} index={i} key={`card_${cardData.id}`} />
       ))}
       {cardDataList.length > 0 && curIndex >= cardDataList.length && (
-        <div className='relative top-1/2'>
+        <div className='m-auto'>
           👀
           <div className='font-bold text-xl'>Looking for more cards?</div>
           Type in a new topic and click "Go" to add more cards to your deck!

@@ -80,7 +80,7 @@ export const CardSourceSearch = () => {
               afterLeave={() => {
                 setQuery(''), setSuggestionList([])
               }}>
-              <Combobox.Options className={'mx-auto bg-tertiary rounded-b text-xl absolute w-full'}>
+              <Combobox.Options className={'mx-auto bg-tertiary rounded-b text-xl absolute w-full z-200'}>
                 {suggestionList.map((fillOption, i) => (
                   <Combobox.Option
                     // ref={i === 0 ? (firstSuggestionRef as React.Ref<HTMLLIElement>) : undefined}

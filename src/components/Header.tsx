@@ -1,5 +1,6 @@
 import React from 'react'
 import SideMenu from './SideMenu'
+import AuthorProfile from '../features/about-author/AuthorProfile'
 
 const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false)
@@ -67,7 +68,9 @@ const Header = () => {
                   <span>Check out the Code</span>
                 </button>
               </a>
-              <SideMenu />
+              <SideMenu btnStyle={{ style: 'Text', text: 'About' }}>
+                <AuthorProfile />
+              </SideMenu>
             </div>
           </section>
           <button
@@ -116,7 +119,9 @@ const Header = () => {
             <span>Check out the Code</span>
           </button>
         </a>
-        <SideMenu />
+        <SideMenu btnStyle={{ style: 'Text', text: 'About' }}>
+          <AuthorProfile />
+        </SideMenu>
       </section>
       <section>{/* SideMenu Button which activates sidemenu */}</section>
     </div>
