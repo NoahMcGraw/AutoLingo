@@ -1,5 +1,5 @@
 import { Combobox, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { getSearchSuggestions } from '../../../api/datamuse/datamuse'
 import { useAppDispatch } from '../../../context/hooks'
 import { capitalizeFirstLetter } from '../../../utils'
@@ -9,23 +9,22 @@ import { SourceWord } from '../../../models/MSApi.model'
 export const CardSourceSearch = () => {
   const dispatch = useAppDispatch()
   const maxSugResults = 6
-  // const firstSuggestionRef = useRef<HTMLLIElement>()
+  const [curTimeout, setCurTimeout] = useState<NodeJS.Timeout | undefined>(undefined)
   const [selectedTopic, setSelectedTopic] = useState<string>('')
-  const [query, setQuery] = useState<string>('')
   const [maxQueryResults, setMaxQueryResults] = useState<number>(20)
   const [suggestionList, setSuggestionList] = useState<SourceWord[]>([])
 
   const handleQueryChange = (newQuery: string) => {
-    // TODO: Figure out how to clear previous timeouts and only run one search at a time
-    // const clearAllTimeouts = createClearAllTimeouts()
-    // clearAllTimeouts() // Clear all prev timeouts
+    clearTimeout(curTimeout)
     // If the query is not empty, reset the timeout and then get the suggested results.
     if (newQuery) {
-      setTimeout(() => {
-        getSearchSuggestions(newQuery, maxSugResults).then((searchResults: SourceWord[]) => {
-          setSuggestionList(searchResults)
-        })
-      }, 1000)
+      setCurTimeout(
+        setTimeout(() => {
+          getSearchSuggestions(newQuery, maxSugResults).then((searchResults: SourceWord[]) => {
+            setSuggestionList(searchResults)
+          })
+        }, 1000)
+      )
     } else {
       setSuggestionList([])
     }
@@ -49,17 +48,12 @@ export const CardSourceSearch = () => {
     setSelectedTopic('')
   }
 
-  // useEffect(()=>{
-  //   console.log(selectedTopic)
-  // }, [selectedTopic])
-
   return (
     <div className='w-full lg:w-1/3 py-10 lg:px-4 bg-secondary'>
       {/* Mobile and Tablet view */}
       <div className='flex lg:hidden justify-center z-200'>
         <Combobox value={selectedTopic} onChange={setSelectedTopic}>
           <div className='w-1/2 relative'>
-            {/* <div className="relative w-full cursor-default overflow-hidden rounded-l bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300"> */}
             <Combobox.Input
               displayValue={(selectedTopic: string) => capitalizeFirstLetter(selectedTopic)}
               id={'searchInput'}
@@ -68,22 +62,17 @@ export const CardSourceSearch = () => {
               onChange={(e) => handleQueryChange(e.target.value)}
               onKeyDown={(e) => handleKeyDownOnSearch(e)}
             />
-            {/* <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                Find
-              </Combobox.Button> */}
-            {/* </div> */}
             <Transition
               as={Fragment}
               leave='transition ease-in duration-100'
               leaveFrom='opacity-100'
               leaveTo='opacity-0'
               afterLeave={() => {
-                setQuery(''), setSuggestionList([])
+                setSuggestionList([])
               }}>
               <Combobox.Options className={'mx-auto bg-tertiary rounded-b text-xl absolute w-full z-200'}>
                 {suggestionList.map((fillOption, i) => (
                   <Combobox.Option
-                    // ref={i === 0 ? (firstSuggestionRef as React.Ref<HTMLLIElement>) : undefined}
                     id={'suggestion_' + i}
                     key={fillOption}
                     value={fillOption}
@@ -138,9 +127,9 @@ export const CardSourceSearch = () => {
           onClick={(e) => fetchMoreCardsByTopic()}
           disabled={!(selectedTopic.length > 0)}
           className={`py-1 w-12 h-10 rounded-r ${
-            selectedTopic.length ? 'bg-secondary text-tertiary' : 'bg-slate-200'
+            selectedTopic.length ? 'bg-secondaryLight text-tertiary' : 'bg-slate-200'
           }`}>
-          Add
+          Go
         </button>
       </div>
       {/* Desktop view */}
@@ -149,7 +138,6 @@ export const CardSourceSearch = () => {
         <div className='text-3xl font-semibold text-center text-tertiary mb-4'>Learn a New Topic</div>
         <Combobox value={selectedTopic} onChange={setSelectedTopic}>
           <div className='w-full pb-4 relative'>
-            {/* <div className="relative w-full cursor-default overflow-hidden rounded-l bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300"> */}
             <Combobox.Input
               displayValue={(selectedTopic: string) => capitalizeFirstLetter(selectedTopic)}
               id={'searchInput'}
@@ -158,22 +146,17 @@ export const CardSourceSearch = () => {
               onChange={(e) => handleQueryChange(e.target.value)}
               onKeyDown={(e) => handleKeyDownOnSearch(e)}
             />
-            {/* <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                Find
-              </Combobox.Button> */}
-            {/* </div> */}
             <Transition
               as={Fragment}
               leave='transition ease-in duration-100'
               leaveFrom='opacity-100'
               leaveTo='opacity-0'
               afterLeave={() => {
-                setQuery(''), setSuggestionList([])
+                setSuggestionList([])
               }}>
               <Combobox.Options className={'mx-auto bg-tertiary rounded-b text-xl absolute w-full box-border'}>
                 {suggestionList.map((fillOption, i) => (
                   <Combobox.Option
-                    // ref={i === 0 ? (firstSuggestionRef as React.Ref<HTMLLIElement>) : undefined}
                     id={'suggestion_' + i}
                     key={fillOption}
                     value={fillOption}

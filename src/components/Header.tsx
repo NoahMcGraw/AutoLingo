@@ -123,7 +123,6 @@ const Header = () => {
           <AuthorProfile />
         </SideMenu>
       </section>
-      <section>{/* SideMenu Button which activates sidemenu */}</section>
     </div>
   )
 }

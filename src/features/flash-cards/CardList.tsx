@@ -4,7 +4,6 @@ import { TranslatedResultObj } from '../../models/MSApi.model'
 import { capitalizeFirstLetter } from '../../utils'
 import { selectCurCardListIndex, selectList } from './cardsSlice'
 import { CardReactions } from './UI/CardReactions'
-import { MoreCardsButton } from './UI/MoreCardsButton'
 import { translationReactions } from '../../models/Reaction.model'
 
 export const CardsList = () => {
@@ -71,7 +70,6 @@ const Card = ({ card, index }: CardProps) => {
   const modZIndex = baseZIndex - index + curIndex // Modify the base index by the index of the card in the stack
 
   const defaultBaseLeftOffset = 7
-  const [baseLeftOffset, setBaseLeftOffset] = useState<number>(defaultBaseLeftOffset)
   const [modLeftOffset, setModLeftOffset] = useState<number>(-33)
 
   const mdMediaQuery = window.matchMedia('(min-width: 768px)')
@@ -81,7 +79,6 @@ const Card = ({ card, index }: CardProps) => {
 
   const updateBaseLeftOffset = () => {
     const _mdBaseLeftOffset = 33
-    setBaseLeftOffset(mdMediaQuery.matches ? _mdBaseLeftOffset : defaultBaseLeftOffset)
     setModLeftOffset((mdMediaQuery.matches ? _mdBaseLeftOffset : defaultBaseLeftOffset) - index + curIndex)
   }
 

@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit'
-import { RootState, AppThunk } from '../../context/store'
+import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
+import { RootState } from '../../context/store'
 import { buildTranslationsList } from '../../api/integration-bridge/bridge'
 import { TranslatedResultObj } from '../../models/MSApi.model'
 
