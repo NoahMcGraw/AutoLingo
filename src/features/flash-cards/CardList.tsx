@@ -5,6 +5,7 @@ import { capitalizeFirstLetter } from '../../utils'
 import { selectCurCardListIndex, selectList } from './cardsSlice'
 import { CardReactions } from './UI/CardReactions'
 import { translationReactions } from '../../models/Reaction.model'
+import Intro from '../how-to/Intro'
 
 export const CardsList = () => {
   const cardDataList = useAppSelector(selectList) as TranslatedResultObj[]
@@ -12,34 +13,7 @@ export const CardsList = () => {
 
   return (
     <section className='card-list-backdrop flex items-center overflow-hidden my-3'>
-      {cardDataList.length === 0 && (
-        <div className='text-justify h-full sm:h-auto sm:mt-8 sm:w-3/4 mx-auto sm:pb-28 px-4'>
-          {/* Instructions for getting started including how the search works and how to add more cards to the deck */}
-
-          <div className='text-3xl font-bold text-center mb-4'>Welcome to AutoLingo - Language Study Made Easy</div>
-          <div className='px-8 overflow-scroll sm:overflow-hidden h-96 sm:h-auto'>
-            <div className='text-xl font-medium'>
-              - To get started, use the input to search a topic that you would like to learn vocabulary for.**
-            </div>
-            <div className='text-xl font-medium'>
-              - Choose the amount of cards you would like to generate and click "Go". Our algorithm will shuffle you
-              your own custom study deck!
-            </div>
-            <div className='text-xl font-medium'>- Click on each card to see the translation.</div>
-            <div className='text-xl font-medium'>
-              - If you knew the translation, good job! You can add that card to the "known" pile. Otherwise, put it in
-              the "Don't Know" pile for later.
-            </div>
-            <div className='text-xl font-medium'>
-              - You can always add a new topic to the deck at any time by searching a new topic. Your new cards will be
-              added to the back of your deck.
-            </div>
-            <div className='text-sm font-medium mt-8'>
-              **For Beta V1, all topics are translated from English to Spanish.
-            </div>
-          </div>
-        </div>
-      )}
+      {cardDataList.length === 0 && <Intro />}
       {cardDataList.map((cardData: TranslatedResultObj, i: number) => (
         <Card card={cardData} index={i} key={`card_${cardData.id}`} />
       ))}

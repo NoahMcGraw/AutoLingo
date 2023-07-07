@@ -20,7 +20,6 @@ import { DMAPIResponse, DMAPIResponseSingular } from '../../models/DMApi.model'
 export const getSourceWords = (wordNumber: number, lang: string = 'en', topic: string = 'travel') =>
   new Promise<SourceWord[]>((resolve, reject) => {
     // The random word api defaults to returning english and does not accept an 'en' lang code so we will just blank the value.
-    console.log(topic)
     if (lang == 'en') {
       lang = ''
     }
@@ -38,7 +37,6 @@ export const getSourceWords = (wordNumber: number, lang: string = 'en', topic: s
         key: 'topics',
         value: topic,
       },
-
       {
         key: 'rel_trg',
         value: topic,
@@ -73,7 +71,7 @@ export const getSourceWords = (wordNumber: number, lang: string = 'en', topic: s
  * @param lang: String - Alternate language to return. Known Options: es | en
  * @returns List of random words
  */
-export const getSearchSuggestions = (searchString: string, maxResults: number, lang: string = '') =>
+export const getSearchSuggestions = (searchString: string, maxResults: number, lang: string = 'en') =>
   new Promise<SourceWord[]>((resolve, reject) => {
     // The random word api defaults to returning english and does not accept an 'en' lang code so we will just blank the value.
     if (lang == 'en') {
