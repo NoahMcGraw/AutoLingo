@@ -56,6 +56,8 @@ export const CardSourceSearch = () => {
     setSelectedTopic('')
   }
 
+  console.log((document.getElementById('mbl-limit') as HTMLInputElement)?.value)
+
   return (
     <div className='w-full lg:w-1/3 py-10 px-4 bg-secondary'>
       {/* Mobile and Tablet view */}
@@ -184,7 +186,7 @@ export const CardSourceSearch = () => {
           </Listbox>
           {/* Mobile Limit Input */}
           <div className='flex w-1/5 rounded-r border-r-2 relative'>
-            {(document.getElementById('mbl-limit') as HTMLInputElement)?.value === '' && (
+            {!(document.getElementById('mbl-limit') as HTMLInputElement)?.value && (
               <label htmlFor='mbl-limit' className='absolute top-1/2 left-2 sm:left-4 -translate-y-1/2'>
                 <span className='sm:hidden'>Lmt</span>
                 <span className='hidden sm:inline'>Limit</span>
@@ -193,7 +195,6 @@ export const CardSourceSearch = () => {
             <input
               id='mbl-limit'
               name='mbl-limit'
-              defaultValue={''}
               onChange={(e) => setMaxQueryResults(Number(e.target.value))}
               type='number'
               className='bg-tertiary pl-2 sm:pl-4 py-1 h-10 w-full overflow-hidden'
