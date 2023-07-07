@@ -133,7 +133,7 @@ export const CardSourceSearch = () => {
                   alt={sourceLang.name + ' speaker flag'}
                   className='h-4 w-4 mx-1 inline-block'
                 />
-                <span className='hidden xl:inline'>{sourceLang.name}</span>
+                <span className='hidden sm:inline'>{sourceLang.code.toUpperCase()}</span>
               </Listbox.Button>
               <Listbox.Options className='mx-auto bg-tertiary rounded-b absolute py-1 w-full box-border z-200'>
                 {languages.map(
@@ -145,7 +145,7 @@ export const CardSourceSearch = () => {
                           alt={language.name + ' speaker flag'}
                           className='h-4 w-4 mx-1 inline-block'
                         />
-                        <span className='hidden xl:inline'>{language.name}</span>
+                        <span className='hidden sm:inline'>{language.code.toUpperCase()}</span>
                       </Listbox.Option>
                     )
                 )}
@@ -165,7 +165,7 @@ export const CardSourceSearch = () => {
                   alt={targetLang.name + ' speaker flag'}
                   className='h-4 w-4 mx-1 inline-block'
                 />
-                <span className='hidden xl:inline'>{targetLang.name}</span>
+                <span className='hidden sm:inline'>{targetLang.code.toUpperCase()}</span>
               </Listbox.Button>
               <Listbox.Options className='mx-auto bg-tertiary rounded-b absolute py-1 w-full box-border z-200'>
                 {languages.map(
@@ -177,7 +177,7 @@ export const CardSourceSearch = () => {
                           alt={language.name + ' speaker flag'}
                           className='h-4 w-4 mx-1 inline-block'
                         />
-                        <span className='hidden xl:inline'>{language.name}</span>
+                        <span className='hidden sm:inline'>{language.code.toUpperCase()}</span>
                       </Listbox.Option>
                     )
                 )}
