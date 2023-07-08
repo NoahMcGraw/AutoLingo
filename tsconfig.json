@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"],
+  "include": ["src", "../api/src/models/MSApi.model.ts", "../api/src/models/DMApi.model.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

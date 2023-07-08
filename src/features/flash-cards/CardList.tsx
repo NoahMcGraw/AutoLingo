@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../context/hooks'
-import { TranslatedResultObj } from '../../models/MSApi.model'
+import { TranslatedResultObj } from '../../../../api/src/models/MSApi.model'
 import { capitalizeFirstLetter } from '../../utils'
 import { selectCurCardListIndex, selectList } from './cardsSlice'
 import { CardReactions } from './UI/CardReactions'

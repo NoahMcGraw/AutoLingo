@@ -1,15 +1,16 @@
 import { Combobox, Listbox, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { getSearchSuggestions } from '../../../api/datamuse/datamuse'
 import { useAppDispatch } from '../../../context/hooks'
 import { capitalizeFirstLetter } from '../../../utils'
 import { fetchTranslations } from '../cardsSlice'
-import { SourceWord } from '../../../models/MSApi.model'
 import { LanguageObj, languages } from '../../../models/Language.model'
 import arrowRight from '/assets/images/arrow-right.svg'
+import SourceWord from '../../../models/SourceWord.model'
+import AutoLingoAPI from '../../../services/AutoLingoAPI.service'
 
 export const CardSourceSearch = () => {
   const dispatch = useAppDispatch()
+  const [api, setApi] = useState<AutoLingoAPI>(new AutoLingoAPI())
   const maxSugResults = 6
   const [curTimeout, setCurTimeout] = useState<NodeJS.Timeout | undefined>(undefined)
   const [selectedTopic, setSelectedTopic] = useState<string>('')
@@ -24,7 +25,7 @@ export const CardSourceSearch = () => {
     if (newQuery) {
       setCurTimeout(
         setTimeout(() => {
-          getSearchSuggestions(newQuery, maxSugResults, sourceLang.code).then((searchResults: SourceWord[]) => {
+          api.getSearchSuggestions(newQuery, maxSugResults, sourceLang.code).then((searchResults: SourceWord[]) => {
             setSuggestionList(searchResults)
           })
         }, 1000)
@@ -55,8 +56,6 @@ export const CardSourceSearch = () => {
     )
     setSelectedTopic('')
   }
-
-  console.log((document.getElementById('mbl-limit') as HTMLInputElement)?.value)
 
   return (
     <div className='w-full lg:w-1/3 py-10 px-4 bg-secondary'>
