@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../context/hooks'
-import { TranslatedResultObj } from '../../../../api/src/models/MSApi.model'
 import { capitalizeFirstLetter } from '../../utils'
 import { selectCurCardListIndex, selectList } from './cardsSlice'
 import { CardReactions } from './UI/CardReactions'
 import { translationReactions } from '../../models/Reaction.model'
 import Intro from '../how-to/Intro'
+import TranslatedResultObj from '../../models/TranslatedResult.model'
 
 export const CardsList = () => {
   const cardDataList = useAppSelector(selectList) as TranslatedResultObj[]

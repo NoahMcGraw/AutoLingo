@@ -1,6 +1,6 @@
 import { useAppDispatch } from '../../../context/hooks'
-import { TranslatedResultObj } from '../../../../../api/src/models/MSApi.model'
 import { reactionObj, translationReactions } from '../../../models/Reaction.model'
+import TranslatedResultObj from '../../../models/TranslatedResult.model'
 import { getElColorClasses } from '../../../utils'
 import { addReaction, incrementCardListIndex } from '../cardsSlice'
 
