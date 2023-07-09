@@ -1,11 +1,11 @@
 import usFlag from '/assets/images/us.svg'
 import esFlag from '/assets/images/es.svg'
-import frFlag from '/assets/images/fr.svg'
+// import frFlag from '/assets/images/fr.svg'
 
 export enum LanguageCode {
   EN = 'en',
   ES = 'es',
-  FR = 'fr',
+  // FR = 'fr',
 }
 
 export type LanguageObj = {
@@ -27,9 +27,9 @@ export const languages = [
     icon: esFlag,
   },
 
-  {
-    name: 'French',
-    code: 'fr',
-    icon: frFlag,
-  },
+  // {
+  //   name: 'French',
+  //   code: 'fr',
+  //   icon: frFlag,
+  // },
 ] as LanguageObj[]
