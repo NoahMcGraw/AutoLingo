@@ -2,9 +2,15 @@ import usFlag from '/assets/images/us.svg'
 import esFlag from '/assets/images/es.svg'
 import frFlag from '/assets/images/fr.svg'
 
+export enum LanguageCode {
+  EN = 'en',
+  ES = 'es',
+  FR = 'fr',
+}
+
 export type LanguageObj = {
   name: string
-  code: string
+  code: LanguageCode
   icon: string
 }
 

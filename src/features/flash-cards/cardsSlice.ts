@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
 import { RootState } from '../../context/store'
-import { buildTranslationsList } from '../../api/integration-bridge/bridge'
-import { TranslatedResultObj } from '../../models/MSApi.model'
+import TranslatedResultObj from '../../models/TranslatedResult.model'
+import AutoLingoAPI from '../../services/AutoLingoAPI.service'
+import { LanguageCode } from '../../models/Language.model'
 
 export interface CardsState {
   list: TranslatedResultObj[]
@@ -17,9 +18,9 @@ const initialState: CardsState = {
 
 export type fetchTranslationsParams = {
   wordNumber: number
-  sourceLang?: string
-  targetLang?: string
-  topic?: string
+  sourceLang: LanguageCode
+  targetLang: LanguageCode
+  topic: string
 }
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -32,17 +33,20 @@ export const fetchTranslations = createAsyncThunk(
   async ({ wordNumber, sourceLang, targetLang, topic }: fetchTranslationsParams, { rejectWithValue }) => {
     try {
       let response = [] as TranslatedResultObj[]
-      const translationList = await buildTranslationsList(wordNumber, sourceLang, targetLang, topic)
+      const autoLingoAPI = new AutoLingoAPI()
+      const translationList = await autoLingoAPI.getRelatedTranslations(wordNumber, sourceLang, targetLang, topic)
 
       if (translationList.length) {
         // Insert an id into each card so we can identify them later.
-        translationList.map((entry) => (entry.id = nanoid()))
+        translationList.map((entry: TranslatedResultObj) => (entry.id = nanoid()))
         // The value we return becomes the `fulfilled` action payload
         response = translationList
       }
       return response
-    } catch (error) {
-      rejectWithValue('There was an error contacting the server')
+    } catch (_error) {
+      const error = _error as Error
+      console.error(error.message)
+      rejectWithValue('There was an error contacting the server: ' + error.message)
     }
   }
 )
