@@ -11,3 +11,9 @@ This project's original idea was to generate a flash card deck of english to spa
 ## Init npm
 
 `npm i`
+
+## Add env files and vars
+
+Pick your flavor of .env files to install, following the vite convention of accepted formats. Make sure you define:
+
+- VITE_API_URL={UrlOfTheAutoLingoApi}
