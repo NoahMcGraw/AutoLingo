@@ -5,7 +5,7 @@ module.exports = {
       pattern: /bg-(red|green|blue)-/,
     },
     {
-      pattern: /group-hover:text-(red|green|blue)-/,
+      pattern: /text-(primary|secondary|tertiary)/,
     },
   ],
   theme: {
