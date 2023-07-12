@@ -3,17 +3,18 @@ import { RootState } from '../../context/store'
 import TranslatedResultObj from '../../models/TranslatedResult.model'
 import AutoLingoAPI from '../../services/AutoLingoAPI.service'
 import { LanguageCode } from '../../models/Language.model'
+import Status from '../../models/Status.model'
 
 export interface CardsState {
   list: TranslatedResultObj[]
   curListIndex: number
-  status: 'idle' | 'loading' | 'failed'
+  status: Status
 }
 
 const initialState: CardsState = {
   list: [],
   curListIndex: 0,
-  status: 'idle',
+  status: Status.Idle,
 }
 
 export type fetchTranslationsParams = {
@@ -81,16 +82,16 @@ export const cardsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchTranslations.pending, (state) => {
-        state.status = 'loading'
+        state.status = Status.Loading
       })
       .addCase(fetchTranslations.fulfilled, (state, action) => {
-        state.status = 'idle'
+        state.status = Status.Idle
         if (typeof action.payload !== 'undefined') {
           state.list = state.list.concat(action.payload)
         }
       })
       .addCase(fetchTranslations.rejected, (state) => {
-        state.status = 'failed'
+        state.status = Status.Failed
       })
   },
 })

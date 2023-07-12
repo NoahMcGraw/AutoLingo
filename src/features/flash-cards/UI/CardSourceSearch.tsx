@@ -7,11 +7,14 @@ import { LanguageObj, languages } from '../../../models/Language.model'
 import arrowRight from '/assets/images/arrow-right.svg'
 import SourceWord from '../../../models/SourceWord.model'
 import AutoLingoAPI from '../../../services/AutoLingoAPI.service'
+import { LoadingIcon } from '../../../components/Loading'
+import Status from '../../../models/Status.model'
 
 export const CardSourceSearch = () => {
   const dispatch = useAppDispatch()
   const [api, setApi] = useState<AutoLingoAPI>(new AutoLingoAPI())
   const maxSugResults = 6
+  const [searchStatus, setSearchStatus] = useState<Status>(Status.Idle)
   const [curTimeout, setCurTimeout] = useState<NodeJS.Timeout | undefined>(undefined)
   const [selectedTopic, setSelectedTopic] = useState<string>('')
   const [sourceLang, setSourceLang] = useState<LanguageObj>(languages[0])
@@ -21,21 +24,32 @@ export const CardSourceSearch = () => {
 
   const handleQueryChange = (newQuery: string) => {
     clearTimeout(curTimeout)
+    setSelectedTopic('')
     // If the query is not empty, reset the timeout and then get the suggested results.
     if (newQuery) {
+      setSearchStatus(Status.Loading)
       setCurTimeout(
         setTimeout(() => {
-          api.getSearchSuggestions(newQuery, maxSugResults, sourceLang.code).then((searchResults: SourceWord[]) => {
-            setSuggestionList(searchResults)
-          })
+          api
+            .getSearchSuggestions(newQuery, maxSugResults, sourceLang.code)
+            .then((searchResults: SourceWord[]) => {
+              setSuggestionList(searchResults)
+              setSearchStatus(Status.Idle)
+            })
+            .catch((err) => {
+              console.warn(err)
+              setSearchStatus(Status.Failed)
+            })
         }, 1000)
       )
     } else {
       setSuggestionList([])
+      setSearchStatus(Status.Idle)
     }
   }
 
   const handleKeyDownOnSearch = (event: React.KeyboardEvent) => {
+    // Handle when user wants to tab into the suggestion list
     if ((event.key === 'Tab' || event.key === 'ArrowDown') && suggestionList.length) {
       event.preventDefault()
       const firstSuggestion = document.getElementById('suggestion_0') as HTMLElement
@@ -65,14 +79,21 @@ export const CardSourceSearch = () => {
           {/* Mobile Search Input */}
           <Combobox value={selectedTopic} onChange={setSelectedTopic}>
             <div className='w-full relative border-r-2'>
-              <Combobox.Input
-                displayValue={(selectedTopic: string) => capitalizeFirstLetter(selectedTopic)}
-                id={'searchInput'}
-                className={`bg-tertiary rounded-l py-2 px-4 w-full`}
-                placeholder='Find a topic to add'
-                onChange={(e) => handleQueryChange(e.target.value)}
-                onKeyDown={(e) => handleKeyDownOnSearch(e)}
-              />
+              <div className='flex relative'>
+                <Combobox.Input
+                  displayValue={(selectedTopic: string) => capitalizeFirstLetter(selectedTopic)}
+                  id={'searchInput'}
+                  className={`bg-tertiary rounded-l py-2 px-4 w-full`}
+                  placeholder='Find a topic to add'
+                  onChange={(e) => handleQueryChange(e.target.value)}
+                  onKeyDown={(e) => handleKeyDownOnSearch(e)}
+                />
+                {searchStatus === Status.Loading && (
+                  <div className='absolute right-2 top-0 bottom-0 flex items-center'>
+                    <LoadingIcon size={20} color='secondary' />
+                  </div>
+                )}
+              </div>
               <Transition
                 as={Fragment}
                 leave='transition ease-in duration-100'
@@ -217,14 +238,21 @@ export const CardSourceSearch = () => {
         <div className='flex mb-4'>
           <Combobox value={selectedTopic} onChange={setSelectedTopic}>
             <div className='w-3/4 relative'>
-              <Combobox.Input
-                displayValue={(selectedTopic: string) => capitalizeFirstLetter(selectedTopic)}
-                id={'searchInput'}
-                className={`bg-tertiary py-2 px-4 w-full rounded-l`}
-                placeholder='Search for a Topic in...'
-                onChange={(e) => handleQueryChange(e.target.value)}
-                onKeyDown={(e) => handleKeyDownOnSearch(e)}
-              />
+              <div className='flex relative'>
+                <Combobox.Input
+                  displayValue={(selectedTopic: string) => capitalizeFirstLetter(selectedTopic)}
+                  id={'searchInput'}
+                  className={`bg-tertiary py-2 px-4 w-full rounded-l`}
+                  placeholder='Search for a Topic in...'
+                  onChange={(e) => handleQueryChange(e.target.value)}
+                  onKeyDown={(e) => handleKeyDownOnSearch(e)}
+                />
+                {searchStatus === Status.Loading && (
+                  <div className='absolute right-2 top-0 bottom-0 flex items-center'>
+                    <LoadingIcon size={20} color='secondary' />
+                  </div>
+                )}
+              </div>
               <Transition
                 as={Fragment}
                 leave='transition ease-in duration-100'
