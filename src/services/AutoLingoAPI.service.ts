@@ -16,10 +16,10 @@ class AutoLingoAPI {
    * @param topic
    */
   async getRelatedTranslations(
-    wordNumber: number,
     sourceLang: LanguageCode,
     targetLang: LanguageCode,
-    topic: string
+    topic: string,
+    wordNumber: number = 15
   ): Promise<TranslatedResultObj[]> {
     let response: TranslatedResultObj[]
 

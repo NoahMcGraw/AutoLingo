@@ -18,7 +18,6 @@ const initialState: CardsState = {
 }
 
 export type fetchTranslationsParams = {
-  wordNumber: number
   sourceLang: LanguageCode
   targetLang: LanguageCode
   topic: string
@@ -31,11 +30,11 @@ export type fetchTranslationsParams = {
 // typically used to make async requests.
 export const fetchTranslations = createAsyncThunk(
   'cards/fetchTranslations',
-  async ({ wordNumber, sourceLang, targetLang, topic }: fetchTranslationsParams, { rejectWithValue }) => {
+  async ({ sourceLang, targetLang, topic }: fetchTranslationsParams, { rejectWithValue }) => {
     try {
       let response = [] as TranslatedResultObj[]
       const autoLingoAPI = new AutoLingoAPI()
-      const translationList = await autoLingoAPI.getRelatedTranslations(wordNumber, sourceLang, targetLang, topic)
+      const translationList = await autoLingoAPI.getRelatedTranslations(sourceLang, targetLang, topic)
 
       if (translationList.length) {
         // Insert an id into each card so we can identify them later.
