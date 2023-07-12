@@ -5,7 +5,8 @@
   "scripts": {
     "typecheck": "tsc --project ./tsconfig.json --skipLibCheck --noEmit",
     "dev": "vite",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "build": "tsc && vite build",
     "preview": "vite preview"
