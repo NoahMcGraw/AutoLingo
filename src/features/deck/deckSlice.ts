@@ -6,6 +6,7 @@ import { LanguageCode } from '../../models/Language.model'
 import Status from '../../models/Status.model'
 import Deck from '../../models/Deck.model'
 import { translationReactions } from '../../models/Reaction.model'
+import { CreateFormData } from '../../models/CreateForm.model'
 
 export interface DeckState {
   decks: Deck[]
@@ -112,20 +113,7 @@ export const removeCardFromDeck = createAsyncThunk(
 
 export const createDeck = createAsyncThunk(
   'deck/createDeck',
-  async (
-    {
-      name,
-      sourceLang,
-      targetLang,
-      topics,
-    }: {
-      name: string
-      sourceLang: LanguageCode
-      targetLang: LanguageCode
-      topics: string[]
-    },
-    { rejectWithValue }
-  ) => {
+  async ({ name, sourceLang, targetLang, topics }: CreateFormData, { rejectWithValue }) => {
     try {
       let response = {} as Deck
       const autoLingoAPI = new AutoLingoAPI()

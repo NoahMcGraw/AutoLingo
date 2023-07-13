@@ -1,13 +1,7 @@
-import { CardsList } from '../features/flash-cards/CardList'
-import { CardSourceSearch } from '../features/flash-cards/UI/CardSourceSearch'
+import CreateForm from '../features/deck/UI/CreateForm/CreateForm'
 
 const Create = () => {
-  return (
-    <section className='lg:flex'>
-      <CardSourceSearch />
-      <CardsList />
-    </section>
-  )
+  return <CreateForm />
 }
 
 export default Create
