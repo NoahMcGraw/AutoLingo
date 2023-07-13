@@ -138,7 +138,7 @@ class AutoLingoAPI {
    * @returns new Deck instance that was created
    * @throws If params are invalid
    */
-  async createDeck(name: string, sourceLang: string, targetLang: string, topics: string[]): Promise<Deck> {
+  async createDeck(name: string, sourceLang: LanguageCode, targetLang: LanguageCode, topics: string[]): Promise<Deck> {
     let response: Deck
 
     const data = {

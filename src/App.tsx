@@ -6,10 +6,10 @@ import Create from './pages/Create'
 // import Home from './pages/Home'
 import GetStarted from './pages/GetStarted'
 import { useSelector } from 'react-redux'
-import { selectCardsStatus } from './context/store'
 import { LoadingOverlay } from './components/Loading'
+import { selectStatus } from './context/statusSlice'
 export const App = () => {
-  const appStatus = useSelector(selectCardsStatus)
+  const appStatus = useSelector(selectStatus)
 
   return (
     <div className='App bg-tertiary'>
