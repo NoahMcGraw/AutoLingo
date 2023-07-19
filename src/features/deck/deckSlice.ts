@@ -120,6 +120,7 @@ export const createDeck = createAsyncThunk(
       const newDeck = await autoLingoAPI.createDeck(name, sourceLang, targetLang, topics)
 
       if (newDeck) {
+        console.log(newDeck)
         response = newDeck
       }
       return response

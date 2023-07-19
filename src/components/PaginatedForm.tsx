@@ -79,7 +79,7 @@ const PaginatedForm = ({ children, submitFunction, submitBtnText, curPageIndex }
         )}
         {currentPageI === children.length - 1 && (
           <button
-            disabled={isValid.every((validation) => validation === true)}
+            disabled={!isValid.every((validation) => validation === true)}
             className={`w-2/5 rounded-xl text-style-tertiary text-tertiary py-1 ${
               isValid.every((validation) => validation === true) ? 'bg-green-500' : 'bg-secondary'
             }`}
