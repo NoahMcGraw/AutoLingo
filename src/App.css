@@ -1,4 +1,5 @@
 body {
+  @apply font-sans;
   overflow-x: hidden;
 }
 
@@ -86,4 +87,25 @@ body {
   to {
     transform: rotate(1turn);
   }
+}
+
+/*
+*=============================
+*  Text Styles
+*=============================
+*/
+
+.text-style-primary {
+  @apply font-extraBold;
+  @apply text-6xl;
+}
+
+.text-style-secondary {
+  @apply font-bold;
+  @apply text-4xl;
+}
+
+.text-style-tertiary {
+  @apply font-bold;
+  @apply text-xl;
 }

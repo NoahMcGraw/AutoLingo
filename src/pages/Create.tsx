@@ -1,7 +1,7 @@
-import CreateForm from '../features/deck/UI/CreateForm/CreateForm'
+import CreateFormPopup from '../features/deck/UI/CreateForm/CreateFormPopup'
 
 const Create = () => {
-  return <CreateForm />
+  return <CreateFormPopup />
 }
 
 export default Create

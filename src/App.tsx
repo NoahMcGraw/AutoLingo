@@ -13,9 +13,9 @@ export const App = () => {
   const appStatus = useSelector(selectStatus)
 
   return (
-    <div className='App bg-tertiary'>
+    <div className='App bg-tertiary flex flex-col'>
       <Header />
-      <div className='relative'>
+      <div className='relative flex-1'>
         {appStatus === 'loading' && <LoadingOverlay />}
         <Router>
           {/* A <Switch> looks through its children <Route>s and

@@ -1,9 +1,10 @@
 import React from 'react'
 import Hints from './Hints'
+import Color from '../models/Color.model'
 
 type LoadingIconProps = {
   size?: number // size of the loader
-  color?: 'primary' | 'secondary' | 'tertiary' // color of the loader
+  color?: Color // color of the loader
 }
 
 export const LoadingIcon: React.FC<LoadingIconProps> = ({ size = 50, color = 'primary' }) => (
@@ -12,7 +13,7 @@ export const LoadingIcon: React.FC<LoadingIconProps> = ({ size = 50, color = 'pr
 
 type LoadingOverlayProps = {
   size?: number // size of the loader
-  color?: 'primary' | 'secondary' | 'tertiary' // color of the loader
+  color?: Color // color of the loader
   text?: string // text to display under the loader
   displayHints?: boolean // whether to display hints
 }

@@ -1,3 +1,5 @@
+import { SudoRandColor } from './models/Color.model'
+
 /**
  * Formats and returns a string param list to append to the url.
  * @param urlParams obj arr: Arr of objs containing a key value pair
@@ -39,4 +41,13 @@ export const getElColorClasses = (color: string) => {
         text: 'text-white',
       }
   }
+}
+
+/**
+ * Returns a color from the SudoRandColor enum. The color is determined by the passed index and loops back to the beginning of the enum if the index is out of bounds.
+ * @returns string: random color
+ * @see SudoRandColor
+ */
+export const getSudoRandColor = (index: number) => {
+  return SudoRandColor[index % (Object.keys(SudoRandColor).length / 2)]
 }

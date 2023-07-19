@@ -5,17 +5,22 @@ module.exports = {
       pattern: /bg-(red|green|blue)-/,
     },
     {
-      pattern: /text-(primary|secondary|tertiary)/,
+      pattern: /text-(primary|primaryLight|primarySuperLight|secondary|secondaryLight|secondarySuperLight|tertiary)/,
     },
   ],
   theme: {
+    fontFamily: {
+      sans: ['Cairo', 'sans-serif'],
+    },
     extend: {
       colors: {
-        primary: '#152D5A',
-        primaryLight: '#1f4283',
-        secondary: '#5ec64f',
-        secondaryLight: '#7edc6c',
-        tertiary: '#fafdf6',
+        primary: '#E29A2E',
+        primaryLight: '#E4A548',
+        primarySuperLight: '#E5AD5A',
+        secondary: '#B5CEFF',
+        secondaryLight: '#BFD5FF',
+        secondarySuperLight: '#C9DBFF',
+        tertiary: '#FDFAF6',
       },
       translate: {
         '100vw': '100vw',
@@ -25,6 +30,8 @@ module.exports = {
         1000: '1000',
       },
       width: {
+        225: '225px',
+        300: '300px',
         500: '500px',
         '10v': '10vw',
         '20v': '20vw',
@@ -38,6 +45,8 @@ module.exports = {
         '100v': '100vw',
       },
       height: {
+        225: '225px',
+        300: '300px',
         '10v': '10vh',
         '20v': '20vh',
         '30v': '30vh',
@@ -51,6 +60,24 @@ module.exports = {
       },
       minWidth: {
         100: '100px',
+      },
+      minHeight: {
+        300: '300px',
+        '20vw': '20vw',
+      },
+      maxHeight: {
+        300: '300px',
+        500: '500px',
+      },
+      fontWeight: {
+        extraLight: '200',
+        light: '300',
+        normal: '400',
+        medium: '500',
+        semiBold: '600',
+        bold: '700',
+        extraBold: '800',
+        black: '900',
       },
     },
   },
