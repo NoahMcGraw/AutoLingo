@@ -9,6 +9,7 @@ import SourceWord from '../../../models/SourceWord.model'
 import AutoLingoAPI from '../../../services/AutoLingoAPI.service'
 import { LoadingIcon } from '../../../components/Loading'
 import Status from '../../../models/Status.model'
+import Color from '../../../models/Color.model'
 
 export const CardSourceSearch = () => {
   const dispatch = useAppDispatch()
@@ -89,7 +90,7 @@ export const CardSourceSearch = () => {
                 />
                 {searchStatus === Status.Loading && (
                   <div className='absolute right-2 top-0 bottom-0 flex items-center'>
-                    <LoadingIcon size={20} color='secondary' />
+                    <LoadingIcon size={20} color={Color.Secondary} />
                   </div>
                 )}
               </div>
@@ -233,7 +234,7 @@ export const CardSourceSearch = () => {
                 />
                 {searchStatus === Status.Loading && (
                   <div className='absolute right-2 top-0 bottom-0 flex items-center'>
-                    <LoadingIcon size={20} color='secondary' />
+                    <LoadingIcon size={20} color={Color.Secondary} />
                   </div>
                 )}
               </div>
