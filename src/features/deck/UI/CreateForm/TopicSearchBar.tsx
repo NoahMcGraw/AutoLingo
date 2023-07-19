@@ -72,6 +72,7 @@ const TopicSearchBar = ({ sourceLangCode, addtlTopicChangeHandler }: TopicSearch
         <div className='flex relative'>
           <Combobox.Input
             displayValue={(selectedTopic: string) => capitalizeFirstLetter(selectedTopic)}
+            name='topics'
             id={'searchInput'}
             className={`bg-tertiary text-gray-400 placeholder-secondarySuperLight text-style-tertiary rounded-xl py-2 px-4 w-full`}
             placeholder='Search...'

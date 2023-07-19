@@ -51,3 +51,99 @@ export const getElColorClasses = (color: string) => {
 export const getSudoRandColor = (index: number) => {
   return SudoRandColor[index % (Object.keys(SudoRandColor).length / 2)]
 }
+
+/**
+ * Gets an element by its name attribute
+ * @param name string: name attribute of the element
+ * @returns HTMLElement
+ *
+ */
+export const getElByName = (name: string) => {
+  return document.getElementsByName(name)[0]
+}
+
+/**
+ * Assigns an error outline to an element by its name attribute
+ * @param name string: name attribute of the element
+ */
+export const assignErrorOutlineByName = (name: string) => {
+  const el = getElByName(name)
+  if (el) {
+    el.classList.add('outline', 'outline-red-500', 'outline-4')
+  }
+}
+
+/**
+ * Removes an error outline from an element by its name attribute
+ * @param name string: name attribute of the element
+ *
+ */
+export const removeErrorOutlineByName = (name: string) => {
+  const el = getElByName(name)
+  if (el) {
+    el.classList.remove('outline', 'outline-red-500', 'outline-4')
+  }
+}
+
+/**
+ * Appends an element after an existing element based on name
+ * @param name string: name attribute of the element to append after
+ * @param el HTMLElement: element to append
+ */
+export const appendElAfterElByName = (name: string, el: HTMLElement) => {
+  const existingEl = getElByName(name)
+  if (existingEl) {
+    existingEl.after(el)
+  }
+}
+
+/**
+ * Removes an element by its name attribute
+ * @param name string: name attribute of the element
+ * @returns HTMLElement
+ *
+ */
+export const removeElByName = (name: string) => {
+  const el = getElByName(name)
+  if (el) {
+    el.remove()
+  }
+}
+
+/**
+ * Compares two string arrays and performs an action on the elements that exist in the first array but not the second
+ * @param arr1 string[]: First array to compare
+ * @param arr2 string[]: Second array to compare
+ * @param action Function: Action to perform on the elements that are different
+ */
+export const findOutliersAndActOnArr = (
+  valuesToFind: string[],
+  arrToCheck: string[],
+  action: (param1: string) => void
+) => {
+  // If the values have changed, perform the action on the new value
+  valuesToFind.forEach((value) => {
+    if (!arrToCheck.includes(value)) action(value)
+  })
+}
+
+/**
+ * Checks if two string arrays are equal
+ *
+ * @param arr1 string[]: First array to compare
+ * @param arr2 string[]: Second array to compare
+ * @returns boolean: True if the arrays are equal, false if they are not
+ */
+export const arraysAreEqual = (a: string[], b: string[]) => {
+  if (a.length !== b.length) {
+    return false
+  }
+
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      return false
+    }
+  }
+
+  return true
+}

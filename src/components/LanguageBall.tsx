@@ -22,7 +22,9 @@ const LanguageBall = ({ languages, size }: LanguageBallProps) => {
               <img
                 src={language.icon}
                 alt={language.name + ' speaker flag'}
-                className='w-full h-full inline-block object-cover'
+                className={`w-full h-full inline-block object-cover ${
+                  i <= (languages.length - 1) / 2 ? 'scale-x-flip' : ''
+                }`}
               />
               {/* <span className='hidden xl:inline text-style-tertiary text-tertiary'>{language.name}</span> */}
             </div>

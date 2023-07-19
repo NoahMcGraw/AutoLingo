@@ -1,7 +1,8 @@
-import React, { useState, ReactNode, FormEvent } from 'react'
+import React, { useState, ReactNode, FormEvent, ReactElement } from 'react'
+import FormPageProps from '../models/FormPage.model'
 
 interface PaginatedFormProps {
-  children: ReactNode[]
+  children: ReactElement<FormPageProps>[]
   submitFunction: () => void
   submitBtnText?: string
   curPageIndex?: {
@@ -11,14 +12,22 @@ interface PaginatedFormProps {
 }
 
 const PaginatedForm = ({ children, submitFunction, submitBtnText, curPageIndex }: PaginatedFormProps) => {
+  const [isValid, setIsValid] = useState<boolean[]>([])
+
   // We allow for a parent to pass in a current page index and setter in order to add functionality to the form
   const [currentPageI, setCurrentPageI] = curPageIndex ? [curPageIndex.value, curPageIndex.setter] : useState<number>(0)
   const currentPageFriendly = currentPageI + 1
   submitBtnText = submitBtnText || 'Submit'
 
-  const handleSubmit = (event: FormEvent) => {
-    // TODO: Add validation
+  const handleValidation = (index: number, valid: boolean) => {
+    setIsValid((prevValid) => {
+      const newValid = [...prevValid]
+      newValid[index] = valid
+      return newValid
+    })
+  }
 
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     submitFunction()
   }
@@ -34,6 +43,10 @@ const PaginatedForm = ({ children, submitFunction, submitBtnText, curPageIndex }
       setCurrentPageI((prevPage) => prevPage - 1)
     }
   }
+
+  children = React.Children.map(children, (child, index) =>
+    React.cloneElement(child, { onValidate: handleValidation, index })
+  )
 
   return (
     <form className='w-full h-full relative' onSubmit={handleSubmit}>
@@ -55,15 +68,22 @@ const PaginatedForm = ({ children, submitFunction, submitBtnText, curPageIndex }
         </div>
         {currentPageI !== children.length - 1 && (
           <button
-            className='w-2/5 rounded-xl bg-green-500 text-style-tertiary text-tertiary py-1'
+            className={`w-2/5 rounded-xl  text-style-tertiary text-tertiary py-1 ${
+              isValid[currentPageI] ? 'bg-green-500' : 'bg-secondary'
+            }`}
             type='button'
             onClick={handleNext}
-            disabled={currentPageI === children.length - 1}>
+            disabled={!isValid[currentPageI]}>
             Next
           </button>
         )}
         {currentPageI === children.length - 1 && (
-          <button className='w-2/5 rounded-xl bg-green-500 text-style-tertiary text-tertiary py-1' type='submit'>
+          <button
+            disabled={isValid.every((validation) => validation === true)}
+            className={`w-2/5 rounded-xl text-style-tertiary text-tertiary py-1 ${
+              isValid.every((validation) => validation === true) ? 'bg-green-500' : 'bg-secondary'
+            }`}
+            type='submit'>
             {submitBtnText}
           </button>
         )}

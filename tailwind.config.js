@@ -25,6 +25,9 @@ module.exports = {
       translate: {
         '100vw': '100vw',
       },
+      scale: {
+        flip: '-1',
+      },
       zIndex: {
         200: '200',
         1000: '1000',
