@@ -1,40 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../context/hooks'
-import { capitalizeFirstLetter } from '../../utils'
-import { selectCurCardListIndex, selectList } from './cardsSlice'
-import { CardReactions } from './UI/CardReactions'
+import Card from '../../models/Card.model'
+import { selectCurCardIndex } from '../deck/deckSlice'
 import { translationReactions } from '../../models/Reaction.model'
-import Intro from '../how-to/Intro'
-import TranslatedResultObj from '../../models/TranslatedResult.model'
-
-export const CardsList = () => {
-  const cardDataList = useAppSelector(selectList) as TranslatedResultObj[]
-  const curIndex = useAppSelector((state) => selectCurCardListIndex(state))
-
-  return (
-    <section className='card-list-backdrop flex items-center overflow-hidden my-3'>
-      {cardDataList.length === 0 && <Intro />}
-      {cardDataList.map((cardData: TranslatedResultObj, i: number) => (
-        <Card card={cardData} index={i} key={`card_${cardData.id}`} />
-      ))}
-      {cardDataList.length > 0 && curIndex >= cardDataList.length && (
-        <div className='m-auto'>
-          👀
-          <div className='font-bold text-xl'>Looking for more cards?</div>
-          Type in a new topic and click "Go" to add more cards to your deck!
-        </div>
-      )}
-    </section>
-  )
-}
+import { CardReactions } from './UI/CardReactions'
+import { capitalizeFirstLetter } from '../../utils'
 
 type CardProps = {
-  card: TranslatedResultObj
+  cardData: Card
   index: number
 }
 
-export const Card = ({ card, index }: CardProps) => {
-  const curIndex = useAppSelector((state) => selectCurCardListIndex(state))
+const Card = ({ cardData, index }: CardProps) => {
+  const curIndex = useAppSelector(selectCurCardIndex)
 
   const isTopCard = () => {
     return curIndex === index
@@ -69,7 +47,7 @@ export const Card = ({ card, index }: CardProps) => {
     let response = ''
     let reactions = translationReactions
     if (curIndex > index) {
-      let reactionObj = reactions.find((reaction) => reaction.name === card.reaction)
+      let reactionObj = reactions.find((reaction) => reaction.name === cardData.reaction)
       if (reactionObj) {
         switch (reactionObj.exitDir) {
           case 'left':
@@ -96,19 +74,21 @@ export const Card = ({ card, index }: CardProps) => {
     <div
       className={`flip-card h-full md:h-50v w-90v md:w-40v lg:w-30v transition-all duration-1000 ${handleTransitionOffScreen()}`}
       style={{ left: `${modLeftOffset.toString()}%`, zIndex: modZIndex.toString() }}>
-      <div onClick={(e) => handleCardFlip(card.id)} id={`card_${card.id}_inner`} className='flip-card-inner'>
+      <div onClick={(e) => handleCardFlip(cardData.id)} id={`card_${cardData.id}_inner`} className='flip-card-inner'>
         <section className='flip-card-front bg-slate-100 border-2 border-slate-200'>
           <div className='relative top-1/2 cursor-default text-3xl md:text-2xl'>
-            {capitalizeFirstLetter(card.translation)}
+            {capitalizeFirstLetter(cardData.targetWord)}
           </div>
         </section>
         <section className='flip-card-back bg-blue-100 align-middle border-2 border-slate-200'>
           <div className='relative top-1/2 cursor-default text-3xl md:text-2xl'>
-            {capitalizeFirstLetter(card.source)}
+            {capitalizeFirstLetter(cardData.sourceWord)}
           </div>
-          <CardReactions cardId={card.id} cardReaction={card.reaction ? card.reaction : 'Know'} />
+          <CardReactions cardId={cardData.id} cardReaction={cardData.reaction ? cardData.reaction : 'Do Not Know'} />
         </section>
       </div>
     </div>
   )
 }
+
+export default Card

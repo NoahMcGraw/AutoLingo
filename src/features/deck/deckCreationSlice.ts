@@ -1,12 +1,6 @@
 import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
 import { RootState } from '../../context/store'
-import TranslatedResultObj from '../../models/TranslatedResult.model'
-import AutoLingoAPI from '../../services/AutoLingoAPI.service'
 import { LanguageCode } from '../../models/Language.model'
-import Status from '../../models/Status.model'
-import Deck from '../../models/Deck.model'
-import { translationReactions } from '../../models/Reaction.model'
-import { CreateFormData } from '../../models/CreateForm.model'
 import { capitalizeFirstLetter } from '../../utils'
 
 export interface DeckCreationState {

@@ -1,13 +1,15 @@
 import { useAppDispatch } from '../../../context/hooks'
-import { reactionObj, translationReactions } from '../../../models/Reaction.model'
-import TranslatedResultObj from '../../../models/TranslatedResult.model'
+import { TranslationReaction, reactionObj, translationReactions } from '../../../models/Reaction.model'
+import Card from '../../../models/Card.model'
+
 import { getElColorClasses } from '../../../utils'
 import { addReaction, incrementCardListIndex } from '../cardsSlice'
 
 type CardReactionsProps = {
-  card: TranslatedResultObj
+  cardId: string
+  cardReaction: TranslationReaction
 }
-export const CardReactions = ({ card }: CardReactionsProps) => {
+export const CardReactions = ({ cardId, cardReaction }: CardReactionsProps) => {
   const dispatch = useAppDispatch()
   const reactions = translationReactions
 
@@ -17,19 +19,19 @@ export const CardReactions = ({ card }: CardReactionsProps) => {
         <button
           key={`reaction_` + i}
           className={`rounded py-2 px-4 group ${
-            card.reaction === reaction.name ? getElColorClasses(reaction.color).bg : ''
+            cardReaction === reaction.name ? getElColorClasses(reaction.color).bg : ''
           }`}
           onClick={(e) => {
             dispatch(
               addReaction({
-                cardId: card.id,
+                cardId: cardId,
                 reaction: reaction.name,
               })
             )
             dispatch(incrementCardListIndex())
           }}>
           <span
-            className={`${card.reaction !== reaction.name ? getElColorClasses(reaction.color).text : ''} md:visible`}>
+            className={`${cardReaction !== reaction.name ? getElColorClasses(reaction.color).text : ''} md:visible`}>
             {reaction.name}
           </span>
           <div className='md:invisible' dangerouslySetInnerHTML={{ __html: reaction.icon }}></div>

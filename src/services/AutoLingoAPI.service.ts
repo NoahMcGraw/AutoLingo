@@ -338,6 +338,50 @@ class AutoLingoAPI {
 
     return response
   }
+
+  /**
+   * Fetches a single translation for a word
+   * @param word: String - Word to translate
+   * @param sourceLang: String - Source language code
+   * @param targetLang: String - Target language code
+   * @returns translated word
+   */
+  async getTranslation(
+    word: string,
+    sourceLang: LanguageCode,
+    targetLang: LanguageCode
+  ): Promise<{ source: string; translation: string }> {
+    let response: { source: string; translation: string }
+    const _params = [
+      {
+        key: 'word',
+        value: word,
+      },
+      {
+        key: 'sourceLang',
+        value: sourceLang,
+      },
+      {
+        key: 'targetLang',
+        value: targetLang,
+      },
+    ]
+    // Use the axios library to make a GET request to the API.
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+      }
+      response = await axios
+        .get(`${import.meta.env.VITE_API_URL}/relatedTranslations${formatUrlGetParams(_params)}`, { headers: headers })
+        .then((res) => res.data)
+    } catch (_error) {
+      const error = _error as Error
+      console.error(error)
+      throw new Error('There was an error contacting the server: ' + error.message)
+    }
+
+    return response
+  }
 }
 
 export default AutoLingoAPI
