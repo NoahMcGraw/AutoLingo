@@ -74,7 +74,7 @@ const TopicSearchBar = ({ sourceLangCode, addtlTopicChangeHandler }: TopicSearch
             displayValue={(selectedTopic: string) => capitalizeFirstLetter(selectedTopic)}
             name='topics'
             id={'searchInput'}
-            className={`bg-tertiary text-gray-400 placeholder-secondarySuperLight text-style-tertiary rounded-xl py-2 px-4 w-full`}
+            className={`bg-tertiary text-gray-400 placeholder-secondarySuperLight text-style-tertiary rounded-xl py-2 px-4 w-full transition-all duration-100 focus:outline-none focus:ring-4 focus:ring-tertiary focus:ring-opacity-50`}
             placeholder='Search...'
             onChange={(e) => handleQueryChange(e.target.value)}
             onKeyDown={(e) => handleKeyDownOnSearch(e)}
@@ -94,7 +94,9 @@ const TopicSearchBar = ({ sourceLangCode, addtlTopicChangeHandler }: TopicSearch
             setSuggestionList([])
           }}>
           <Combobox.Options
-            className={'mx-auto bg-tertiary rounded-lg text-style-tertiary text-xl absolute w-full z-200'}>
+            className={
+              'mx-auto mt-1 bg-tertiary rounded-lg text-style-tertiary text-gray-500 text-xl absolute w-full z-200'
+            }>
             {suggestionList.map((fillOption, i) => (
               <Combobox.Option
                 id={'suggestion_' + i}
@@ -127,10 +129,10 @@ const TopicSearchBar = ({ sourceLangCode, addtlTopicChangeHandler }: TopicSearch
                     }
                   }
                 }}
-                className={`text-left pl-4 pb-1 ${
+                className={`text-left pl-4 py-1 ${
                   i === suggestionList.length - 1 ? '' : 'border-b-2 border-opacity-25'
                 } focus:bg-slate-200 hover:bg-slate-200 hover:cursor-pointer`}>
-                - {capitalizeFirstLetter(fillOption)}
+                <div>- {capitalizeFirstLetter(fillOption)}</div>
               </Combobox.Option>
             ))}
           </Combobox.Options>

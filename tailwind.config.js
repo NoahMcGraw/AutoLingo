@@ -22,6 +22,20 @@ module.exports = {
         secondarySuperLight: '#C9DBFF',
         tertiary: '#FDFAF6',
       },
+      keyframes: {
+        shake: {
+          '0%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-5px)' },
+          '60%': { transform: 'translateY(0px)' },
+          '70%': { transform: 'translateY(-2.5px)' },
+          '80%': { transform: 'translateY(0px)' },
+          '90%': { transform: 'translateY(-1px)' },
+          '100%': { transform: 'translateY(0px)' },
+        },
+      },
+      animation: {
+        shake: 'shake 3s ease-in-out',
+      },
       translate: {
         '100vw': '100vw',
       },
@@ -66,6 +80,8 @@ module.exports = {
       },
       minHeight: {
         300: '300px',
+        500: '500px',
+        600: '600px',
         '20vw': '20vw',
       },
       maxHeight: {
@@ -85,6 +101,10 @@ module.exports = {
       padding: {
         full: '100%',
         double: '200%',
+      },
+      boxShadow: {
+        innerXl: 'inset 0 0 20px 0 rgba(0, 0, 0, 0.25)',
+        glow: '0 0 10px 5px rgba(255,215,0, 0.6)', // Change color and size as needed
       },
     },
   },

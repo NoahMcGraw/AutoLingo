@@ -55,31 +55,39 @@ const NamePageCreateForm = ({ onValidate, index }: FormPageProps) => {
 
   return (
     <div className='h-full w-full flex flex-col'>
+      <section className='text-right'>
+        <span className='text-style-tertiary text-tertiary'>Name</span>
+      </section>
       <section className='pb-2'>
-        <span className='text-style-tertiary text-tertiary'>Give Your Deck a Name</span>
+        <span className='text-style-tertiary text-tertiary'>What to Call Your Deck?</span>
       </section>
       <section className='pb-2'>
         <input
           name='name'
           type='text'
-          className='w-full h-10 rounded-xl bg-tertiary text-style-tertiary text-secondary focus:text-gray-400 placeholder-secondary px-4'
+          className={`bg-tertiary text-gray-400 placeholder-secondarySuperLight text-style-tertiary rounded-xl py-2 px-4 w-full transition-all duration-100 focus:outline-none focus:ring-4 focus:ring-tertiary focus:ring-opacity-50`}
           placeholder='Name...'
           value={name}
           onChange={(e) => handleChangeName(e.target.value)}
         />
       </section>
-      <section className='pb-1'>
-        <Error message={errorMsg} />
+      {errorMsg.length > 0 && (
+        <section className='pb-2'>
+          <Error message={errorMsg} />
+        </section>
+      )}
+      <section className='text-style-tertiary text-tertiary pb-2'>
+        <span>or</span>
       </section>
       <section>
-        <div className='text-style-tertiary text-tertiary pb-2'>
-          <span>or</span>
-        </div>
         <button
           type='button'
           onClick={handleGenerateDeckName}
-          className='w-full rounded-xl bg-green-500 text-style-tertiary text-tertiary py-1 px-2'>
-          Generate A Name
+          className='w-full rounded-xl bg-secondary enabled:bg-green-500 text-style-tertiary text-tertiary py-1.5 transition-all duration-100 group  enabled:hover:shadow-innerXl enabled:active:translate-y-0.5'>
+          <span
+            className={`inline-block transform transition-all duration-200 group-enabled:group-hover:brightness-200 group-enabled:group-hover:scale-105`}>
+            Generate A Name
+          </span>
         </button>
       </section>
     </div>

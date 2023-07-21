@@ -24,8 +24,8 @@ const CreateForm = () => {
   }
 
   return (
-    <div className='bg-secondary w-full h-full max-w-4xl max-h-500 m-auto rounded-xl flex'>
-      <div className='w-1/2 flex flex-col m-4'>
+    <div className='bg-secondary w-full h-auto max-w-4xl min-h-500 m-auto rounded-xl flex'>
+      <div className='w-full sm:w-1/2 flex flex-col m-4'>
         {/* Deck Title Section. Occupies col 1 row 1 */}
         {curPageIndex !== totalPageCount - 1 && (
           <section className='border-b-2 pb-2 text-left'>
@@ -47,7 +47,7 @@ const CreateForm = () => {
           </PaginatedForm>
         </section>
       </div>
-      <div className='w-1/2 flex border-l-2'>
+      <div className='hidden sm:flex w-1/2 border-l-2'>
         <DeckPreview />
       </div>
     </div>

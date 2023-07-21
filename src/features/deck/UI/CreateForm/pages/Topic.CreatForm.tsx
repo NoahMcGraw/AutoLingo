@@ -69,8 +69,11 @@ const TopicPageCreateForm = ({ onValidate, index }: FormPageProps) => {
 
   return (
     <div className='h-full w-full flex flex-col'>
+      <section className='text-right'>
+        <span className='text-style-tertiary text-tertiary'>Topics</span>
+      </section>
       <section className='pb-2'>
-        <span className='text-style-tertiary text-tertiary'>Topics to Include</span>
+        <span className='text-style-tertiary text-tertiary'>Add to Deck</span>
       </section>
       <section className='pb-2'>
         <TopicSearchBar addtlTopicChangeHandler={handleAddTopic} sourceLangCode={sourceLangCode} />

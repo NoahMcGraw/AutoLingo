@@ -121,12 +121,21 @@ const Card = ({
         onClick={(e) => handleCardClick(cardData.id)}
         id={`card_${cardData.id}_inner`}
         className='flip-card-inner absolute'>
+        {/* Card Front */}
         <section className='flip-card-front bg-slate-100 border-2 border-slate-200 flex flex-col justify-between'>
-          <div className='flex justify-start'>
-            <div className='px-4 pt-4'>
+          <div className={`flex justify-${cardData.sourceWord.length > 0 ? 'start' : 'center'}`}>
+            {/* Decktop View Language Ball */}
+            <div className='px-4 pt-4 hidden lg:block'>
               <LanguageBall
                 languages={sourceLanguage ? [sourceLanguage] : undefined}
                 size={cardData.sourceWord.length > 0 ? 50 : 250}
+              />
+            </div>
+            {/* Tablet View Language Ball */}
+            <div className='px-4 pt-4 lg:hidden'>
+              <LanguageBall
+                languages={sourceLanguage ? [sourceLanguage] : undefined}
+                size={cardData.sourceWord.length > 0 ? 50 : 200}
               />
             </div>
           </div>
@@ -135,12 +144,21 @@ const Card = ({
             {cardData.sourceWord.length === 0 && <span>{sourceLanguage?.name}</span>}
           </div>
         </section>
+        {/* Card Back */}
         <section className='flip-card-back bg-blue-100 align-middle border-2 border-slate-200 flex flex-col justify-between'>
-          <div className='flex justify-end'>
-            <div className='px-4 pt-4'>
+          <div className={`flex justify-${cardData.targetWord.length > 0 ? 'end' : 'center'}`}>
+            {/* Decktop View Language Ball */}
+            <div className='px-4 pt-4 hidden lg:block'>
               <LanguageBall
                 languages={targetLanguage ? [targetLanguage] : undefined}
                 size={cardData.targetWord.length > 0 ? 50 : 250}
+              />
+            </div>
+            {/* Tablet View Language Ball */}
+            <div className='px-4 pt-4 lg:hidden'>
+              <LanguageBall
+                languages={targetLanguage ? [targetLanguage] : undefined}
+                size={cardData.targetWord.length > 0 ? 50 : 200}
               />
             </div>
           </div>

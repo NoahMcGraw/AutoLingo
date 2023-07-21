@@ -109,3 +109,38 @@ body {
   @apply font-bold;
   @apply text-xl;
 }
+
+@keyframes shine {
+  0% {
+    background-position: -100px;
+  }
+  40%,
+  100% {
+    background-position: 140px;
+  }
+}
+
+.shine-effect {
+  background: #f0f0f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.8) 20%,
+    rgba(255, 255, 255, 0.2) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: shine 10s 1;
+}

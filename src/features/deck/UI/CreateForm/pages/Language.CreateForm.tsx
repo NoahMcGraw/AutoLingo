@@ -7,8 +7,9 @@ import { useEffect, useState } from 'react'
 import FormPageProps from '../../../../../models/FormPage.model'
 import { assignErrorOutlineByName, findOutliersAndActOnArr, removeErrorOutlineByName } from '../../../../../utils'
 import Error from '../../../../../components/FormError'
+import { current } from '@reduxjs/toolkit'
 
-const LanguagePageCreateForm = ({ onValidate, index }: FormPageProps) => {
+const LanguagePageCreateForm = ({ className, onValidate, index }: FormPageProps) => {
   const dispatch = useAppDispatch()
   const sourceLangCode = useAppSelector(selectSourceLang) as LanguageCode
   const sourceLang = languages.filter((lang) => lang.code === sourceLangCode)[0]
@@ -74,64 +75,100 @@ const LanguagePageCreateForm = ({ onValidate, index }: FormPageProps) => {
   }, [sourceLangCode, targetLangCode])
 
   return (
-    <div className='h-full w-full flex flex-col'>
-      <section>
+    <div className={`${className ? className : ''} transition-all h-full w-full flex flex-col`}>
+      <section className='text-right'>
         <span className='text-style-tertiary text-tertiary'>Languages</span>
       </section>
       <section className='pb-1 flex-1 flex flex-col'>
-        <section className='flex-1 w-full flex items-center justify-center'>
-          <LanguageBall languages={[sourceLang, targetLang]} />
+        <section className='py-2 flex-1 w-full flex items-center justify-center'>
+          <LanguageBall languages={[sourceLang, targetLang]} size={200} />
         </section>
-        <section className='justify-between flex items-center bg-secondary rounded-xl w-2/3 m-auto my-2'>
+        <section className='justify-between flex items-center bg-secondary rounded-xl w-full lg:w-2/3 m-auto my-2'>
           {/* Source Lang Select */}
           <Listbox value={sourceLangCode} onChange={handleSourceLangChange}>
-            <div className='w-1/4 min-w-100 relative'>
-              <Listbox.Button name='sourceLang' className={`py-1 px-1 w-full h-10 rounded-l-xl`}>
+            <div
+              onBlur={(event) => {
+                // get currentTarget from event
+                const currentTarget = event.currentTarget as HTMLDivElement
+                // find the svg child of the currentTarget
+                const svg = currentTarget.querySelector('svg.expand')
+                // if the svg is not null, add the rotate-180 class to it
+                if (svg) svg.classList.toggle('rotate-180')
+              }}
+              className='w-1/2 min-w-100 relative'>
+              <Listbox.Button
+                name='sourceLang'
+                className={`py-1 px-2 w-full h-10 rounded-xl flex items-center justify-evenly transition-all duration-100 group hover:shadow-innerXl active:translate-y-0.5`}>
                 {/* The source of the icon should come from filtering the languages array for the language matching the sourceLangCode */}
-                {/* <img
-                  src={sourceLang.icon}
-                  alt={`${sourceLang.name} speaker flag`}
-                  className='h-4 w-4 mx-1 inline-block'
-                /> */}
                 <span className='text-style-tertiary text-tertiary'>{sourceLang.name}</span>
+                <svg
+                  className={`h-6 w-6 text-style-tertiary fill-tertiary expand`}
+                  xmlns='http://www.w3.org/2000/svg'
+                  height='48'
+                  viewBox='0 -960 960 960'
+                  width='48'>
+                  <path d='M480-322 216-586l67-67 197 198 197-197 67 67-264 263Z' />
+                </svg>
               </Listbox.Button>
-              <Listbox.Options className='mx-auto bg-tertiary absolute py-1 w-full box-border z-200 cursor-pointer rounded-lg'>
+              <Listbox.Options className='mx-auto mt-1 bg-tertiary absolute w-full box-border z-200 cursor-pointer rounded-lg'>
                 {languages.map(
                   (language, i) =>
                     language.code !== sourceLang.code && (
-                      <Listbox.Option key={i} value={language.code}>
+                      <Listbox.Option
+                        className={`hover:shadow-innerXl active:translate-y-0.5 group py-1 rounded-lg flex items-center justify-evenly transition-all duration-100`}
+                        key={i}
+                        value={language.code}>
+                        <span className='transition-all duration-100 text-style-tertiary text-secondary group-hover:text-gray-800'>
+                          {language.name}
+                        </span>
                         <img
                           src={language.icon}
                           alt={language.name + ' speaker flag'}
                           className='h-4 w-4 mx-1 inline-block'
                         />
-                        <span className='text-style-tertiary text-secondary'>{language.name}</span>
                       </Listbox.Option>
                     )
                 )}
               </Listbox.Options>
             </div>
           </Listbox>
-          <div>
+          <div className='px-1'>
             <span className='text-style-tertiary text-tertiary'>to</span>
           </div>
           {/* Target Lang Select */}
           <Listbox value={targetLangCode} onChange={handleTargetLangChange}>
-            <div className='w-1/4 min-w-100 relative'>
-              <Listbox.Button name='targetLang' className={`py-1 px-1 w-full h-10 rounded-r-xl`}>
-                {/* The target of the icon should come from filtering the languages array for the language matching the targetLangCode */}
-                {/* <img
-                  src={targetLang.icon}
-                  alt={`${targetLang.name} speaker flag`}
-                  className='h-4 w-4 mx-1 inline-block'
-                /> */}
+            <div
+              onBlur={(event) => {
+                // get currentTarget from event
+                const currentTarget = event.currentTarget as HTMLDivElement
+                // find the svg child of the currentTarget
+                const svg = currentTarget.querySelector('svg.expand')
+                // if the svg is not null, add the rotate-180 class to it
+                if (svg) svg.classList.toggle('rotate-180')
+              }}
+              className='w-1/2 min-w-100 relative'>
+              <Listbox.Button
+                name='targetLang'
+                className={`py-1 px-2 w-full h-10 rounded-xl flex items-center justify-evenly transition-all duration-100 group hover:shadow-innerXl active:translate-y-0.5`}>
+                <svg
+                  className='h-6 w-6 text-style-tertiary inline-block fill-tertiary expand'
+                  xmlns='http://www.w3.org/2000/svg'
+                  height='48'
+                  viewBox='0 -960 960 960'
+                  width='48'>
+                  <path d='M480-322 216-586l67-67 197 198 197-197 67 67-264 263Z' />
+                </svg>
+
                 <span className='text-style-tertiary text-tertiary'>{targetLang.name}</span>
               </Listbox.Button>
-              <Listbox.Options className='mx-auto bg-tertiary absolute py-1 w-full box-border z-200 cursor-pointer rounded-lg'>
+              <Listbox.Options className='mx-auto mt-1 bg-tertiary absolute w-full box-border z-200 cursor-pointer rounded-lg'>
                 {languages.map(
                   (language, i) =>
                     language.code !== targetLang.code && (
-                      <Listbox.Option key={i} value={language.code}>
+                      <Listbox.Option
+                        className={`hover:shadow-innerXl active:translate-y-0.5 group py-1 rounded-lg flex items-center justify-evenly transition-all duration-100`}
+                        key={i}
+                        value={language.code}>
                         <img
                           src={language.icon}
                           alt={language.name + ' speaker flag'}
