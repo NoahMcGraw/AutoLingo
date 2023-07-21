@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../../../context/hooks'
 import { default as CardTemplate } from '../../../flash-cards/Card'
 import { selectFormData } from '../../deckCreationSlice'
@@ -7,9 +7,14 @@ import { v4 as uuidv4 } from 'uuid'
 import Deck from '../../../../models/Deck.model'
 import Card from '../../../../models/Card.model'
 import AutoLingoAPI from '../../../../services/AutoLingoAPI.service'
+import { LoadingOverlay } from '../../../../components/Loading'
+import { LanguageCode } from '../../../../models/Language.model'
+import { calculatePositionAlongAngle, inverseIndex } from '../../../../utils'
 
-const DeckPreview = async () => {
+const DeckPreview = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const deckData = useAppSelector(selectFormData)
+  const [deck, setDeck] = useState<Deck | undefined>(undefined)
 
   /**
    * Takes preliminary card data and returns a sample card.
@@ -21,7 +26,9 @@ const DeckPreview = async () => {
       id: uuidv4(),
       topic: cardData.topic ? cardData.topic : '',
       sourceWord: cardData.sourceWord ? cardData.sourceWord : '',
+      sourceLang: cardData.sourceLang ? cardData.sourceLang : LanguageCode.EN,
       targetWord: cardData.targetWord ? cardData.targetWord : '',
+      targetLang: cardData.targetLang ? cardData.targetLang : LanguageCode.ES,
     }
   }
 
@@ -42,18 +49,38 @@ const DeckPreview = async () => {
     }
     // If there are no topics, create a deck with two sample cards for the source and target languages that have no topic or source/target words
     if (deckData.topics.length === 0) {
-      sampleDeck.cards = [createCard({}), createCard({})]
+      sampleDeck.cards = [
+        createCard({ sourceLang: deckData.sourceLang, targetLang: deckData.targetLang }),
+        createCard({ sourceLang: deckData.sourceLang, targetLang: deckData.targetLang }),
+      ]
     }
     // If there is only one topic, create a deck with two sample cards for that topic
     if (deckData.topics.length === 1) {
       sampleDeck.cards = [
-        createCard({ topic: deckData.topics[0], sourceWord: deckData.topics[0] }),
-        createCard({ topic: deckData.topics[0], targetWord: deckData.topics[0] }),
+        createCard({
+          topic: deckData.topics[0],
+          sourceWord: deckData.topics[0],
+          sourceLang: deckData.sourceLang,
+          targetLang: deckData.targetLang,
+        }),
+        createCard({
+          topic: deckData.topics[0],
+          sourceWord: deckData.topics[0],
+          sourceLang: deckData.sourceLang,
+          targetLang: deckData.targetLang,
+        }),
       ]
     }
     // If there are more than one topic, create a deck with a sample card for each topic
     if (deckData.topics.length > 1) {
-      sampleDeck.cards = deckData.topics.map((topic) => createCard({ topic: topic, sourceWord: topic }))
+      sampleDeck.cards = deckData.topics.map((topic) =>
+        createCard({
+          topic: topic,
+          sourceWord: topic,
+          sourceLang: deckData.sourceLang,
+          targetLang: deckData.targetLang,
+        })
+      )
     }
 
     // If the first card in the deck has a source word, translate it
@@ -72,16 +99,44 @@ const DeckPreview = async () => {
     return sampleDeck
   }
 
-  const [deck, setDeck] = useState(await createSampleDeck(deckData))
+  useEffect(() => {
+    setIsLoading(true)
+    createSampleDeck(deckData).then((newSampleDeck: Deck) => {
+      console.log(newSampleDeck)
+      setDeck(newSampleDeck)
+      setIsLoading(false)
+    })
+  }, [deckData])
 
   return (
-    <div>
+    <div className='w-full h-full relative'>
       {/* Deck Preview overlay. Keeps the user from activating the cards */}
-      <div className='z-200 bg-transparent  absolute top-0 left-0 bottom-0 right-0'></div>
+      <div className='z-200 bg-transparent absolute top-0 left-0 bottom-0 right-0'></div>
       {/* Cards */}
-      <section>
-        <CardTemplate cardData={deck.cards[0]} index={0} />
-      </section>
+      {isLoading && <LoadingOverlay displayHints={false} />}
+      {!isLoading && (
+        <section className='relative w-full h-full flex items-center justify-center'>
+          {deck?.cards.map((card, i) => (
+            <CardTemplate
+              style={{
+                rotate: `${calculatePositionAlongAngle(
+                  24,
+                  deck?.cards.length,
+                  inverseIndex(deck?.cards.length, i)
+                )}deg`,
+              }}
+              key={i}
+              cardData={card}
+              index={i}
+              baseOffset={0}
+              renderFlipped={i === 0 ? true : false}
+              enableTransitions={true}
+            />
+          ))}
+        </section>
+      )}
     </div>
   )
 }
+
+export default DeckPreview

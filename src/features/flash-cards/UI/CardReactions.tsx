@@ -1,7 +1,5 @@
 import { useAppDispatch } from '../../../context/hooks'
 import { TranslationReaction, reactionObj, translationReactions } from '../../../models/Reaction.model'
-import Card from '../../../models/Card.model'
-
 import { getElColorClasses } from '../../../utils'
 import { addReaction, incrementCardListIndex } from '../cardsSlice'
 
@@ -14,7 +12,7 @@ export const CardReactions = ({ cardId, cardReaction }: CardReactionsProps) => {
   const reactions = translationReactions
 
   return (
-    <div className='flex justify-evenly absolute bottom-5 left-0 right-0 text-xl'>
+    <div className='flex justify-evenly absolute bottom-5 left-0 right-0 text-style-tertiary h-10'>
       {reactions.map((reaction: reactionObj, i: number) => (
         <button
           key={`reaction_` + i}

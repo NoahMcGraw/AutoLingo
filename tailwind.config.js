@@ -82,6 +82,10 @@ module.exports = {
         extraBold: '800',
         black: '900',
       },
+      padding: {
+        full: '100%',
+        double: '200%',
+      },
     },
   },
   plugins: [],

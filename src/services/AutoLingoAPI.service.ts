@@ -372,7 +372,7 @@ class AutoLingoAPI {
         'Content-Type': 'application/json',
       }
       response = await axios
-        .get(`${import.meta.env.VITE_API_URL}/relatedTranslations${formatUrlGetParams(_params)}`, { headers: headers })
+        .get(`${import.meta.env.VITE_API_URL}/getTranslation${formatUrlGetParams(_params)}`, { headers: headers })
         .then((res) => res.data)
     } catch (_error) {
       const error = _error as Error

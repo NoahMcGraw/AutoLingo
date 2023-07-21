@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
-import Card from '../../models/Card.model'
 import { RootState } from '../../context/store'
 import AutoLingoAPI from '../../services/AutoLingoAPI.service'
 import { LanguageCode } from '../../models/Language.model'

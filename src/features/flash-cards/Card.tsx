@@ -1,18 +1,35 @@
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../context/hooks'
-import Card from '../../models/Card.model'
+import { default as CardType } from '../../models/Card.model'
 import { selectCurCardIndex } from '../deck/deckSlice'
 import { translationReactions } from '../../models/Reaction.model'
 import { CardReactions } from './UI/CardReactions'
 import { capitalizeFirstLetter } from '../../utils'
+import LanguageBall from '../../components/LanguageBall'
+import { languages } from '../../models/Language.model'
 
 type CardProps = {
-  cardData: Card
+  style?: React.CSSProperties
+  className?: string
+  cardData: CardType
   index: number
+  baseOffset?: number
+  renderFlipped?: boolean
+  enableTransitions?: boolean
 }
 
-const Card = ({ cardData, index }: CardProps) => {
+const Card = ({
+  style,
+  className,
+  cardData,
+  index,
+  baseOffset = 7,
+  renderFlipped = false,
+  enableTransitions = true,
+}: CardProps) => {
   const curIndex = useAppSelector(selectCurCardIndex)
+  const sourceLanguage = languages.find((languageObj) => languageObj.code === cardData.sourceLang)
+  const targetLanguage = languages.find((languageObj) => languageObj.code === cardData.targetLang)
 
   const isTopCard = () => {
     return curIndex === index
@@ -21,8 +38,8 @@ const Card = ({ cardData, index }: CardProps) => {
   const baseZIndex = 100
   const modZIndex = baseZIndex - index + curIndex // Modify the base index by the index of the card in the stack
 
-  const defaultBaseLeftOffset = 7
-  const [modLeftOffset, setModLeftOffset] = useState<number>(-33)
+  const [modLeftOffset, setModLeftOffset] = useState<number>(baseOffset)
+  const _mdBaseLeftOffset = baseOffset
 
   const mdMediaQuery = window.matchMedia('(min-width: 768px)')
   mdMediaQuery.addEventListener('change', () => {
@@ -30,17 +47,33 @@ const Card = ({ cardData, index }: CardProps) => {
   })
 
   const updateBaseLeftOffset = () => {
-    const _mdBaseLeftOffset = 33
-    setModLeftOffset((mdMediaQuery.matches ? _mdBaseLeftOffset : defaultBaseLeftOffset) - index + curIndex)
+    setModLeftOffset((mdMediaQuery.matches ? _mdBaseLeftOffset : baseOffset) - index + curIndex)
   }
 
-  const handleCardFlip = (cardId: string) => {
+  const handleCardClick = (cardId: string) => {
     if (isTopCard()) {
-      const el = document.getElementById('card_' + cardId + '_inner')
-      if (el) {
-        el.classList.toggle('rotate-y-180')
-      }
+      flipCard(cardId)
     }
+  }
+
+  const flipCard = (cardId: string) => {
+    const el = document.getElementById('card_' + cardId + '_inner')
+    if (el) {
+      el.classList.toggle('rotate-y-180')
+    }
+  }
+
+  /**
+   * function to check whether a card is already flipped
+   * @param cardId
+   * @returns boolean
+   */
+  const isCardFlipped = (cardId: string) => {
+    const el = document.getElementById('card_' + cardId + '_inner')
+    if (el) {
+      return el.classList.contains('rotate-y-180')
+    }
+    return false
   }
 
   const handleTransitionOffScreen = () => {
@@ -70,21 +103,54 @@ const Card = ({ cardData, index }: CardProps) => {
     }, 100)
   }, [curIndex])
 
+  useEffect(() => {
+    if (renderFlipped && !isCardFlipped(cardData.id)) {
+      console.log(cardData.id)
+      console.log('flipping card')
+      flipCard(cardData.id)
+    }
+  }, [])
+
   return (
     <div
-      className={`flip-card h-full md:h-50v w-90v md:w-40v lg:w-30v transition-all duration-1000 ${handleTransitionOffScreen()}`}
-      style={{ left: `${modLeftOffset.toString()}%`, zIndex: modZIndex.toString() }}>
-      <div onClick={(e) => handleCardFlip(cardData.id)} id={`card_${cardData.id}_inner`} className='flip-card-inner'>
-        <section className='flip-card-front bg-slate-100 border-2 border-slate-200'>
-          <div className='relative top-1/2 cursor-default text-3xl md:text-2xl'>
-            {capitalizeFirstLetter(cardData.targetWord)}
+      className={`${className} flip-card top-1/2 -translate-y-1/2 w-2/3 pb-full ${
+        enableTransitions ? 'transition-all duration-1000' : ''
+      } ${handleTransitionOffScreen()}`}
+      style={{ zIndex: modZIndex.toString(), ...style }}>
+      <div
+        onClick={(e) => handleCardClick(cardData.id)}
+        id={`card_${cardData.id}_inner`}
+        className='flip-card-inner absolute'>
+        <section className='flip-card-front bg-slate-100 border-2 border-slate-200 flex flex-col justify-between'>
+          <div className='flex justify-start'>
+            <div className='px-4 pt-4'>
+              <LanguageBall
+                languages={sourceLanguage ? [sourceLanguage] : undefined}
+                size={cardData.sourceWord.length > 0 ? 50 : 250}
+              />
+            </div>
+          </div>
+          <div className='cursor-default text-style-secondary text-gray-800 pb-10 flex-1 flex items-center justify-center'>
+            {cardData.sourceWord.length > 0 && <span>{capitalizeFirstLetter(cardData.sourceWord)}</span>}
+            {cardData.sourceWord.length === 0 && <span>{sourceLanguage?.name}</span>}
           </div>
         </section>
-        <section className='flip-card-back bg-blue-100 align-middle border-2 border-slate-200'>
-          <div className='relative top-1/2 cursor-default text-3xl md:text-2xl'>
-            {capitalizeFirstLetter(cardData.sourceWord)}
+        <section className='flip-card-back bg-blue-100 align-middle border-2 border-slate-200 flex flex-col justify-between'>
+          <div className='flex justify-end'>
+            <div className='px-4 pt-4'>
+              <LanguageBall
+                languages={targetLanguage ? [targetLanguage] : undefined}
+                size={cardData.targetWord.length > 0 ? 50 : 250}
+              />
+            </div>
           </div>
-          <CardReactions cardId={cardData.id} cardReaction={cardData.reaction ? cardData.reaction : 'Do Not Know'} />
+          <div className='cursor-default text-style-secondary text-gray-800 pb-10 flex-1 flex items-center justify-center'>
+            {cardData.targetWord.length > 0 && <span>{capitalizeFirstLetter(cardData.targetWord)}</span>}
+            {cardData.targetWord.length === 0 && <span>{targetLanguage?.name}</span>}
+          </div>
+          {cardData.targetWord.length > 0 && (
+            <CardReactions cardId={cardData.id} cardReaction={cardData.reaction ? cardData.reaction : 'Do Not Know'} />
+          )}
         </section>
       </div>
     </div>

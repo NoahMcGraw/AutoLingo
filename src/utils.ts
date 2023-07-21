@@ -147,3 +147,26 @@ export const arraysAreEqual = (a: string[], b: string[]) => {
 
   return true
 }
+
+/**
+ * Calculates position along an angle based on number of elements and index of the element
+ * @param angle number: Angle to calculate position along
+ * @param totalPositions number: Total number of positions to calculate
+ * @param positionIndex number: Index of the position to calculate
+ * @returns number: Position along the angle
+ *
+ */
+export const calculatePositionAlongAngle = (angle: number, totalPositions: number, positionIndex: number) => {
+  const step = angle / (totalPositions - 1)
+  return step * positionIndex
+}
+
+/**
+ *  Gets the inverse index of an array
+ * @param length number: Length of the array
+ * @param index number: Index of the element to get the inverse of
+ * @returns number: Inverse index of the element
+ */
+export const inverseIndex = (length: number, index: number) => {
+  return length - 1 - index
+}

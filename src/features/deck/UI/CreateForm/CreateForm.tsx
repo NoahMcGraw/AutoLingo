@@ -9,6 +9,7 @@ import ReviewPageCreateForm from './pages/Review.CreateForm'
 import { useState } from 'react'
 import ProgressBar from '../../../../components/ProgressBar'
 import { selectFormData } from '../../deckCreationSlice'
+import DeckPreview from './DeckPreview'
 
 const CreateForm = () => {
   const dispatch = useAppDispatch()
@@ -47,7 +48,7 @@ const CreateForm = () => {
         </section>
       </div>
       <div className='w-1/2 flex border-l-2'>
-        <section></section>
+        <DeckPreview />
       </div>
     </div>
   )
