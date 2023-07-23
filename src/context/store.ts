@@ -11,6 +11,7 @@ export const store = configureStore({
     deck: deckReducer,
     deckCreation: deckCreationReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: true }),
 })
 
 export type AppDispatch = typeof store.dispatch

@@ -1,7 +1,7 @@
 import { useAppSelector } from '../../../../../context/hooks'
 import { CreateFormData } from '../../../../../models/CreateForm.model'
 import { selectFormData } from '../../../deckCreationSlice'
-import { LanguageCode, languages } from '../../../../../models/Language.model'
+import { languages } from '../../../../../models/Language.model'
 import LanguageBall from '../../../../../components/LanguageBall'
 import { capitalizeFirstLetter, getSudoRandColor } from '../../../../../utils'
 
@@ -22,7 +22,7 @@ const ReviewPageCreateForm = () => {
           <span className='text-style-secondary text-tertiary'>{formData.name}</span>
         </section>
         <section className='flex-1 flex items-center py-4'>
-          <LanguageBall languages={[sourceLang, targetLang]} size={150} />
+          <LanguageBall languageCodes={[formData.sourceLang, formData.targetLang]} size={150} />
         </section>
         <section className='py-2 mb-4 rounded-xl bg-secondary w-full flex items-center justify-between px-4'>
           <div className='text-style-tertiary text-tertiary'>Languages:</div>

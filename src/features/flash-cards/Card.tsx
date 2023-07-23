@@ -105,8 +105,6 @@ const Card = ({
 
   useEffect(() => {
     if (renderFlipped && !isCardFlipped(cardData.id)) {
-      console.log(cardData.id)
-      console.log('flipping card')
       flipCard(cardData.id)
     }
   }, [])
@@ -126,17 +124,11 @@ const Card = ({
           <div className={`flex justify-${cardData.sourceWord.length > 0 ? 'start' : 'center'}`}>
             {/* Decktop View Language Ball */}
             <div className='px-4 pt-4 hidden lg:block'>
-              <LanguageBall
-                languages={sourceLanguage ? [sourceLanguage] : undefined}
-                size={cardData.sourceWord.length > 0 ? 50 : 250}
-              />
+              <LanguageBall languageCodes={[cardData.sourceLang]} size={cardData.sourceWord.length > 0 ? 50 : 250} />
             </div>
             {/* Tablet View Language Ball */}
             <div className='px-4 pt-4 lg:hidden'>
-              <LanguageBall
-                languages={sourceLanguage ? [sourceLanguage] : undefined}
-                size={cardData.sourceWord.length > 0 ? 50 : 200}
-              />
+              <LanguageBall languageCodes={[cardData.sourceLang]} size={cardData.sourceWord.length > 0 ? 50 : 200} />
             </div>
           </div>
           <div className='cursor-default text-style-secondary text-gray-800 pb-10 flex-1 flex items-center justify-center'>
@@ -149,17 +141,11 @@ const Card = ({
           <div className={`flex justify-${cardData.targetWord.length > 0 ? 'end' : 'center'}`}>
             {/* Decktop View Language Ball */}
             <div className='px-4 pt-4 hidden lg:block'>
-              <LanguageBall
-                languages={targetLanguage ? [targetLanguage] : undefined}
-                size={cardData.targetWord.length > 0 ? 50 : 250}
-              />
+              <LanguageBall languageCodes={[cardData.targetLang]} size={cardData.targetWord.length > 0 ? 50 : 250} />
             </div>
             {/* Tablet View Language Ball */}
             <div className='px-4 pt-4 lg:hidden'>
-              <LanguageBall
-                languages={targetLanguage ? [targetLanguage] : undefined}
-                size={cardData.targetWord.length > 0 ? 50 : 200}
-              />
+              <LanguageBall languageCodes={[cardData.targetLang]} size={cardData.targetWord.length > 0 ? 50 : 200} />
             </div>
           </div>
           <div className='cursor-default text-style-secondary text-gray-800 pb-10 flex-1 flex items-center justify-center'>

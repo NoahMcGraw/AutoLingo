@@ -1,11 +1,9 @@
-import { CardsList } from '../features/flash-cards/CardList'
-import { CardSourceSearch } from '../features/flash-cards/UI/CardSourceSearch'
+import DeckList from '../features/deck/DeckList'
 
 const Decks = () => {
   return (
-    <section className='lg:flex'>
-      <CardSourceSearch />
-      <CardsList />
+    <section className='lg:flex p-4'>
+      <DeckList />
     </section>
   )
 }

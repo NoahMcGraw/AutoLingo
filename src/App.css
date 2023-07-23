@@ -110,6 +110,11 @@ body {
   @apply text-xl;
 }
 
+.text-style-quaternary {
+  @apply font-bold;
+  @apply text-base;
+}
+
 @keyframes shine {
   0% {
     background-position: -100px;

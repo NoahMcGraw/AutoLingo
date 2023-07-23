@@ -102,7 +102,6 @@ const DeckPreview = () => {
   useEffect(() => {
     setIsLoading(true)
     createSampleDeck(deckData).then((newSampleDeck: Deck) => {
-      console.log(newSampleDeck)
       setDeck(newSampleDeck)
       setIsLoading(false)
     })

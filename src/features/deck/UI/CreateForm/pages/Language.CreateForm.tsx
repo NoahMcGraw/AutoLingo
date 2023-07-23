@@ -81,7 +81,7 @@ const LanguagePageCreateForm = ({ className, onValidate, index }: FormPageProps)
       </section>
       <section className='pb-1 flex-1 flex flex-col'>
         <section className='py-2 flex-1 w-full flex items-center justify-center'>
-          <LanguageBall languages={[sourceLang, targetLang]} size={200} />
+          <LanguageBall languageCodes={[sourceLangCode, targetLangCode]} size={200} />
         </section>
         <section className='justify-between flex items-center bg-secondary rounded-xl w-full lg:w-2/3 m-auto my-2'>
           {/* Source Lang Select */}

@@ -170,3 +170,31 @@ export const calculatePositionAlongAngle = (angle: number, totalPositions: numbe
 export const inverseIndex = (length: number, index: number) => {
   return length - 1 - index
 }
+
+/**
+ * Truncates a list to a specified length
+ * @param list unknown[]: List of strings to truncate
+ * @param length number: The number of elements to truncate the list to
+ * @returns string: Truncated list of strings
+ */
+export const truncateList = (list: unknown[], length: number) => {
+  return list.slice(0, length)
+}
+
+/**
+ * Takes a list of strings and returns a string of the list separated by commas and truncated to a specified length
+ * @param list unknown[]: List of strings to truncate
+ * @param length number: The number of elements to truncate the list to
+ * @returns string: Truncated list of strings
+ */
+export const truncateListToString = (list: unknown[], length: number) => {
+  // If the list is empty, return an empty string
+  if (list.length === 0) return ''
+
+  // If the length of the list is the same or less than the length to truncate to, return the list as a string
+  if (list.length <= length) return list.join(', ')
+
+  // If the length of the list is greater than the length to truncate to, return the truncated list as a string
+  const truncatedList = truncateList(list, length)
+  return truncatedList.join(', ') + ', ...'
+}

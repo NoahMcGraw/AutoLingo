@@ -14,12 +14,12 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: '#E29A2E',
-        primaryLight: '#E4A548',
-        primarySuperLight: '#E5AD5A',
+        primary: '#FF9900',
+        primaryLight: '#FFA31B',
+        primarySuperLight: '#FFAF39',
         secondary: '#B5CEFF',
-        secondaryLight: '#BFD5FF',
-        secondarySuperLight: '#C9DBFF',
+        secondaryLight: '#D3E2FF',
+        secondarySuperLight: '#F2F6FF',
         tertiary: '#FDFAF6',
       },
       keyframes: {
@@ -77,6 +77,7 @@ module.exports = {
       },
       minWidth: {
         100: '100px',
+        '1/3': '33.333333%',
       },
       minHeight: {
         300: '300px',
@@ -104,6 +105,7 @@ module.exports = {
       },
       boxShadow: {
         innerXl: 'inset 0 0 20px 0 rgba(0, 0, 0, 0.25)',
+        inner3xl: 'inset 2px 4px 4px 0px rgba(0, 0, 0, 0.25)',
         glow: '0 0 10px 5px rgba(255,215,0, 0.6)', // Change color and size as needed
       },
     },

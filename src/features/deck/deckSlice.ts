@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../context/store'
 import AutoLingoAPI from '../../services/AutoLingoAPI.service'
 import Deck from '../../models/Deck.model'
@@ -31,7 +31,7 @@ const initialState: DeckState = {
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
-export const getAll = createAsyncThunk('deck/getAll', async ({}, { rejectWithValue }) => {
+export const getAll = createAsyncThunk('deck/getAll', async (_, { rejectWithValue }) => {
   try {
     let response = [] as Deck[]
     const autoLingoAPI = new AutoLingoAPI()
@@ -117,7 +117,6 @@ export const createDeck = createAsyncThunk(
       const newDeck = await autoLingoAPI.createDeck(name, sourceLang, targetLang, topics)
 
       if (newDeck) {
-        console.log(newDeck)
         response = newDeck
       }
       return response
