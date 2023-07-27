@@ -9,6 +9,7 @@ import { truncateListToString } from '../../utils'
 import { SortByProp } from '../../components/SortByProp'
 import { LoadingOverlay } from '../../components/Loading'
 import { useNavigate } from 'react-router-dom'
+import EditFormPopup from './UI/EditForm/EditFormPopup'
 
 const DeckList = () => {
   const dispatch = useAppDispatch()
@@ -45,6 +46,7 @@ const DeckList = () => {
   }, [dispatch])
 
   useEffect(() => {
+    setLoading(true)
     setFilteredDecks(decks)
     setSelectedDeck(undefined)
     setTimeout(() => setLoading(false), 100) // We timeout to allow the dom to register the new filteredDecks before removing the loading overlay.
@@ -128,15 +130,15 @@ const DeckList = () => {
         <section className='w-full flex items-center justify-end gap-4'>
           <button
             onClick={handleDeleteButtonClick}
-            className='bg-red-500 text-style-tertiary text-tertiary py-2 px-6 rounded-lg text-left'>
+            disabled={!selectedDeck}
+            className='bg-secondary enabled:bg-red-500 text-style-tertiary text-tertiary py-2 px-6 rounded-lg text-left'>
             <span>Delete</span>
           </button>
-          <button className='bg-blue-500 text-style-tertiary text-tertiary py-2 px-6 rounded-lg text-left'>
-            <span>Edit</span>
-          </button>
+          <EditFormPopup deck={selectedDeck} />
           <button
             onClick={handleStudyButtonClick}
-            className='bg-green-500 text-style-tertiary text-tertiary py-2 px-12 rounded-lg text-left'>
+            disabled={!selectedDeck}
+            className='bg-secondary enabled:bg-green-500 text-style-tertiary text-tertiary py-2 px-12 rounded-lg text-left'>
             <span>Study</span>
           </button>
         </section>

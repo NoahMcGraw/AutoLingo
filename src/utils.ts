@@ -111,9 +111,9 @@ export const removeElByName = (name: string) => {
 }
 
 /**
- * Compares two string arrays and performs an action on the elements that exist in the first array but not the second
- * @param arr1 string[]: First array to compare
- * @param arr2 string[]: Second array to compare
+ * Compares two string arrays and performs an action on the elements that exist in the valuesToFind but not the arrToCheck
+ * @param valuesToFind string[]: First array to compare
+ * @param arrToCheck string[]: Second array to compare
  * @param action Function: Action to perform on the elements that are different
  */
 export const findOutliersAndActOnArr = (

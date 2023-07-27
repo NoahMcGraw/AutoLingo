@@ -23,8 +23,8 @@ function SearchBar<T>({ listToSearch, setFilteredList }: SearchBarProps<T>) {
   const handleQueryChange = (newQuery: string) => {
     setSearchQuery(newQuery)
     // If the query is not empty, reset the timeout and then get the suggested results.
+    setSearchStatus(Status.Loading)
     if (newQuery) {
-      setSearchStatus(Status.Loading)
       setFilteredList(
         listToSearch.filter((item) => {
           return JSON.stringify(item).toLowerCase().includes(newQuery.toLowerCase())
@@ -32,6 +32,8 @@ function SearchBar<T>({ listToSearch, setFilteredList }: SearchBarProps<T>) {
       )
       setSearchStatus(Status.Idle)
     } else {
+      // If the query is empty, reset the list.
+      setFilteredList(listToSearch)
       setSearchStatus(Status.Idle)
     }
   }

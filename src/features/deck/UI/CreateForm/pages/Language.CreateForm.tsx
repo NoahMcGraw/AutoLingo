@@ -77,7 +77,7 @@ const LanguagePageCreateForm = ({ className, onValidate, index }: FormPageProps)
   return (
     <div className={`${className ? className : ''} transition-all h-full w-full flex flex-col`}>
       <section className='text-right'>
-        <span className='text-style-tertiary text-tertiary'>Languages</span>
+        <span className='text-style-tertiary text-secondary'>Languages</span>
       </section>
       <section className='pb-1 flex-1 flex flex-col'>
         <section className='py-2 flex-1 w-full flex items-center justify-center'>
@@ -110,7 +110,7 @@ const LanguagePageCreateForm = ({ className, onValidate, index }: FormPageProps)
                   <path d='M480-322 216-586l67-67 197 198 197-197 67 67-264 263Z' />
                 </svg>
               </Listbox.Button>
-              <Listbox.Options className='mx-auto mt-1 bg-tertiary absolute w-full box-border z-200 cursor-pointer rounded-lg'>
+              <Listbox.Options className='mx-auto mt-1 bg-tertiary absolute w-full box-border z-popup cursor-pointer rounded-lg'>
                 {languages.map(
                   (language, i) =>
                     language.code !== sourceLang.code && (
@@ -161,7 +161,7 @@ const LanguagePageCreateForm = ({ className, onValidate, index }: FormPageProps)
 
                 <span className='text-style-tertiary text-tertiary'>{targetLang.name}</span>
               </Listbox.Button>
-              <Listbox.Options className='mx-auto mt-1 bg-tertiary absolute w-full box-border z-200 cursor-pointer rounded-lg'>
+              <Listbox.Options className='mx-auto mt-1 bg-tertiary absolute w-full box-border z-popup cursor-pointer rounded-lg'>
                 {languages.map(
                   (language, i) =>
                     language.code !== targetLang.code && (

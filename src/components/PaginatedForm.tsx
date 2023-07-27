@@ -30,6 +30,7 @@ const PaginatedForm = ({ children, submitFunction, submitBtnText, curPageIndex }
   }
 
   const handleSubmit = (event: FormEvent) => {
+    console.log('submitting form')
     event.preventDefault()
     submitFunction()
   }

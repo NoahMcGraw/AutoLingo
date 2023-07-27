@@ -10,7 +10,7 @@ const Header = () => {
   }
   return (
     // This header component should stick to the top of the page and move when the user scrolls
-    <div className='sticky top-0 left-0 right-0 z-1000 flex justify-between items-center px-4 py-2 bg-primary'>
+    <div className='sticky top-0 left-0 right-0 z-headerFooter flex justify-between items-center px-4 py-2 bg-primary'>
       {/* Mobile and Tablet View */}
       {/* Logo will stack on top with a hamburger menu that drops down */}
       <section className='md:hidden mx-auto text-lg'>
@@ -45,7 +45,7 @@ const Header = () => {
         </button>
         {/* Dropdown mobile menu. Menu should lay over the content below the header and be full width. It will contain that same links that the desktop menu contains*/}
         <div
-          className={`fixed top-0 right-0 h-screen w-full lg:w-1/3 bg-tertiary text-black z-1000 transition-all duration-500 ease-in-out ${
+          className={`fixed top-0 right-0 h-screen w-full lg:w-1/3 bg-tertiary text-black z-nav transition-all duration-500 ease-in-out ${
             isOpen ? 'translate-y-0' : '-translate-y-full'
           }`}>
           <div className='bg-primary w-full'>

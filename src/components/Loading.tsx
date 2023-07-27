@@ -20,7 +20,7 @@ type LoadingOverlayProps = {
 
 export const LoadingOverlay = ({ size, color, text = 'Loading', displayHints = true }: LoadingOverlayProps) => {
   return (
-    <div className='flex flex-col bg-tertiary bg-opacity-90 justify-center items-center absolute top-0 bottom-0 left-0 right-0 z-200 h-full px-4'>
+    <div className='flex flex-col bg-tertiary bg-opacity-90 justify-center items-center absolute top-0 bottom-0 left-0 right-0 z-overlay h-full px-4'>
       <div className='lg:h-3/4 mb-4 lg:mb-0 flex flex-col items-center justify-center'>
         <div className='loading__spinner'>
           <LoadingIcon size={size} color={color}></LoadingIcon>

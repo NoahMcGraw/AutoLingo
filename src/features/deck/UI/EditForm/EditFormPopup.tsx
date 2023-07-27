@@ -1,15 +1,24 @@
 import { useEffect, useState } from 'react'
-import CreateForm from './CreateForm'
-import Status from '../../../../models/Status.model'
-import { useAppSelector } from '../../../../context/hooks'
+import EditForm from './EditForm'
+import Deck from '../../../../models/Deck.model'
 import { selectStatus } from '../../../../context/statusSlice'
+import { useAppSelector } from '../../../../context/hooks'
+import Status from '../../../../models/Status.model'
 
-const CreateFormPopup = () => {
+type EditFormPopupProps = {
+  deck?: Deck
+  className?: {
+    openBtn?: string
+    closeBtn?: string
+    form?: string
+  }
+}
+
+const EditFormPopup = ({ deck, className }: EditFormPopupProps) => {
   const appStatus = useAppSelector(selectStatus)
-
   const [showPopup, setShowPopup] = useState(false)
 
-  const handleCreateButtonClick = () => {
+  const handleEditButtonClick = () => {
     setShowPopup(true)
   }
 
@@ -34,7 +43,7 @@ const CreateFormPopup = () => {
           {/* Close popup button */}
           <button
             type='button'
-            className=' absolute top-0 right-0 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-transparent focus:outline-none'
+            className={`absolute top-0 right-0 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-transparent focus:outline-none ${className?.closeBtn}`}
             onClick={handleCloseButtonClick}>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -45,16 +54,17 @@ const CreateFormPopup = () => {
               <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
             </svg>
           </button>
-          <CreateForm />
+          {deck && <EditForm deck={deck} className={className?.form} />}
         </div>
       )}
       <button
-        className='bg-green-500 text-style-tertiary text-tertiary py-2 px-4 rounded-lg'
-        onClick={handleCreateButtonClick}>
-        <span>Add New</span>
+        className={`text-style-tertiary text-tertiary bg-secondary enabled:bg-blue-500 py-2 px-6 rounded-lg ${className?.openBtn}`}
+        disabled={!deck}
+        onClick={handleEditButtonClick}>
+        <span>Edit</span>
       </button>
     </>
   )
 }
 
-export default CreateFormPopup
+export default EditFormPopup

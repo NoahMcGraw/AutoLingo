@@ -64,7 +64,7 @@ const SideMenu = ({ btnStyle = { style: 'Icon' }, children }: SideMenuProps) => 
       {/* SideMenu */}
       {/* If isOpen is false, the side menu should be hidden and moved off screen to the right. Once opened, visibility should be set and a transition will bring it into the user viewport from right to left */}
       <div
-        className={`fixed top-0 right-0 h-screen w-full lg:w-1/3 bg-tertiary text-black z-1000 transition-all duration-500 ease-in-out ${
+        className={`fixed top-0 right-0 h-screen w-full lg:w-1/3 bg-tertiary text-black z-sideMenu transition-all duration-500 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         id='sidemenu'>

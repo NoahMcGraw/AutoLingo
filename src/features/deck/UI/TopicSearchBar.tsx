@@ -1,12 +1,12 @@
 import { Combobox, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import AutoLingoAPI from '../../../../services/AutoLingoAPI.service'
-import Status from '../../../../models/Status.model'
-import { LanguageCode } from '../../../../models/Language.model'
-import SourceWord from '../../../../models/SourceWord.model'
-import { capitalizeFirstLetter } from '../../../../utils'
-import { LoadingIcon } from '../../../../components/Loading'
-import Color from '../../../../models/Color.model'
+import AutoLingoAPI from '../../../services/AutoLingoAPI.service'
+import Status from '../../../models/Status.model'
+import { LanguageCode } from '../../../models/Language.model'
+import SourceWord from '../../../models/SourceWord.model'
+import { capitalizeFirstLetter } from '../../../utils'
+import { LoadingIcon } from '../../../components/Loading'
+import Color from '../../../models/Color.model'
 
 type TopicSearchBarProps = {
   sourceLangCode: LanguageCode
@@ -73,7 +73,7 @@ const TopicSearchBar = ({ sourceLangCode, addtlTopicChangeHandler }: TopicSearch
             displayValue={(selectedTopic: string) => capitalizeFirstLetter(selectedTopic)}
             name='topics'
             id={'searchInput'}
-            className={`bg-tertiary text-gray-400 placeholder-secondarySuperLight text-style-tertiary rounded-xl py-2 px-4 w-full transition-all duration-100 focus:outline-none focus:ring-4 focus:ring-tertiary focus:ring-opacity-50`}
+            className={`bg-tertiary text-gray-400 placeholder-secondary text-style-tertiary rounded-xl py-2 px-4 w-full transition-all duration-100 focus:outline-none focus:ring-4 focus:ring-secondaryLight focus:ring-opacity-50`}
             placeholder='Search...'
             onChange={(e) => handleQueryChange(e.target.value)}
             onKeyDown={(e) => handleKeyDownOnSearch(e)}
@@ -94,7 +94,7 @@ const TopicSearchBar = ({ sourceLangCode, addtlTopicChangeHandler }: TopicSearch
           }}>
           <Combobox.Options
             className={
-              'mx-auto mt-1 bg-tertiary rounded-lg text-style-tertiary text-gray-500 text-xl absolute w-full z-200'
+              'mx-auto mt-1 bg-tertiary rounded-lg text-style-tertiary text-gray-500 text-xl absolute w-full z-popup'
             }>
             {suggestionList.map((fillOption, i) => (
               <Combobox.Option

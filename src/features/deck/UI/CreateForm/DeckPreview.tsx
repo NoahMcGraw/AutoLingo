@@ -11,9 +11,13 @@ import { LoadingOverlay } from '../../../../components/Loading'
 import { LanguageCode } from '../../../../models/Language.model'
 import { calculatePositionAlongAngle, inverseIndex } from '../../../../utils'
 
-const DeckPreview = () => {
+type DeckPreviewProps = {
+  deckToPreview?: Deck
+}
+
+const DeckPreview = ({ deckToPreview }: DeckPreviewProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const deckData = useAppSelector(selectFormData)
+  const deckData = deckToPreview ? deckToPreview : useAppSelector(selectFormData)
   const [deck, setDeck] = useState<Deck | undefined>(undefined)
 
   /**
@@ -110,7 +114,7 @@ const DeckPreview = () => {
   return (
     <div className='w-full h-full relative'>
       {/* Deck Preview overlay. Keeps the user from activating the cards */}
-      <div className='z-200 bg-transparent absolute top-0 left-0 bottom-0 right-0'></div>
+      <div className='z-overlay bg-transparent absolute top-0 left-0 bottom-0 right-0'></div>
       {/* Cards */}
       {isLoading && <LoadingOverlay displayHints={false} />}
       {!isLoading && (

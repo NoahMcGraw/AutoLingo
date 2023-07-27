@@ -45,6 +45,12 @@ module.exports = {
       zIndex: {
         200: '200',
         1000: '1000',
+        popupBg: '100',
+        popup: '101',
+        overlay: '102',
+        headerFooter: '103',
+        nav: '104',
+        sideMenu: '105',
       },
       width: {
         225: '225px',

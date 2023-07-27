@@ -1,7 +1,7 @@
 import ChipList from '../../../../../components/ChipList'
 import { useAppDispatch, useAppSelector } from '../../../../../context/hooks'
 import { addTopic, removeTopic, selectSourceLang, selectTopics } from '../../../deckCreationSlice'
-import TopicSearchBar from '../TopicSearchBar'
+import TopicSearchBar from '../../TopicSearchBar'
 import { LanguageCode } from '../../../../../models/Language.model'
 import FormPageProps from '../../../../../models/FormPage.model'
 import { useEffect, useRef, useState } from 'react'
@@ -70,10 +70,10 @@ const TopicPageCreateForm = ({ onValidate, index }: FormPageProps) => {
   return (
     <div className='h-full w-full flex flex-col'>
       <section className='text-right'>
-        <span className='text-style-tertiary text-tertiary'>Topics</span>
+        <span className='text-style-tertiary text-secondary'>Topics</span>
       </section>
       <section className='pb-2'>
-        <span className='text-style-tertiary text-tertiary'>Add to Deck</span>
+        <span className='text-style-tertiary text-secondary'>Add to Deck</span>
       </section>
       <section className='pb-2'>
         <TopicSearchBar addtlTopicChangeHandler={handleAddTopic} sourceLangCode={sourceLangCode} />

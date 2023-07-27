@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { LanguageCode } from '../models/Language.model'
-import { formatUrlGetParams } from '../utils'
+import { capitalizeFirstLetter, formatUrlGetParams } from '../utils'
 import SourceWord from '../models/SourceWord.model'
 import TranslatedResultObj from '../models/TranslatedResult.model'
 import Deck from '../models/Deck.model'
@@ -196,7 +196,10 @@ class AutoLingoAPI {
    * @throws If the deck does not exist
    * @throws If the payload is invalid
    */
-  async editDeck(id: string, payload: Deck): Promise<Deck> {
+  async editDeck(
+    id: string,
+    payload: Deck & { topicsToAdd?: string[]; topicsToRemove?: string[]; cardIdToRemove?: string }
+  ): Promise<Deck> {
     let response: Deck
 
     const data = {
@@ -242,6 +245,49 @@ class AutoLingoAPI {
     }
 
     return response
+  }
+
+  /**
+   *
+   * Generates a deck name based on the topics passed
+   * @param topics
+   * @returns The generated deck name
+   *
+   */
+  async generateDeckName(topics: string[]): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        let response = 'New Deck' as string
+        // TODO: Remove this once the API is ready
+        // const autoLingoAPI = new AutoLingoAPI()
+        // const generatedName = await autoLingoAPI.generateDeckName()
+
+        function generateDeckName() {
+          let generatedName = '' as string
+          topics.forEach((topic) => {
+            if (topics.length > 1 && topic === topics[topics.length - 1]) {
+              generatedName += ' and '
+            }
+            generatedName += capitalizeFirstLetter(topic)
+            if (topics.length > 2 && topic !== topics[topics.length - 1]) {
+              generatedName += ', '
+            }
+          })
+          return generatedName.trim()
+        }
+
+        const generatedName = generateDeckName()
+
+        if (generatedName.length) {
+          response = generatedName
+        }
+        resolve(response)
+      } catch (_error) {
+        const error = _error as Error
+        console.error(error.message)
+        reject('There was an error contacting the server: ' + error.message)
+      }
+    })
   }
 
   /**
