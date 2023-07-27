@@ -1,9 +1,9 @@
 import { languages } from '../../../../../models/Language.model'
 import LanguageBall from '../../../../../components/LanguageBall'
 import { capitalizeFirstLetter, getSudoRandColor } from '../../../../../utils'
-import FormPageProps from '../../../../../models/FormPage.model'
+import { EditDeckFormPageProps } from '../../../../../models/FormPage.model'
 
-const ReviewPageEditForm = ({ formData }: FormPageProps) => {
+const ReviewPageEditForm = ({ formData }: EditDeckFormPageProps) => {
   const sourceLang = languages.filter((lang) => lang.code === formData?.data.sourceLang)[0]
 
   const targetLang = languages.filter((lang) => lang.code === formData?.data.targetLang)[0]

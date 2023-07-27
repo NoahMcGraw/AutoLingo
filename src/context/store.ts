@@ -2,14 +2,12 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import statusReducer from './statusSlice'
 import cardsReducer from '../features/flash-cards/cardsSlice'
 import deckReducer from '../features/deck/deckSlice'
-import deckCreationReducer from '../features/deck/deckCreationSlice'
 
 export const store = configureStore({
   reducer: {
     status: statusReducer,
     cards: cardsReducer, // TODO: Remove this
     deck: deckReducer,
-    deckCreation: deckCreationReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: true }),
 })

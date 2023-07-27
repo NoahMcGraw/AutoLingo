@@ -76,7 +76,7 @@ export const SortByProp = ({ sortableObjArr, setSortableObjArr, sortBy, sortByTy
 
   return (
     <div
-      className='cursor-pointer inline-block'
+      className='cursor-pointer flex items-center justify-start'
       onClick={() => {
         sortObjArr(!dir)
       }}>

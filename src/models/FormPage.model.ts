@@ -1,13 +1,23 @@
 import Deck from './Deck.model'
 
-type FormPageProps = {
+export type CreateDeckFormPageProps = {
   formData?: {
-    data: Deck & { topicsToAdd?: string[]; topicsToRemove?: string[]; cardIdToRemove?: string }
-    setter: React.Dispatch<React.SetStateAction<Deck>>
+    data: Omit<Deck, 'id' | 'cards'>
+    setter: React.Dispatch<React.SetStateAction<Omit<Deck, 'id' | 'cards'>>>
   }
   className?: string
   onValidate?: (index: number, valid: boolean) => void
   index?: number
 }
 
-export default FormPageProps
+export type EditDeckFormPageProps = {
+  formData?: {
+    data: Deck & { topicsToAdd?: string[]; topicsToRemove?: string[]; cardIdToRemove?: string }
+    setter: React.Dispatch<
+      React.SetStateAction<Deck & { topicsToAdd?: string[]; topicsToRemove?: string[]; cardIdToRemove?: string }>
+    >
+  }
+  className?: string
+  onValidate?: (index: number, valid: boolean) => void
+  index?: number
+}

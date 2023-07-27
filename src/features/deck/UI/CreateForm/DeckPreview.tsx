@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../../../context/hooks'
 import { default as CardTemplate } from '../../../flash-cards/Card'
-import { selectFormData } from '../../deckCreationSlice'
 import { CreateFormData } from '../../../../models/CreateForm.model'
 import { v4 as uuidv4 } from 'uuid'
 import Deck from '../../../../models/Deck.model'
@@ -12,12 +11,11 @@ import { LanguageCode } from '../../../../models/Language.model'
 import { calculatePositionAlongAngle, inverseIndex } from '../../../../utils'
 
 type DeckPreviewProps = {
-  deckToPreview?: Deck
+  deckToPreview: Deck | Omit<Deck, 'id' | 'cards'>
 }
 
 const DeckPreview = ({ deckToPreview }: DeckPreviewProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const deckData = deckToPreview ? deckToPreview : useAppSelector(selectFormData)
   const [deck, setDeck] = useState<Deck | undefined>(undefined)
 
   /**
@@ -41,7 +39,7 @@ const DeckPreview = ({ deckToPreview }: DeckPreviewProps) => {
    * @param deckData CreateFormData
    * @returns Deck
    */
-  const createSampleDeck = async (deckData: CreateFormData): Promise<Deck> => {
+  const createSampleDeck = async (deckData: Deck | Omit<Deck, 'id' | 'cards'>): Promise<Deck> => {
     const api = new AutoLingoAPI()
     let sampleDeck: Deck = {
       id: uuidv4(),
@@ -105,11 +103,11 @@ const DeckPreview = ({ deckToPreview }: DeckPreviewProps) => {
 
   useEffect(() => {
     setIsLoading(true)
-    createSampleDeck(deckData).then((newSampleDeck: Deck) => {
+    createSampleDeck(deckToPreview).then((newSampleDeck: Deck) => {
       setDeck(newSampleDeck)
       setIsLoading(false)
     })
-  }, [deckData])
+  }, [deckToPreview])
 
   return (
     <div className='w-full h-full relative'>

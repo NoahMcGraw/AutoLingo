@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../../../context/hooks'
-import FormPageProps from '../../../../../models/FormPage.model'
-import { generateDeckName, selectName, selectTopics, setName } from '../../../deckCreationSlice'
-import { assignErrorOutlineByName, findOutliersAndActOnArr, removeErrorOutlineByName } from '../../../../../utils'
 import Error, { setErrorsToForm } from '../../../../../components/FormError'
+import { CreateDeckFormPageProps } from '../../../../../models/FormPage.model'
+import Deck from '../../../../../models/Deck.model'
+import AutoLingoAPI from '../../../../../services/AutoLingoAPI.service'
 
-const NamePageCreateForm = ({ onValidate, index }: FormPageProps) => {
-  const dispatch = useAppDispatch()
-  const name = useAppSelector(selectName) as string
-  const topics = useAppSelector(selectTopics) as string[]
+const NamePageCreateForm = ({ formData, onValidate, index }: CreateDeckFormPageProps) => {
+  const api = new AutoLingoAPI()
+  const name = formData?.data.name || ''
+  const topics = formData?.data.topics || []
   const [invalidInputs, setInvalidInputs] = useState<string[]>([])
   const [errorMsg, setErrorMsg] = useState<string>('')
 
@@ -42,11 +41,14 @@ const NamePageCreateForm = ({ onValidate, index }: FormPageProps) => {
   }
 
   const handleChangeName = (newName: string) => {
-    dispatch(setName(newName))
+    formData?.setter((prevFormData: Omit<Deck, 'id' | 'cards'>) => {
+      return { ...prevFormData, name: newName }
+    })
   }
 
-  const handleGenerateDeckName = () => {
-    dispatch(generateDeckName({ topics: topics }))
+  const handleGenerateDeckName = async () => {
+    const newName = await api.generateDeckName(topics)
+    handleChangeName(newName)
   }
 
   useEffect(() => {

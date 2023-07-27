@@ -1,7 +1,6 @@
 import ChipList from '../../../../../components/ChipList'
 import TopicSearchBar from '../../TopicSearchBar'
 import { LanguageCode } from '../../../../../models/Language.model'
-import FormPageProps from '../../../../../models/FormPage.model'
 import { useEffect, useRef, useState } from 'react'
 import {
   arraysAreEqual,
@@ -11,8 +10,9 @@ import {
 } from '../../../../../utils'
 import Error from '../../../../../components/FormError'
 import Deck from '../../../../../models/Deck.model'
+import { EditDeckFormPageProps } from '../../../../../models/FormPage.model'
 
-const TopicPageEditForm = ({ formData, onValidate, index }: FormPageProps) => {
+const TopicPageEditForm = ({ formData, onValidate, index }: EditDeckFormPageProps) => {
   const sourceLangCode = formData?.data.sourceLang as LanguageCode
   const [originalTopics, setOriginalTopics] = useState<string[]>(formData?.data.topics || [])
   const prevTopics = useRef<string[]>([])

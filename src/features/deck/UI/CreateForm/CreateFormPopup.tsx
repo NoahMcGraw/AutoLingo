@@ -49,9 +49,18 @@ const CreateFormPopup = () => {
         </div>
       )}
       <button
-        className='bg-green-500 text-style-tertiary text-tertiary py-2 px-4 rounded-lg'
+        className='bg-green-500 text-style-tertiary text-tertiary py-2 px-4 flex-1 rounded-lg flex justify-center items-center'
         onClick={handleCreateButtonClick}>
-        <span>Add New</span>
+        <span className='hidden md:inline'>Add New</span>
+        <svg
+          className='md:hidden h-7 w-6 text-tertiary'
+          xmlns='http://www.w3.org/2000/svg'
+          height='48'
+          fill='currentColor'
+          viewBox='0 -960 960 960'
+          width='48'>
+          <path d='M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z' />
+        </svg>
       </button>
     </>
   )

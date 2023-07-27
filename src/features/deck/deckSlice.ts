@@ -110,15 +110,13 @@ export const removeCardFromDeck = createAsyncThunk(
 
 export const createDeck = createAsyncThunk(
   'deck/createDeck',
-  async ({ name, sourceLang, targetLang, topics }: CreateFormData, { rejectWithValue }) => {
+  async ({ name, sourceLang, targetLang, topics }: Omit<Deck, 'id' | 'cards'>, { rejectWithValue }) => {
     try {
       let response = {} as Deck
       const autoLingoAPI = new AutoLingoAPI()
-      console.log('running creation')
       const newDeck = await autoLingoAPI.createDeck(name, sourceLang, targetLang, topics)
 
       if (newDeck) {
-        console.log('deck created', newDeck)
         response = newDeck
       }
       return response
@@ -139,7 +137,6 @@ export const editDeck = createAsyncThunk(
       const updatedDeck = await autoLingoAPI.editDeck(id, payload)
 
       if (updatedDeck) {
-        console.log('deck updated', updatedDeck)
         response = updatedDeck
       }
       return response
@@ -255,7 +252,6 @@ export const deckSlice = createSlice({
         // Find the deck in the state and update it
         const deckIndex = state.decks.findIndex((deck) => deck.id === updatedDeck.id)
         state.decks[deckIndex] = updatedDeck
-        console.log('state.decks[deckIndex]', state.decks[deckIndex])
       }
     })
     builder.addCase(deleteDeck.fulfilled, (state, action) => {

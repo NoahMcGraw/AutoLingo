@@ -1,9 +1,6 @@
 import ChipList from '../../../../../components/ChipList'
-import { useAppDispatch, useAppSelector } from '../../../../../context/hooks'
-import { addTopic, removeTopic, selectSourceLang, selectTopics } from '../../../deckCreationSlice'
 import TopicSearchBar from '../../TopicSearchBar'
 import { LanguageCode } from '../../../../../models/Language.model'
-import FormPageProps from '../../../../../models/FormPage.model'
 import { useEffect, useRef, useState } from 'react'
 import {
   arraysAreEqual,
@@ -12,12 +9,13 @@ import {
   removeErrorOutlineByName,
 } from '../../../../../utils'
 import Error from '../../../../../components/FormError'
+import { CreateDeckFormPageProps } from '../../../../../models/FormPage.model'
+import Deck from '../../../../../models/Deck.model'
 
-const TopicPageCreateForm = ({ onValidate, index }: FormPageProps) => {
-  const dispatch = useAppDispatch()
-  const sourceLangCode = useAppSelector(selectSourceLang) as LanguageCode
+const TopicPageCreateForm = ({ formData, onValidate, index }: CreateDeckFormPageProps) => {
+  const sourceLangCode = formData?.data.sourceLang as LanguageCode
   const prevTopics = useRef<string[]>([])
-  const topics = useAppSelector(selectTopics) as string[]
+  const topics = formData?.data.topics || []
   const [invalidInputs, setInvalidInputs] = useState<string[]>([])
   const [errorMsg, setErrorMsg] = useState<string>('')
 
@@ -49,13 +47,17 @@ const TopicPageCreateForm = ({ onValidate, index }: FormPageProps) => {
 
   const handleAddTopic = (topic: string) => {
     if (topic.length > 0) {
-      dispatch(addTopic(topic))
+      formData?.setter((prevFormData: Omit<Deck, 'id' | 'cards'>) => {
+        return { ...prevFormData, topics: [...prevFormData.topics, topic] }
+      })
     }
   }
 
   const handleRemoveTopic = (topic: string) => {
     if (topic.length > 0) {
-      dispatch(removeTopic(topic))
+      formData?.setter((prevFormData: Omit<Deck, 'id' | 'cards'>) => {
+        return { ...prevFormData, topics: prevFormData.topics.filter((t) => t !== topic) }
+      })
     }
   }
 

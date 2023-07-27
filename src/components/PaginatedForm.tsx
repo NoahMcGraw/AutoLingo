@@ -1,8 +1,8 @@
 import React, { useState, FormEvent, ReactElement } from 'react'
-import FormPageProps from '../models/FormPage.model'
+import { CreateDeckFormPageProps, EditDeckFormPageProps } from '../models/FormPage.model'
 
 interface PaginatedFormProps {
-  children: ReactElement<FormPageProps>[]
+  children: ReactElement<CreateDeckFormPageProps | EditDeckFormPageProps>[]
   submitFunction: () => void
   submitBtnText?: string
   curPageIndex?: {
@@ -30,7 +30,6 @@ const PaginatedForm = ({ children, submitFunction, submitBtnText, curPageIndex }
   }
 
   const handleSubmit = (event: FormEvent) => {
-    console.log('submitting form')
     event.preventDefault()
     submitFunction()
   }

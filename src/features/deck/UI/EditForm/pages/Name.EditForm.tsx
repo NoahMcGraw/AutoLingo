@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import FormPageProps from '../../../../../models/FormPage.model'
 import Error, { setErrorsToForm } from '../../../../../components/FormError'
 import AutoLingoAPI from '../../../../../services/AutoLingoAPI.service'
 import Deck from '../../../../../models/Deck.model'
+import { EditDeckFormPageProps } from '../../../../../models/FormPage.model'
 
-const NamePageEditForm = ({ formData, onValidate, index }: FormPageProps) => {
+const NamePageEditForm = ({ formData, onValidate, index }: EditDeckFormPageProps) => {
   const api = new AutoLingoAPI()
   const name = formData?.data.name || ''
   const topics = formData?.data.topics || []
@@ -41,9 +41,7 @@ const NamePageEditForm = ({ formData, onValidate, index }: FormPageProps) => {
   }
 
   const handleChangeName = (newName: string) => {
-    console.log('newName', newName)
     formData?.setter((prevFormData: Deck) => {
-      console.log('newFormData', { ...prevFormData, name: newName })
       return { ...prevFormData, name: newName }
     })
   }

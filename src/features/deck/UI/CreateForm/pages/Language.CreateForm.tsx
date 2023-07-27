@@ -1,19 +1,16 @@
 import { Listbox } from '@headlessui/react'
-import { useAppDispatch, useAppSelector } from '../../../../../context/hooks'
 import { LanguageCode, languages } from '../../../../../models/Language.model'
-import { selectSourceLang, selectTargetLang, setSourceLang, setTargetLang } from '../../../deckCreationSlice'
 import LanguageBall from '../../../../../components/LanguageBall'
 import { useEffect, useState } from 'react'
-import FormPageProps from '../../../../../models/FormPage.model'
 import { assignErrorOutlineByName, findOutliersAndActOnArr, removeErrorOutlineByName } from '../../../../../utils'
 import Error from '../../../../../components/FormError'
-import { current } from '@reduxjs/toolkit'
+import { CreateDeckFormPageProps } from '../../../../../models/FormPage.model'
+import Deck from '../../../../../models/Deck.model'
 
-const LanguagePageCreateForm = ({ className, onValidate, index }: FormPageProps) => {
-  const dispatch = useAppDispatch()
-  const sourceLangCode = useAppSelector(selectSourceLang) as LanguageCode
+const LanguagePageCreateForm = ({ formData, className, onValidate, index }: CreateDeckFormPageProps) => {
+  const sourceLangCode = formData?.data.sourceLang || LanguageCode.EN
   const sourceLang = languages.filter((lang) => lang.code === sourceLangCode)[0]
-  const targetLangCode = useAppSelector(selectTargetLang) as LanguageCode
+  const targetLangCode = formData?.data.targetLang || LanguageCode.ES
   const targetLang = languages.filter((lang) => lang.code === targetLangCode)[0]
   const [invalidInputs, setInvalidInputs] = useState<string[]>([])
   const [errorMsg, setErrorMsg] = useState<string>('')
@@ -58,15 +55,27 @@ const LanguagePageCreateForm = ({ className, onValidate, index }: FormPageProps)
   }
 
   const handleSourceLangChange = (lang: LanguageCode) => {
-    dispatch(setSourceLang(lang))
+    formData?.setter((prevFormData: Omit<Deck, 'id' | 'cards'>) => {
+      return { ...prevFormData, sourceLang: lang }
+    })
     // If the target language is the same as the source language, change the target language to the previous source language
-    if (lang === targetLangCode) dispatch(setTargetLang(sourceLangCode))
+    if (lang === targetLangCode) {
+      formData?.setter((prevFormData: Omit<Deck, 'id' | 'cards'>) => {
+        return { ...prevFormData, targetLang: sourceLangCode }
+      })
+    }
   }
 
   const handleTargetLangChange = (lang: LanguageCode) => {
-    dispatch(setTargetLang(lang))
+    formData?.setter((prevFormData: Omit<Deck, 'id' | 'cards'>) => {
+      return { ...prevFormData, targetLang: lang } as Omit<Deck, 'id' | 'cards'>
+    })
     // If the source language is the same as the target language, change the source language to the previous target language
-    if (lang === sourceLangCode) dispatch(setSourceLang(targetLangCode))
+    if (lang === sourceLangCode) {
+      formData?.setter((prevFormData: Omit<Deck, 'id' | 'cards'>) => {
+        return { ...prevFormData, sourceLang: targetLangCode } as Omit<Deck, 'id' | 'cards'>
+      })
+    }
   }
 
   // Whenever the source or target languages change, revalidate the form

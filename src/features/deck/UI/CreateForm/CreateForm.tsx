@@ -1,25 +1,29 @@
-import { CreateFormData } from '../../../../models/CreateForm.model'
 import { createDeck } from '../../deckSlice'
 import PaginatedForm from '../../../../components/PaginatedForm'
-import { useAppDispatch, useAppSelector } from '../../../../context/hooks'
+import { useAppDispatch } from '../../../../context/hooks'
 import LanguagePageCreateForm from './pages/Language.CreateForm'
 import TopicPageCreateForm from './pages/Topic.CreateForm'
 import NamePageCreateForm from './pages/Name.CreateForm'
 import ReviewPageCreateForm from './pages/Review.CreateForm'
 import { useState } from 'react'
 import ProgressBar from '../../../../components/ProgressBar'
-import { selectFormData } from '../../deckCreationSlice'
 import DeckPreview from './DeckPreview'
+import Deck from '../../../../models/Deck.model'
+import { LanguageCode } from '../../../../models/Language.model'
 
 const CreateForm = () => {
   const dispatch = useAppDispatch()
   const totalPageCount = 4
   const [curPageIndex, setCurPageIndex] = useState<number>(0)
 
-  const formData = useAppSelector(selectFormData) as CreateFormData
+  const [formData, setFormData] = useState<Omit<Deck, 'id' | 'cards'>>({
+    name: 'New Deck',
+    topics: [],
+    sourceLang: LanguageCode.EN,
+    targetLang: LanguageCode.ES,
+  })
 
   const submitForm = () => {
-    console.log('submitting form', formData)
     // Dispatch action to create deck
     dispatch(createDeck(formData))
   }
@@ -42,15 +46,15 @@ const CreateForm = () => {
               submitFunction={submitForm}
               submitBtnText='Create'
               curPageIndex={{ value: curPageIndex, setter: setCurPageIndex }}>
-              <LanguagePageCreateForm />
-              <TopicPageCreateForm />
-              <NamePageCreateForm />
-              <ReviewPageCreateForm />
+              <LanguagePageCreateForm formData={{ data: formData, setter: setFormData }} />
+              <TopicPageCreateForm formData={{ data: formData, setter: setFormData }} />
+              <NamePageCreateForm formData={{ data: formData, setter: setFormData }} />
+              <ReviewPageCreateForm formData={{ data: formData, setter: setFormData }} />
             </PaginatedForm>
           </section>
         </div>
         <div className='hidden sm:flex w-1/2 border-l-2'>
-          <DeckPreview />
+          <DeckPreview deckToPreview={formData} />
         </div>
       </div>
       <div className='absolute w-1/4 text-left pl-4 text-style-tertiary text-tertiary bg-green-500 left-0 -top-7 h-10 rounded-t-xl z-popupBg'>
