@@ -62,7 +62,6 @@ export const CardSourceSearch = () => {
   const fetchMoreCardsByTopic = () => {
     dispatch(
       fetchTranslations({
-        wordNumber: maxQueryResults,
         sourceLang: sourceLang.code,
         targetLang: targetLang.code,
         topic: selectedTopic,
@@ -204,23 +203,6 @@ export const CardSourceSearch = () => {
               </Listbox.Options>
             </div>
           </Listbox>
-          {/* Mobile Limit Input */}
-          <div className='flex w-1/5 rounded-r border-r-2 relative'>
-            {!(document.getElementById('mbl-limit') as HTMLInputElement)?.value && (
-              <label htmlFor='mbl-limit' className='absolute top-1/2 left-2 sm:left-4 -translate-y-1/2'>
-                <span className='sm:hidden'>Lmt</span>
-                <span className='hidden sm:inline'>Limit</span>
-              </label>
-            )}
-            <input
-              id='mbl-limit'
-              name='mbl-limit'
-              onChange={(e) => setMaxQueryResults(Number(e.target.value))}
-              type='number'
-              className='bg-tertiary pl-2 sm:pl-4 py-1 h-10 w-full overflow-hidden'
-              max={100}
-            />
-          </div>
         </div>
         <button
           onClick={(e) => fetchMoreCardsByTopic()}
@@ -235,14 +217,16 @@ export const CardSourceSearch = () => {
       <div className='hidden lg:block '>
         {/* Label for Add a New Topic to the deck */}
         <div className='text-3xl font-semibold text-center text-tertiary mb-4'>Learn a New Topic</div>
+        {/* Desktop Source Element */}
         <div className='flex mb-4'>
+          {/* Desktop Source Search Bar */}
           <Combobox value={selectedTopic} onChange={setSelectedTopic}>
             <div className='w-3/4 relative'>
               <div className='flex relative'>
                 <Combobox.Input
                   displayValue={(selectedTopic: string) => capitalizeFirstLetter(selectedTopic)}
                   id={'searchInput'}
-                  className={`bg-tertiary py-2 px-4 w-full rounded-l`}
+                  className={`bg-tertiary py-2 px-4 w-full rounded-l font-normal`}
                   placeholder='Search for a Topic in...'
                   onChange={(e) => handleQueryChange(e.target.value)}
                   onKeyDown={(e) => handleKeyDownOnSearch(e)}
@@ -303,6 +287,7 @@ export const CardSourceSearch = () => {
               </Transition>
             </div>
           </Combobox>
+          {/* Desktop Source Lang Select */}
           <Listbox value={sourceLang} onChange={setSourceLang}>
             <div className='w-1/4 xl:min-w-100 border-l-2 relative'>
               <Listbox.Button className='py-1 px-1 w-full h-10 rounded-r bg-tertiary'>
@@ -331,18 +316,11 @@ export const CardSourceSearch = () => {
             </div>
           </Listbox>
         </div>
+        {/* Desktop Target Element */}
         <div className='flex mb-4'>
           <div className='flex w-3/4'>
-            <input
-              defaultValue={maxQueryResults}
-              onChange={(e) => setMaxQueryResults(Number(e.target.value))}
-              type='number'
-              className='bg-tertiary pl-4 w-1/4 h-10 rounded-l '
-              max={100}
-            />
-            <div className='h-10 p-2 w-full text-black cursor-default border-l-2 bg-tertiary'>
-              <span className='hidden xl:inline'>Cards to Generate in</span>
-              <span className='xl:hidden'>Cards</span>
+            <div className='h-10 p-2 pl-3 w-full font-normal cursor-default border-l-2 bg-tertiary text-left'>
+              <span>Generate Cards in...</span>
             </div>
           </div>
           <Listbox value={targetLang} onChange={setTargetLang}>

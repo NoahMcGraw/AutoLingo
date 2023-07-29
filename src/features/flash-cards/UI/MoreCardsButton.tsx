@@ -8,9 +8,7 @@ export const MoreCardsButton = () => {
     <button
       className='rounded text-xl text-white bg-green-300 hover:bg-green-500 relative top-1/2 py-4 px-2'
       onClick={() => {
-        dispatch(
-          fetchTranslations({ wordNumber: 5, sourceLang: LanguageCode.EN, targetLang: LanguageCode.ES, topic: 'food' })
-        )
+        dispatch(fetchTranslations({ sourceLang: LanguageCode.EN, targetLang: LanguageCode.ES, topic: 'food' }))
       }}>
       <span>Get More Cards</span>
     </button>
