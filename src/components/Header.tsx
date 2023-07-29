@@ -10,7 +10,7 @@ const Header = () => {
   }
   return (
     // This header component should stick to the top of the page and move when the user scrolls
-    <div className='sticky top-0 left-0 right-0 z-headerFooter flex justify-between items-center px-4 py-2 bg-primary h-[115px]'>
+    <div className='sticky top-0 left-0 right-0 z-headerFooter flex justify-between items-center px-6 py-4 min-h-[115px] bg-primary h-[115px]'>
       {/* Mobile and Tablet View */}
       {/* Logo will stack on top with a hamburger menu that drops down */}
       <section className='md:hidden mx-auto text-lg'>
