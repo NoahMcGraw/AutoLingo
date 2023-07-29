@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../context/hooks'
-import { deleteDeck, getAll, selectAllDecks, setCurDeckId } from './deckSlice'
+import { deleteDeck, getAll, selectAllDecks, selectCurDeck, setCurDeckId } from './deckSlice'
 import SearchBar from '../../components/SearchBar'
 import Deck from '../../models/Deck.model'
 import CreateFormPopup from './UI/CreateForm/CreateFormPopup'
@@ -11,18 +11,41 @@ import { LoadingOverlay } from '../../components/Loading'
 import { useNavigate } from 'react-router-dom'
 import EditFormPopup from './UI/EditForm/EditFormPopup'
 
-const DeckList = () => {
+type DeckListProps = {
+  className?: string
+}
+
+const DeckList = ({ className }: DeckListProps) => {
   const dispatch = useAppDispatch()
   let navigate = useNavigate()
   const decks = useAppSelector(selectAllDecks)
+  const curDeck = useAppSelector(selectCurDeck)
   const [filteredDecks, setFilteredDecks] = useState<Deck[]>(decks)
   const [selectedDeck, setSelectedDeck] = useState<Deck>()
   const [loading, setLoading] = useState<boolean>(true)
   const [sorting, setSorting] = useState<boolean>(false)
+  const [showEditPopup, setShowEditPopup] = useState<boolean>(false)
+  const [showCreatePopup, setShowCreatePopup] = useState<boolean>(false)
+
+  const [elSizeMd, setElSizeMd] = useState<boolean>(true)
+
+  const observerMd = new ResizeObserver((entries) => {
+    for (let entry of entries) {
+      if (entry.contentRect.width > 500) {
+        setElSizeMd(true)
+      } else {
+        setElSizeMd(false)
+      }
+    }
+  })
 
   const handleDeckClick = (deck: Deck) => () => {
     if (selectedDeck === deck) setSelectedDeck(undefined)
     else setSelectedDeck(deck)
+  }
+
+  const handleCreateButtonClick = () => {
+    setShowCreatePopup(true)
   }
 
   const handleStudyButtonClick = () => {
@@ -31,6 +54,10 @@ const DeckList = () => {
       // Navigate to study page
       navigate('/study')
     }
+  }
+
+  const handleEditButtonClick = () => {
+    setShowEditPopup(true)
   }
 
   const handleDeleteButtonClick = () => {
@@ -42,7 +69,11 @@ const DeckList = () => {
 
   useEffect(() => {
     setLoading(true)
-    dispatch(getAll())
+    // Get the parent element and watch it for size changes so we can update the child element
+    const parentElement = document.getElementById('deck-list')
+    if (parentElement) {
+      observerMd.observe(parentElement)
+    }
   }, [dispatch])
 
   useEffect(() => {
@@ -53,20 +84,40 @@ const DeckList = () => {
   }, [decks])
 
   return (
-    <div className='w-full h-auto max-w-4xl min-h-500 m-auto flex flex-col items-center justify-start bg-secondaryLight rounded-xl'>
+    <div
+      id='deck-list'
+      className={`h-auto max-w-4xl min-h-500 flex flex-col items-center justify-start bg-secondaryLight rounded-xl ${
+        className ? className : ''
+      }`}>
       {/* Header */}
       <section className='w-full bg-primary rounded-xl'>
-        <div className='text-style-secondary text-tertiary p-4 text-left'>My Decks</div>
+        <div className='text-style-secondary text-tertiary p-6 text-left h-[115px] flex items-center'>
+          <span>My Decks</span>
+        </div>
       </section>
       {/* Body */}
       <section className='w-full flex flex-col flex-1 items-center justify-center p-6 gap-4'>
         <section className='w-full flex items-center justify-between gap-4'>
           {/* Search Bar */}
           <div className='w-5/6'>
-            <SearchBar listToSearch={decks} setFilteredList={setFilteredDecks} />
+            <SearchBar id='deck-list-search-bar' listToSearch={decks} setFilteredList={setFilteredDecks} />
           </div>
           {/* Add new Deck button */}
-          <CreateFormPopup />
+          <button
+            className='bg-green-500 text-style-tertiary text-tertiary py-2 px-4 flex-1 rounded-lg flex justify-center items-center'
+            onClick={handleCreateButtonClick}>
+            <span className={`${elSizeMd ? 'hidden md:inline' : 'hidden'} `}>Add New</span>
+            <svg
+              className={`${elSizeMd ? 'md:hidden' : ''} h-7 w-6 text-tertiary`}
+              xmlns='http://www.w3.org/2000/svg'
+              height='48'
+              fill='currentColor'
+              viewBox='0 -960 960 960'
+              width='48'>
+              <path d='M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z' />
+            </svg>
+          </button>
+          <CreateFormPopup showPopup={{ value: showCreatePopup, setter: setShowCreatePopup }} />
         </section>
         <section className='w-full flex-1 flex flex-col'>
           {/* Decks found counter */}
@@ -79,7 +130,10 @@ const DeckList = () => {
             {!loading && (
               <>
                 {/* Table header */}
-                <div className='w-full grid grid-cols-3 sm:grid-cols-4 grid-rows-1 bg-tertiary rounded-t-xl'>
+                <div
+                  className={`w-full grid ${
+                    elSizeMd ? 'grid-cols-3 sm:grid-cols-4' : 'grid-cols-2'
+                  } grid-rows-1 bg-tertiary rounded-t-xl`}>
                   <div className='text-style-tertiary text-secondary text-left pl-4 hidden sm:block'>Languages</div>
                   <div className='text-style-tertiary text-secondary text-left pl-4 sm:hidden'>Lang</div>
 
@@ -92,9 +146,13 @@ const DeckList = () => {
                       sortByType='string'
                     />
                   </div>
-                  <div className='text-style-tertiary text-secondary text-left pl-4 sm:col-span-2'>Topics</div>
+                  <div
+                    className={`${
+                      elSizeMd ? 'sm:col-span-2' : 'hidden'
+                    } text-style-tertiary text-secondary text-left pl-4 `}>
+                    Topics
+                  </div>
                 </div>
-                <div className='w-full bg-tertiary rounded-t-xl'></div>
 
                 {/* Table body */}
                 <div className='relative w-full bg-secondarySuperLight rounded-b-xl p-4'>
@@ -102,9 +160,13 @@ const DeckList = () => {
                     {sorting && <LoadingOverlay text={'Sorting'} displayHints={false} />}
                     {!sorting &&
                       filteredDecks.map((deck, i) => (
-                        <div
+                        <button
+                          key={i}
+                          disabled={deck.id === curDeck?.id}
                           onClick={handleDeckClick(deck)}
-                          className={`grid grid-cols-3 sm:grid-cols-4 p-4 rounded-xl cursor-pointer overflow-clip ${
+                          className={`grid w-full disabled:opacity-25 relative ${
+                            elSizeMd ? 'grid-cols-3 sm:grid-cols-4' : 'grid-cols-2'
+                          } p-4 rounded-xl cursor-pointer overflow-clip ${
                             deck === selectedDeck ? 'bg-gray-200 shadow-inner3xl' : 'bg-tertiary'
                           } ${i < filteredDecks.length - 1 ? 'mb-2' : ''}`}>
                           <div className='relative col-span-1 flex justify-start items-center'>
@@ -112,13 +174,16 @@ const DeckList = () => {
                             {/* Language Ball representation of languages */}
                             <LanguageBall languageCodes={[deck.sourceLang, deck.targetLang]} size={50} />
                           </div>
-                          <div className='col-span-1 text-style-tertiary text-gray-400 text-left my-auto'>
+                          <div className='col-span-1 text-style-tertiary text-gray-400 text-left my-auto max-h-[60px] overflow-y-clip'>
                             {deck.name}
                           </div>
-                          <div className='sm:col-span-2 text-style-tertiary text-gray-400 text-left pl-4 my-auto max-h-[60px] overflow-y-clip'>
+                          <div
+                            className={`${
+                              elSizeMd ? 'sm:col-span-2' : 'hidden'
+                            }  text-style-tertiary text-gray-400 text-left pl-4 my-auto max-h-[60px] overflow-y-clip`}>
                             {truncateListToString(deck.topics, 6)}
                           </div>
-                        </div>
+                        </button>
                       ))}
                   </div>
                   <div className='absolute bottom-4 right-4 flex items-center'>
@@ -134,9 +199,9 @@ const DeckList = () => {
             onClick={handleDeleteButtonClick}
             disabled={!selectedDeck}
             className='bg-secondary enabled:bg-red-500 text-style-tertiary text-tertiary py-2 px-6 rounded-lg text-left'>
-            <span className='hidden md:inline'>Delete</span>
+            <span className={`${elSizeMd ? 'hidden md:inline' : 'hidden'} `}>Delete</span>
             <svg
-              className='md:hidden h-7 w-6 text-tertiary'
+              className={`${elSizeMd ? 'md:hidden' : ''} h-7 w-6 text-tertiary`}
               xmlns='http://www.w3.org/2000/svg'
               fill='currentColor'
               height='48'
@@ -145,14 +210,29 @@ const DeckList = () => {
               <path d='M261-120q-24.75 0-42.375-17.625T201-180v-570h-41v-60h188v-30h264v30h188v60h-41v570q0 24-18 42t-42 18H261Zm438-630H261v570h438v-570ZM367-266h60v-399h-60v399Zm166 0h60v-399h-60v399ZM261-750v570-570Z' />
             </svg>
           </button>
-          <EditFormPopup deck={selectedDeck} />
+          <button
+            className={`text-style-tertiary text-tertiary bg-secondary enabled:bg-blue-500 py-2 px-6 rounded-lg`}
+            disabled={!selectedDeck}
+            onClick={handleEditButtonClick}>
+            <span className={`${elSizeMd ? 'hidden md:inline' : 'hidden'} `}>Edit</span>
+            <svg
+              className={`${elSizeMd ? 'md:hidden' : ''} h-7 w-6 text-tertiary`}
+              xmlns='http://www.w3.org/2000/svg'
+              fill='currentColor'
+              height='48'
+              viewBox='0 -960 960 960'
+              width='48'>
+              <path d='M180-180h44l443-443-44-44-443 443v44Zm614-486L666-794l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Zm-107-21-22-22 44 44-22-22Z' />
+            </svg>
+          </button>
+          <EditFormPopup deck={selectedDeck} showPopup={{ value: showEditPopup, setter: setShowEditPopup }} />
           <button
             onClick={handleStudyButtonClick}
             disabled={!selectedDeck}
             className='bg-secondary enabled:bg-green-500 text-style-tertiary text-tertiary py-2 px-12 rounded-lg text-left'>
-            <span className='hidden md:inline'>Study</span>
+            <span className={`${elSizeMd ? 'hidden md:inline' : 'hidden'} `}>Study</span>
             <svg
-              className='md:hidden h-7 w-6 text-tertiary'
+              className={`${elSizeMd ? 'md:hidden' : ''} h-7 w-6 text-tertiary`}
               xmlns='http://www.w3.org/2000/svg'
               fill='currentColor'
               height='48'

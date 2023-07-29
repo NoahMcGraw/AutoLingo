@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useAppSelector } from '../../../../context/hooks'
 import { default as CardTemplate } from '../../../flash-cards/Card'
-import { CreateFormData } from '../../../../models/CreateForm.model'
 import { v4 as uuidv4 } from 'uuid'
 import Deck from '../../../../models/Deck.model'
 import Card from '../../../../models/Card.model'
@@ -116,7 +114,7 @@ const DeckPreview = ({ deckToPreview }: DeckPreviewProps) => {
       {/* Cards */}
       {isLoading && <LoadingOverlay displayHints={false} />}
       {!isLoading && (
-        <section className='relative w-full h-full flex items-center justify-center'>
+        <section className='relative w-full max-w-[315px] m-auto h-full flex items-center justify-center'>
           {deck?.cards.map((card, i) => (
             <CardTemplate
               style={{
@@ -129,7 +127,7 @@ const DeckPreview = ({ deckToPreview }: DeckPreviewProps) => {
               key={i}
               cardData={card}
               index={i}
-              baseOffset={0}
+              enableOffset={false}
               renderFlipped={i === 0 ? true : false}
               enableTransitions={true}
             />

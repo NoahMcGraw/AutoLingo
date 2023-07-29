@@ -3,38 +3,37 @@ import CreateForm from './CreateForm'
 import Status from '../../../../models/Status.model'
 import { useAppSelector } from '../../../../context/hooks'
 import { selectStatus } from '../../../../context/statusSlice'
-
-const CreateFormPopup = () => {
-  const appStatus = useAppSelector(selectStatus)
-
-  const [showPopup, setShowPopup] = useState(false)
-
-  const handleCreateButtonClick = () => {
-    setShowPopup(true)
+type CreateFormPopupProps = {
+  showPopup: {
+    value: boolean
+    setter: React.Dispatch<React.SetStateAction<boolean>>
   }
+}
+const CreateFormPopup = ({ showPopup }: CreateFormPopupProps) => {
+  const appStatus = useAppSelector(selectStatus)
 
   const handleCloseButtonClick = (event: React.MouseEvent) => {
     if (event.target === event.currentTarget) {
       event.preventDefault()
-      setShowPopup(false)
+      showPopup.setter(false)
     }
   }
 
   // If the deck changes, close the popup
   useEffect(() => {
-    if (appStatus === Status.Loading) setShowPopup(false)
+    if (appStatus === Status.Loading) showPopup.setter(false)
   }, [appStatus])
 
   return (
     <>
-      {showPopup && (
+      {showPopup.value === true && (
         <div
           onClick={handleCloseButtonClick}
-          className='absolute top-0 left-0 flex p-4 w-full h-full z-popupBg bg-tertiary bg-opacity-75'>
+          className='fixed top-0 left-0 flex p-4 w-full h-full z-popupBg bg-tertiary bg-opacity-75'>
           {/* Close popup button */}
           <button
             type='button'
-            className=' absolute top-0 right-0 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-transparent focus:outline-none'
+            className='absolute top-0 right-0 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-transparent focus:outline-none'
             onClick={handleCloseButtonClick}>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -48,20 +47,6 @@ const CreateFormPopup = () => {
           <CreateForm />
         </div>
       )}
-      <button
-        className='bg-green-500 text-style-tertiary text-tertiary py-2 px-4 flex-1 rounded-lg flex justify-center items-center'
-        onClick={handleCreateButtonClick}>
-        <span className='hidden md:inline'>Add New</span>
-        <svg
-          className='md:hidden h-7 w-6 text-tertiary'
-          xmlns='http://www.w3.org/2000/svg'
-          height='48'
-          fill='currentColor'
-          viewBox='0 -960 960 960'
-          width='48'>
-          <path d='M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z' />
-        </svg>
-      </button>
     </>
   )
 }

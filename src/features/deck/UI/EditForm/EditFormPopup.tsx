@@ -7,6 +7,10 @@ import Status from '../../../../models/Status.model'
 
 type EditFormPopupProps = {
   deck?: Deck
+  showPopup: {
+    value: boolean
+    setter: React.Dispatch<React.SetStateAction<boolean>>
+  }
   className?: {
     openBtn?: string
     closeBtn?: string
@@ -14,32 +18,27 @@ type EditFormPopupProps = {
   }
 }
 
-const EditFormPopup = ({ deck, className }: EditFormPopupProps) => {
+const EditFormPopup = ({ deck, showPopup, className }: EditFormPopupProps) => {
   const appStatus = useAppSelector(selectStatus)
-  const [showPopup, setShowPopup] = useState(false)
-
-  const handleEditButtonClick = () => {
-    setShowPopup(true)
-  }
 
   const handleCloseButtonClick = (event: React.MouseEvent) => {
     if (event.target === event.currentTarget) {
       event.preventDefault()
-      setShowPopup(false)
+      showPopup.setter(false)
     }
   }
 
   // If the deck changes, close the popup
   useEffect(() => {
-    if (appStatus === Status.Loading) setShowPopup(false)
+    if (appStatus === Status.Loading) showPopup.setter(false)
   }, [appStatus])
 
   return (
     <>
-      {showPopup && (
+      {showPopup.value === true && (
         <div
           onClick={handleCloseButtonClick}
-          className='absolute top-0 left-0 flex p-4 w-full h-full z-popupBg bg-tertiary bg-opacity-75'>
+          className='fixed top-0 left-0 flex p-4 w-full h-full z-popupBg bg-tertiary bg-opacity-75'>
           {/* Close popup button */}
           <button
             type='button'
@@ -57,21 +56,6 @@ const EditFormPopup = ({ deck, className }: EditFormPopupProps) => {
           {deck && <EditForm deck={deck} className={className?.form} />}
         </div>
       )}
-      <button
-        className={`text-style-tertiary text-tertiary bg-secondary enabled:bg-blue-500 py-2 px-6 rounded-lg ${className?.openBtn}`}
-        disabled={!deck}
-        onClick={handleEditButtonClick}>
-        <span className='hidden md:inline'>Edit</span>
-        <svg
-          className='md:hidden h-7 w-6 text-tertiary'
-          xmlns='http://www.w3.org/2000/svg'
-          fill='currentColor'
-          height='48'
-          viewBox='0 -960 960 960'
-          width='48'>
-          <path d='M180-180h44l443-443-44-44-443 443v44Zm614-486L666-794l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Zm-107-21-22-22 44 44-22-22Z' />
-        </svg>
-      </button>
     </>
   )
 }

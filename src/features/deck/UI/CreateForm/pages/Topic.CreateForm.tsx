@@ -84,7 +84,7 @@ const TopicPageCreateForm = ({ formData, onValidate, index }: CreateDeckFormPage
         </section>
       </section>
       <section className='pb-2 flex-1'>
-        {topics.length === 0 && <span className='text-style-tertiary text-tertiary'>No topics selected</span>}
+        {topics.length === 0 && <span className='text-style-tertiary text-secondary'>No topics selected</span>}
         {topics.length > 0 && <ChipList chips={topics} addtlChipRemoveHandler={handleRemoveTopic} />}
       </section>
     </div>

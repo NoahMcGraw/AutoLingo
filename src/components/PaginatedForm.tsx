@@ -90,24 +90,19 @@ const PaginatedForm = ({ children, submitFunction, submitBtnText, curPageIndex }
         </div>
         {currentPageI !== children.length - 1 && (
           <button
-            className={`w-2/5 rounded-xl bg-secondary enabled:bg-green-500 text-style-tertiary text-tertiary py-1 transition-all duration-100 group  enabled:hover:shadow-innerXl enabled:active:translate-y-0.5`}
+            className={`w-2/5 rounded-xl bg-secondary enabled:bg-green-500 text-style-tertiary text-tertiary py-1 group`}
             type='button'
             onClick={handleNext}
             disabled={!isValid[currentPageI] || isChangingPage}>
-            <span
-              className={`inline-block transform transition-all duration-200 group-enabled:group-hover:brightness-200 group-enabled:group-hover:scale-110`}>
-              Next
-            </span>
+            <span className={`inline-block transform transition-all duration-200`}>Next</span>
           </button>
         )}
         {currentPageI === children.length - 1 && (
           <button
             disabled={!isValid.every((validation) => validation === true) || isChangingPage}
-            className={`w-2/5 rounded-xl bg-secondary enabled:bg-green-500 text-style-tertiary text-tertiary py-1 transition-all duration-100 group enabled:animate-shake enabled:shadow-glow enabled:active:translate-y-0.5`}
+            className={`w-2/5 rounded-xl bg-secondary enabled:bg-green-500 text-style-tertiary text-tertiary py-1 enabled:animate-shake enabled:shadow-glow group`}
             type='submit'>
-            <span className={`inline-block transform transition-all duration-200 group-enabled:group-hover:scale-110`}>
-              {submitBtnText}
-            </span>
+            <span className={`inline-block`}>{submitBtnText}</span>
           </button>
         )}
       </section>

@@ -44,7 +44,7 @@ export const statusSlice = createSlice({
        * getAll
        */
       .addCase(getAll.pending, (state) => {
-        state.status = Status.Loading
+        // state.status = Status.Loading
       })
       .addCase(getAll.fulfilled, (state, action) => {
         state.status = Status.Idle

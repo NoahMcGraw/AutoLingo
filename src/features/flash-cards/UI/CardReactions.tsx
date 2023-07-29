@@ -1,11 +1,11 @@
 import { useAppDispatch } from '../../../context/hooks'
 import { TranslationReaction, reactionObj, translationReactions } from '../../../models/Reaction.model'
 import { getElColorClasses } from '../../../utils'
-import { addReaction, incrementCardListIndex } from '../cardsSlice'
+import { addReaction, incrementCurCardIndex } from '../../deck/deckSlice'
 
 type CardReactionsProps = {
   cardId: string
-  cardReaction: TranslationReaction
+  cardReaction?: TranslationReaction
 }
 export const CardReactions = ({ cardId, cardReaction }: CardReactionsProps) => {
   const dispatch = useAppDispatch()
@@ -17,7 +17,7 @@ export const CardReactions = ({ cardId, cardReaction }: CardReactionsProps) => {
         <button
           key={`reaction_` + i}
           className={`rounded py-2 px-4 group ${
-            cardReaction === reaction.name ? getElColorClasses(reaction.color).bg : ''
+            cardReaction && cardReaction === reaction.name ? getElColorClasses(reaction.color).bg : ''
           }`}
           onClick={(e) => {
             dispatch(
@@ -26,7 +26,7 @@ export const CardReactions = ({ cardId, cardReaction }: CardReactionsProps) => {
                 reaction: reaction.name,
               })
             )
-            dispatch(incrementCardListIndex())
+            dispatch(incrementCurCardIndex())
           }}>
           <span
             className={`${cardReaction !== reaction.name ? getElColorClasses(reaction.color).text : ''} md:visible`}>

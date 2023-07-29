@@ -10,16 +10,17 @@ const Header = () => {
   }
   return (
     // This header component should stick to the top of the page and move when the user scrolls
-    <div className='sticky top-0 left-0 right-0 z-headerFooter flex justify-between items-center px-4 py-2 bg-primary'>
+    <div className='sticky top-0 left-0 right-0 z-headerFooter flex justify-between items-center px-4 py-2 bg-primary h-[115px]'>
       {/* Mobile and Tablet View */}
       {/* Logo will stack on top with a hamburger menu that drops down */}
       <section className='md:hidden mx-auto text-lg'>
-        <a href='/'>
-          <img src='assets/images/ALLogo.png' alt='logo' className='w-72' />
+        <a className='' href='/'>
+          {/* <img src='assets/images/ALLogo.png' alt='logo' className='w-72' /> */}
+          <span className='text-tertiary text-style-primary block'>AutoLingo</span>
         </a>
         <button
           type='button'
-          className='inline-flex items-center px-3 py-2 border border-transparent shadow-lg drop-shadow-lg text-sm leading-4 font-medium rounded-md bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
+          className='inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
           onClick={handleToggleMenuOpen}>
           {isOpen && (
             // Show close icon
@@ -48,9 +49,11 @@ const Header = () => {
           className={`fixed top-0 right-0 h-screen w-full lg:w-1/3 bg-tertiary text-black z-nav transition-all duration-500 ease-in-out ${
             isOpen ? 'translate-y-0' : '-translate-y-full'
           }`}>
-          <div className='bg-primary w-full'>
+          <div className='bg-primary w-full pt-2 h-[115px]'>
             <a href='/'>
-              <img src='assets/images/ALLogo.png' alt='logo' className='mx-auto' />
+              <span className='text-tertiary text-style-primary'>AutoLingo</span>
+
+              {/* <img src='assets/images/ALLogo.png' alt='logo' className='mx-auto' /> */}
             </a>
           </div>
           {/* Body section for sidemenu. Contains the links to the other pages */}
@@ -89,10 +92,11 @@ const Header = () => {
         </div>
       </section>
       {/* Desktop View */}
-      <section className='hidden md:flex gap-6 justify-start text-lg'>
+      <section className='hidden md:flex gap-6 justify-start items-center text-lg'>
         {/* App logo */}
         <a href='/'>
-          <img src='assets/images/ALLogo.png' alt='logo' className='w-72' />
+          {/* <img src='assets/images/ALLogo.png' alt='logo' className='w-72' /> */}
+          <span className='text-tertiary text-style-primary'>AutoLingo</span>
         </a>
         {/* Home Link */}
         {/* TODO: Uncomment once other pages are ready */}

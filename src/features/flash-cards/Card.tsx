@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../context/hooks'
 import { default as CardType } from '../../models/Card.model'
-import { selectCurCardIndex } from '../deck/deckSlice'
+import { selectCurCardIndex, selectReactionByCardId } from '../deck/deckSlice'
 import { translationReactions } from '../../models/Reaction.model'
 import { CardReactions } from './UI/CardReactions'
 import { capitalizeFirstLetter } from '../../utils'
@@ -14,6 +14,7 @@ type CardProps = {
   cardData: CardType
   index: number
   baseOffset?: number
+  enableOffset?: boolean
   renderFlipped?: boolean
   enableTransitions?: boolean
 }
@@ -23,11 +24,13 @@ const Card = ({
   className,
   cardData,
   index,
-  baseOffset = 7,
+  baseOffset = 0,
+  enableOffset = true,
   renderFlipped = false,
   enableTransitions = true,
 }: CardProps) => {
   const curIndex = useAppSelector(selectCurCardIndex)
+  const cardReaction = useAppSelector((state) => selectReactionByCardId(state, cardData.id))
   const sourceLanguage = languages.find((languageObj) => languageObj.code === cardData.sourceLang)
   const targetLanguage = languages.find((languageObj) => languageObj.code === cardData.targetLang)
 
@@ -35,7 +38,7 @@ const Card = ({
     return curIndex === index
   }
 
-  const baseZIndex = 100
+  const baseZIndex = 50
   const modZIndex = baseZIndex - index + curIndex // Modify the base index by the index of the card in the stack
 
   const [modLeftOffset, setModLeftOffset] = useState<number>(baseOffset)
@@ -80,7 +83,7 @@ const Card = ({
     let response = ''
     let reactions = translationReactions
     if (curIndex > index) {
-      let reactionObj = reactions.find((reaction) => reaction.name === cardData.reaction)
+      let reactionObj = reactions.find((reaction) => reaction.name === cardReaction)
       if (reactionObj) {
         switch (reactionObj.exitDir) {
           case 'left':
@@ -101,7 +104,7 @@ const Card = ({
     setTimeout(() => {
       updateBaseLeftOffset() // Modify the base offset by the index of the card in the stack
     }, 100)
-  }, [curIndex])
+  }, [curIndex, index])
 
   useEffect(() => {
     if (renderFlipped && !isCardFlipped(cardData.id)) {
@@ -111,10 +114,14 @@ const Card = ({
 
   return (
     <div
-      className={`${className} flip-card top-1/2 -translate-y-1/2 w-2/3 pb-full ${
+      className={`${className ? className : ''} flip-card top-1/2 -translate-y-1/2 w-[100%] pb-[133%] ${
         enableTransitions ? 'transition-all duration-1000' : ''
       } ${handleTransitionOffScreen()}`}
-      style={{ zIndex: modZIndex.toString(), ...style }}>
+      style={
+        enableOffset
+          ? { left: `${modLeftOffset.toString()}%`, zIndex: modZIndex.toString(), ...style }
+          : { zIndex: modZIndex.toString(), ...style }
+      }>
       <div
         onClick={(e) => handleCardClick(cardData.id)}
         id={`card_${cardData.id}_inner`}
@@ -152,9 +159,7 @@ const Card = ({
             {cardData.targetWord.length > 0 && <span>{capitalizeFirstLetter(cardData.targetWord)}</span>}
             {cardData.targetWord.length === 0 && <span>{targetLanguage?.name}</span>}
           </div>
-          {cardData.targetWord.length > 0 && (
-            <CardReactions cardId={cardData.id} cardReaction={cardData.reaction ? cardData.reaction : 'Do Not Know'} />
-          )}
+          {cardData.targetWord.length > 0 && <CardReactions cardId={cardData.id} cardReaction={cardReaction} />}
         </section>
       </div>
     </div>

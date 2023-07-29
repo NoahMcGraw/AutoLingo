@@ -198,3 +198,13 @@ export const truncateListToString = (list: unknown[], length: number) => {
   const truncatedList = truncateList(list, length)
   return truncatedList.join(', ') + ', ...'
 }
+
+/**
+ * Takes an array and shuffles it
+ * @param arr T[]: Array to shuffle
+ * @returns T[]: Shuffled array
+ */
+export const shuffleArr = <T>(arr: T[]): T[] => {
+  const copiedArray = [...arr] // Create a shallow copy of the input array
+  return copiedArray.sort(() => Math.random() - 0.5)
+}

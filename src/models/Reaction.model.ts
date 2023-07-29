@@ -1,4 +1,4 @@
-export type TranslationReaction = 'Do Not Know' | 'Know'
+export type TranslationReaction = "Don't Know" | 'Know'
 
 // Imported from types.ts as possible reaction options.
 export type reactionObj = {

@@ -6,6 +6,7 @@ import { Combobox } from '@headlessui/react'
 import { capitalizeFirstLetter } from '../utils'
 
 type SearchBarProps<T> = {
+  id?: string
   listToSearch: T[]
   setFilteredList: React.Dispatch<React.SetStateAction<T[]>>
 }
@@ -16,7 +17,7 @@ type SearchBarProps<T> = {
  *                setFilteredList: React.Dispatch<React.SetStateAction<T[]>> - The setter for the filtered list
  * @returns      JSX.Element - The search bar component
  */
-function SearchBar<T>({ listToSearch, setFilteredList }: SearchBarProps<T>) {
+function SearchBar<T>({ id, listToSearch, setFilteredList }: SearchBarProps<T>) {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [searchStatus, setSearchStatus] = useState<Status>(Status.Idle)
 
@@ -39,7 +40,7 @@ function SearchBar<T>({ listToSearch, setFilteredList }: SearchBarProps<T>) {
   }
 
   return (
-    <div className='w-full flex flex-col items-center justify-center'>
+    <div id={id ? id : 'search-bar'} className='w-full flex flex-col items-center justify-center'>
       {/* Search Bar */}
       <Combobox value={searchQuery} onChange={handleQueryChange}>
         <div className='w-full relative'>
@@ -47,7 +48,7 @@ function SearchBar<T>({ listToSearch, setFilteredList }: SearchBarProps<T>) {
             <Combobox.Input
               displayValue={(searchQuery: string) => capitalizeFirstLetter(searchQuery)}
               name='deckSearch'
-              id={'deckSearchInput'}
+              id={id ? id + '-input' : 'search-bar-input'}
               className={`bg-tertiary text-gray-400 placeholder-secondaryLight text-style-tertiary rounded-xl py-2 px-4 w-full transition-all duration-100 focus:outline-none focus:ring-4 focus:ring-tertiary focus:ring-opacity-50`}
               placeholder='Search...'
               onChange={(e) => handleQueryChange(e.target.value)}

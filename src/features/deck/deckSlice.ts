@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../context/store'
 import AutoLingoAPI from '../../services/AutoLingoAPI.service'
 import Deck from '../../models/Deck.model'
-import { translationReactions } from '../../models/Reaction.model'
-import { CreateFormData } from '../../models/CreateForm.model'
+import { TranslationReaction } from '../../models/Reaction.model'
+import { shuffleArr } from '../../utils'
 
 export interface DeckState {
   decks: Deck[]
@@ -11,7 +11,7 @@ export interface DeckState {
     id: string | null
     curCardIndex: number
     reactions: {
-      [key: string]: string[] // key is name of reaction, value is array of card ids
+      [key: string]: TranslationReaction // key is card id, value is reaction
     }
   }
 }
@@ -21,8 +21,8 @@ const initialState: DeckState = {
   curDeck: {
     id: null,
     curCardIndex: 0,
-    // reactions has keys from the name property of the translationReactions array objects
-    reactions: Object.fromEntries(translationReactions.map((reaction) => [reaction.name, []])),
+    // reactions has keys from the card ids and values from the reaction names
+    reactions: {},
   },
 }
 
@@ -179,13 +179,18 @@ export const deckSlice = createSlice({
       const { cardId, reaction } = action.payload
 
       // Reactions should only be occuring on the current deck, so we can assume that the card appears in the current deck
-
-      if (state.curDeck.reactions[reaction]) {
-        state.curDeck.reactions[reaction].push(cardId)
-      }
+      // Add the reaction to the object by card id
+      state.curDeck.reactions[cardId] = reaction
+      // if (state.curDeck.reactions[reaction]) {
+      //   state.curDeck.reactions[reaction].push(cardId)
+      // }
+    },
+    // Resest all reactions to empty arrays
+    resetReactions: (state) => {
+      state.curDeck.reactions = {}
     },
     setCurDeckId: (state, action) => {
-      const { deckId } = action.payload
+      const deckId = action.payload
       state.curDeck.id = deckId
     },
     resetCurDeckId: (state) => {
@@ -200,11 +205,14 @@ export const deckSlice = createSlice({
     resetCurCardIndex: (state) => {
       state.curDeck.curCardIndex = 0
     },
-    // Resest all reactions to empty arrays
-    resetReactions: (state) => {
-      Object.keys(state.curDeck.reactions).forEach((reaction) => {
-        state.curDeck.reactions[reaction] = []
-      })
+    shuffleCurDeck: (state) => {
+      // Shuffle the cards in the current deck
+      if (state.curDeck.id) {
+        const curDeck = state.decks.find((deck) => deck.id === state.curDeck.id)
+        if (curDeck) {
+          curDeck.cards = shuffleArr(curDeck.cards)
+        }
+      }
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -244,6 +252,8 @@ export const deckSlice = createSlice({
       if (typeof action.payload !== 'undefined') {
         const newDeck = action.payload
         state.decks.push(newDeck)
+        // In addition to adding the deck to the state, we also want to set it as the current deck
+        state.curDeck.id = newDeck.id
       }
     })
     builder.addCase(editDeck.fulfilled, (state, action) => {
@@ -257,6 +267,10 @@ export const deckSlice = createSlice({
     builder.addCase(deleteDeck.fulfilled, (state, action) => {
       if (typeof action.payload !== 'undefined') {
         const deckId = action.payload
+        // If the deck being deleted is the current deck, reset the current deck id
+        if (state.curDeck.id === deckId) {
+          state.curDeck.id = null
+        }
         // Find the deck in the state and remove it
         const deckIndex = state.decks.findIndex((deck) => deck.id === deckId)
         state.decks.splice(deckIndex, 1)
@@ -273,6 +287,7 @@ export const {
   decrementCurCardIndex,
   resetCurCardIndex,
   resetReactions,
+  shuffleCurDeck,
 } = deckSlice.actions
 
 /**
@@ -307,7 +322,7 @@ export const selectCurDeck = (state: RootState) => {
       throw new Error('The current deck is not in the decks state')
     }
   } else {
-    throw new Error('There is no current deck')
+    return undefined
   }
 }
 
@@ -326,8 +341,26 @@ export const selectReactions = (state: RootState) => {
   if (state.deck.curDeck.id) {
     return state.deck.curDeck.reactions
   } else {
-    throw new Error('There is no current deck')
+    return undefined
   }
+}
+
+/**
+ * select reaction by card id from store
+ * @param cardId String: Id of the card you want to return
+ * @returns reaction of the card
+ * @throws If there is no current deck
+ */
+export const selectReactionByCardId = (state: RootState, cardId: string) => {
+  let response = undefined
+  if (state.deck.curDeck.id) {
+    try {
+      response = state.deck.curDeck.reactions[cardId]
+    } catch (_error) {
+      // Just throw the error out and return undefined
+    }
+  }
+  return response
 }
 
 export default deckSlice.reducer
