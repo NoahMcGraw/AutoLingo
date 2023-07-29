@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
 import { RootState } from '../../context/store'
-import TranslatedResultObj from '../../models/TranslatedResult.model'
 import AutoLingoAPI from '../../services/AutoLingoAPI.service'
 import { LanguageCode } from '../../models/Language.model'
 import Status from '../../models/Status.model'
+import TranslatedResultObj from '../../models/TranslatedResult.model'
 
 export interface CardsState {
   list: TranslatedResultObj[]

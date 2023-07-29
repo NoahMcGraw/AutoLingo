@@ -6,7 +6,7 @@ type TranslatedResultObj = {
   id: string
   source: SourceWord
   translation: TranslatedWord
-  reaction: TranslationReaction
+  reaction?: TranslationReaction
 }
 
 export default TranslatedResultObj

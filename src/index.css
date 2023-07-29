@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Cairo';
+  src: url('assets/fonts/Cairo/Cairo-VariableFont_slnt\,wght.ttf') format('truetype-variations');
+  font-weight: 200 1000; /* These numbers depend on the variable font */
+  font-style: normal;
+}
