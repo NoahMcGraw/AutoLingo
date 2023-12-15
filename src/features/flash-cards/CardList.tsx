@@ -95,7 +95,6 @@ export const CardsList = ({ className }: CardsListProps) => {
             <div className={`text-style-tertiary text-left text-sm sm:text-xl`}>
               Welcome to AutoLingo
             </div>
-            {/* <div className={`sm:hidden md:block lg:hidden text-style-tertiary text-left`}>Welcome to AutoLingo</div> */}
             <div className='text-style-tertiary text-left text-sm sm:text-xl'>Language Study Made Easy</div>
           </div>
         </div>
