@@ -26,11 +26,11 @@ const Intro = () => {
   return (
     <div className='w-full max-w-[600px] max-h-[100%] h-full sm:h-full m-auto p-4'>
       {/* Instructions for getting started including how the search works and how to add more cards to the deck */}
-      <div className='text-style-tertiary text-justify text-gray-500 w-full flex flex-col gap-4'>
+      <div className='text-style-tertiary text-gray-500 w-full flex flex-col gap-4'>
         <div className='w-full text-right'>QuickStart Menu</div>
         {/* Create a Deck */}
         <div className='flex justify-between items-center'>
-          <span className='flex-1'>Create a New Deck - </span>
+          <span className='flex-1 text-left'>Create a New Deck - </span>
           {/* Add new Deck button */}
           <button
             className='bg-green-500 text-style-tertiary text-tertiary py-2 px-4 rounded-lg flex justify-center items-center min-w-[175px]'
@@ -40,7 +40,7 @@ const Intro = () => {
         </div>
         {/* Find an existing Deck */}
         <div className='flex justify-between items-center'>
-          <span className='flex-1'>Find an Existing Deck - </span>
+          <span className='flex-1 text-left'>Find an Existing Deck - </span>
           {/* Add new Deck button */}
           <button
             className='bg-blue-500 text-style-tertiary text-tertiary py-2 px-4 rounded-lg flex justify-center items-center min-w-[175px]'
@@ -50,7 +50,7 @@ const Intro = () => {
         </div>
         {/* Divider */}
         <div className='w-full h-2 bg-gray-300 rounded-xl'></div>
-        <div className='w-full'>
+        <div className='w-full text-justify'>
           Introducing AutoLingo - your smart partner in language learning. AutoLingo is an AI-powered flashcard app
           designed to make mastering new languages a breeze. With AutoLingo, you get access to a wealth of flashcard
           decks, each expertly curated around a wide array of topics, tailored to your learning needs. Each deck is
