@@ -91,7 +91,7 @@ export const CardsList = ({ className }: CardsListProps) => {
           <div className={`${cardDataList.length <= 0 ? 'hidden' : ''} text-style-secondary text-center`}>
             {curDeck?.name}
           </div>
-          <div className={`${cardDataList.length > 0 ? 'hidden' : 'flex flex-col align-middle'}`}>
+          <div className={`${cardDataList.length > 0 ? 'hidden' : 'flex flex-col items-center'}`}>
             <div className={`text-style-tertiary text-left text-sm sm:text-xl`}>
               Welcome to AutoLingo
             </div>
