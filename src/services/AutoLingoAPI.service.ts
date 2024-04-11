@@ -4,6 +4,13 @@ import { capitalizeFirstLetter, formatUrlGetParams } from '../utils'
 import SourceWord from '../models/SourceWord.model'
 import TranslatedResultObj from '../models/TranslatedResult.model'
 import Deck from '../models/Deck.model'
+import {
+  deleteLocalDeck,
+  getLocalDeck,
+  getLocalDecks,
+  updateAllLocalDecks,
+  updateLocalDeck,
+} from './LocalDecks.service'
 
 class AutoLingoAPI {
   constructor() {}
@@ -15,54 +22,85 @@ class AutoLingoAPI {
    */
 
   /**
+   * Get a deck by ID - NOT IMPLEMENTED
    * @param id ID of the deck to retrieve
    * @returns The deck with the given ID
    */
-  async getDeck(id: string): Promise<Deck> {
-    let response: Deck
+  async getDeck(id: string, cached: boolean = true): Promise<Deck | undefined> {
+    let response: Deck | undefined
 
-    // Use the axios library to make a GET request to the API.
-    try {
-      const headers = {
-        'Content-Type': 'application/json',
+    if (cached) {
+      const localDeck = getLocalDeck(id)
+      if (localDeck) {
+        response = localDeck
+      } else {
+        response = await this.getDeck(id, false)
       }
-      response = await axios
-        .get(`${import.meta.env.VITE_API_URL}/deck/${id}`, { headers: headers })
-        .then((res) => res.data)
-    } catch (_error) {
-      const error = _error as Error
-      console.error(error)
-      throw new Error('There was an error contacting the server: ' + error.message)
+    } else {
+      // Use the axios library to make a GET request to the API.
+      try {
+        const headers = {
+          'Content-Type': 'application/json',
+        }
+        response = await axios
+          .get(`${import.meta.env.VITE_API_URL}/deck/${id}`, { headers: headers })
+          .then((res) => res.data)
+      } catch (_error) {
+        const error = _error as Error
+        console.error(error)
+        throw new Error('There was an error contacting the server: ' + error.message)
+      }
+      if (response) {
+        updateLocalDeck(response)
+      }
     }
 
     return response
   }
 
   /**
+   * Get all decks - NOT IMPLEMENTED
    * @returns All decks in the database belonging to the user
    * @throws If the user does not exist
    */
-  async getAllDecks(): Promise<Deck[]> {
-    let response: Deck[]
+  async getAllDecks(cached: boolean = true): Promise<Deck[]> {
+    console.log('Getting all decks')
+    let response: Deck[] = []
 
-    // Use the axios library to make a GET request to the API.
-    try {
-      const headers = {
-        'Content-Type': 'application/json',
+    if (cached) {
+      console.log('Getting all decks from cache')
+      const localDecks = getLocalDecks()
+      console.log('Local decks:', localDecks)
+      if (localDecks.length) {
+        response = localDecks
+      } else {
+        console.log('No local decks found')
+        response = await this.getAllDecks(false)
       }
-      response = await axios
-        .get(`${import.meta.env.VITE_API_URL}/deck/all`, { headers: headers })
-        .then((res) => res.data)
-    } catch (_error) {
-      const error = _error as Error
-      console.error(error)
-      throw new Error('There was an error contacting the server: ' + error.message)
+    } else {
+      // Use the axios library to make a GET request to the API.
+      try {
+        const headers = {
+          'Content-Type': 'application/json',
+        }
+        response = await axios
+          .get(`${import.meta.env.VITE_API_URL}/deck/all`, { headers: headers })
+          .then((res) => res.data)
+      } catch (_error) {
+        const error = _error as Error
+        console.error(error)
+        throw new Error('There was an error contacting the server: ' + error.message)
+      }
+
+      // Replace the decks in localstorage with the ones from the API
+      updateAllLocalDecks(response)
     }
 
     return response
   }
 
   /**
+   * Add topics to a deck
    * @param deck The deck to add a topic to (Will be replaced with ID in future)
    * @param topic The topic to add to the deck
    * @returns The deck with the added topic
@@ -89,10 +127,13 @@ class AutoLingoAPI {
       throw new Error('There was an error contacting the server: ' + error.message)
     }
 
+    updateLocalDeck(response)
+
     return response
   }
 
   /**
+   * Remove a topic from a deck
    * @param deck The deck to remove a topic from (Will be replaced with ID in future)
    * @param topic The topic to remove from the deck
    * @returns The deck with the removed topic
@@ -120,10 +161,13 @@ class AutoLingoAPI {
       throw new Error('There was an error contacting the server: ' + error.message)
     }
 
+    updateLocalDeck(response)
+
     return response
   }
 
   /**
+   * Remove a card from a deck
    * @param deck The deck to remove a card from (Will be replaced with ID in future)
    * @param cardId The card to remove from the deck
    * @returns The deck with the removed card
@@ -152,10 +196,13 @@ class AutoLingoAPI {
       throw new Error('There was an error contacting the server: ' + error.message)
     }
 
+    updateLocalDeck(response)
+
     return response
   }
 
   /**
+   * Create a new deck
    * @param name : string: Name of the deck to create
    * @param sourceLang : string: source language code
    * @param targetLang : string: target language code
@@ -186,10 +233,13 @@ class AutoLingoAPI {
       throw new Error('There was an error contacting the server: ' + error.message)
     }
 
+    updateLocalDeck(response)
+
     return response
   }
 
   /**
+   * Edit a deck
    * @param id ID of the deck to edit
    * @param payload The changes to make to the deck
    * @returns The deck that was edited
@@ -220,10 +270,13 @@ class AutoLingoAPI {
       throw new Error('There was an error contacting the server: ' + error.message)
     }
 
+    updateLocalDeck(response)
+
     return response
   }
 
   /**
+   * Delete a deck
    * @param id ID of the deck to delete
    * @returns true : if the deck was deleted successfully
    * @throws If the deck does not exist
@@ -243,6 +296,8 @@ class AutoLingoAPI {
       console.error(error)
       throw new Error('There was an error contacting the server: ' + error.message)
     }
+
+    deleteLocalDeck(id)
 
     return response
   }
