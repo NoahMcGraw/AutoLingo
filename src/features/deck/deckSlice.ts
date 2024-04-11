@@ -35,12 +35,9 @@ export const getAll = createAsyncThunk('deck/getAll', async (_, { rejectWithValu
   try {
     let response = [] as Deck[]
     const autoLingoAPI = new AutoLingoAPI()
-    console.log('Getting all decks through slice')
     const deckList = await autoLingoAPI.getAllDecks()
-    console.log('Decklist: ', deckList)
 
     if (deckList.length) {
-      console.log('Decklist has length')
       response = deckList
     }
     return response

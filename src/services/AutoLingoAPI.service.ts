@@ -64,17 +64,13 @@ class AutoLingoAPI {
    * @throws If the user does not exist
    */
   async getAllDecks(cached: boolean = true): Promise<Deck[]> {
-    console.log('Getting all decks')
     let response: Deck[] = []
 
     if (cached) {
-      console.log('Getting all decks from cache')
       const localDecks = getLocalDecks()
-      console.log('Local decks:', localDecks)
       if (localDecks.length) {
         response = localDecks
       } else {
-        console.log('No local decks found')
         response = await this.getAllDecks(false)
       }
     } else {
