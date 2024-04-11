@@ -1,4 +1,5 @@
 import './App.css'
+import '@ionic/react/css/core.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -12,6 +13,10 @@ import Study from './pages/Study'
 import { useEffect } from 'react'
 import { useAppDispatch } from './context/hooks'
 import { getAll } from './features/deck/deckSlice'
+import { setupIonicReact } from '@ionic/react'
+
+setupIonicReact()
+
 export const App = () => {
   const dispatch = useAppDispatch()
   const appStatus = useSelector(selectStatus)

@@ -13,6 +13,10 @@ import {
 } from './LocalDecks.service'
 
 class AutoLingoAPI {
+  private defaultHeaders = {
+    'ngrok-skip-browser-warning': 'true',
+  }
+
   constructor() {}
 
   /**
@@ -43,7 +47,7 @@ class AutoLingoAPI {
           'Content-Type': 'application/json',
         }
         response = await axios
-          .get(`${import.meta.env.VITE_API_URL}/deck/${id}`, { headers: headers })
+          .get(`${import.meta.env.VITE_API_URL}/deck/${id}`, { headers: { ...this.defaultHeaders, ...headers } })
           .then((res) => res.data)
       } catch (_error) {
         const error = _error as Error
@@ -80,7 +84,7 @@ class AutoLingoAPI {
           'Content-Type': 'application/json',
         }
         response = await axios
-          .get(`${import.meta.env.VITE_API_URL}/deck/all`, { headers: headers })
+          .get(`${import.meta.env.VITE_API_URL}/deck/all`, { headers: { ...this.defaultHeaders, ...headers } })
           .then((res) => res.data)
       } catch (_error) {
         const error = _error as Error
@@ -115,7 +119,9 @@ class AutoLingoAPI {
         'Content-Type': 'application/json',
       }
       response = await axios
-        .patch(`${import.meta.env.VITE_API_URL}/deck/addTopics`, data, { headers: headers })
+        .patch(`${import.meta.env.VITE_API_URL}/deck/addTopics`, data, {
+          headers: { ...this.defaultHeaders, ...headers },
+        })
         .then((res) => res.data)
     } catch (_error) {
       const error = _error as Error
@@ -149,7 +155,9 @@ class AutoLingoAPI {
         'Content-Type': 'application/json',
       }
       response = await axios
-        .patch(`${import.meta.env.VITE_API_URL}/deck/removeTopic`, data, { headers: headers })
+        .patch(`${import.meta.env.VITE_API_URL}/deck/removeTopic`, data, {
+          headers: { ...this.defaultHeaders, ...headers },
+        })
         .then((res) => res.data)
     } catch (_error) {
       const error = _error as Error
@@ -184,7 +192,9 @@ class AutoLingoAPI {
         'Content-Type': 'application/json',
       }
       response = await axios
-        .patch(`${import.meta.env.VITE_API_URL}/deck/removeCard`, data, { headers: headers })
+        .patch(`${import.meta.env.VITE_API_URL}/deck/removeCard`, data, {
+          headers: { ...this.defaultHeaders, ...headers },
+        })
         .then((res) => res.data)
     } catch (_error) {
       const error = _error as Error
@@ -221,7 +231,7 @@ class AutoLingoAPI {
         'Content-Type': 'application/json',
       }
       response = await axios
-        .post(`${import.meta.env.VITE_API_URL}/deck/create`, data, { headers: headers })
+        .post(`${import.meta.env.VITE_API_URL}/deck/create`, data, { headers: { ...this.defaultHeaders, ...headers } })
         .then((res) => res.data)
     } catch (_error) {
       const error = _error as Error
@@ -258,7 +268,7 @@ class AutoLingoAPI {
         'Content-Type': 'application/json',
       }
       response = await axios
-        .patch(`${import.meta.env.VITE_API_URL}/deck/edit`, data, { headers: headers })
+        .patch(`${import.meta.env.VITE_API_URL}/deck/edit`, data, { headers: { ...this.defaultHeaders, ...headers } })
         .then((res) => res.data)
     } catch (_error) {
       const error = _error as Error
@@ -285,7 +295,7 @@ class AutoLingoAPI {
         'Content-Type': 'application/json',
       }
       response = await axios
-        .delete(`${import.meta.env.VITE_API_URL}/deck/${id}`, { headers: headers })
+        .delete(`${import.meta.env.VITE_API_URL}/deck/${id}`, { headers: { ...this.defaultHeaders, ...headers } })
         .then((res) => res.data)
     } catch (_error) {
       const error = _error as Error
@@ -381,7 +391,12 @@ class AutoLingoAPI {
         'Content-Type': 'application/json',
       }
       response = await axios
-        .get(`${import.meta.env.VITE_API_URL}/relatedTranslations${formatUrlGetParams(_params)}`, { headers: headers })
+        .get(`${import.meta.env.VITE_API_URL}/relatedTranslations${formatUrlGetParams(_params)}`, {
+          headers: {
+            ...this.defaultHeaders,
+            ...headers,
+          },
+        })
         .then((res) => res.data)
     } catch (_error) {
       const error = _error as Error
@@ -425,7 +440,12 @@ class AutoLingoAPI {
         'Content-Type': 'application/json',
       }
       response = await axios
-        .get(`${import.meta.env.VITE_API_URL}/searchSuggestions${formatUrlGetParams(_params)}`, { headers: headers })
+        .get(`${import.meta.env.VITE_API_URL}/searchSuggestions${formatUrlGetParams(_params)}`, {
+          headers: {
+            ...this.defaultHeaders,
+            ...headers,
+          },
+        })
         .then((res) => res.data)
     } catch (_error) {
       const error = _error as Error
@@ -469,7 +489,12 @@ class AutoLingoAPI {
         'Content-Type': 'application/json',
       }
       response = await axios
-        .get(`${import.meta.env.VITE_API_URL}/getTranslation${formatUrlGetParams(_params)}`, { headers: headers })
+        .get(`${import.meta.env.VITE_API_URL}/getTranslation${formatUrlGetParams(_params)}`, {
+          headers: {
+            ...this.defaultHeaders,
+            ...headers,
+          },
+        })
         .then((res) => res.data)
     } catch (_error) {
       const error = _error as Error

@@ -1,0 +1,7 @@
+{
+  "name": "AutoLingo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
